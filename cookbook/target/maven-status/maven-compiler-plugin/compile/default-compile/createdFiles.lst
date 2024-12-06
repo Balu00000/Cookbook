@@ -1,0 +1,12 @@
+com\chef\cookbook\model\Allergen.class
+com\chef\cookbook\model\FoodXAllergen.class
+com\chef\cookbook\model\Food.class
+com\chef\cookbook\model\FoodXDietary.class
+com\chef\cookbook\model\MealType.class
+com\chef\cookbook\model\Cuisine.class
+com\chef\cookbook\model\User.class
+com\chef\cookbook\model\Favourite.class
+com\chef\cookbook\model\Dietary.class
+com\chef\cookbook\model\Difficulty.class
+com\chef\cookbook\model\Recipe.class
+com\chef\cookbook\model\Ingredient.class
