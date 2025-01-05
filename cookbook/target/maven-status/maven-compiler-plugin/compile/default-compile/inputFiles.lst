@@ -1,12 +1,27 @@
-D:\javastuff\cookbook\src\main\java\com\chef\cookbook\model\MealType.java
-D:\javastuff\cookbook\src\main\java\com\chef\cookbook\model\Difficulty.java
-D:\javastuff\cookbook\src\main\java\com\chef\cookbook\model\FoodXAllergen.java
-D:\javastuff\cookbook\src\main\java\com\chef\cookbook\model\Allergen.java
-D:\javastuff\cookbook\src\main\java\com\chef\cookbook\model\Cuisine.java
-D:\javastuff\cookbook\src\main\java\com\chef\cookbook\model\Favourite.java
-D:\javastuff\cookbook\src\main\java\com\chef\cookbook\model\User.java
-D:\javastuff\cookbook\src\main\java\com\chef\cookbook\model\Food.java
-D:\javastuff\cookbook\src\main\java\com\chef\cookbook\model\Ingredient.java
-D:\javastuff\cookbook\src\main\java\com\chef\cookbook\model\FoodXDietary.java
-D:\javastuff\cookbook\src\main\java\com\chef\cookbook\model\Recipe.java
-D:\javastuff\cookbook\src\main\java\com\chef\cookbook\model\Dietary.java
+D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\service\FavouriteService.java
+D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\config\JWT.java
+D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\model\Favourite.java
+D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\model\Difficulty.java
+D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\model\Dietary.java
+D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\model\FoodXAllergen.java
+D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\service\DifficultyService.java
+D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\controller\DietaryController.java
+D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\service\CuisineService.java
+D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\controller\MealTypeController.java
+D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\controller\CuisineController.java
+D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\service\UserService.java
+D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\service\DietaryService.java
+D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\model\Food.java
+D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\model\User.java
+D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\controller\UserController.java
+D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\service\MealTypeService.java
+D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\model\Recipe.java
+D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\controller\FavouriteController.java
+D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\model\Allergen.java
+D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\model\Ingredient.java
+D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\controller\DifficultyController.java
+D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\model\FoodXDietary.java
+D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\model\Cuisine.java
+D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\controller\ApplicationConfig.java
+D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\exception\ExceptionLogger.java
+D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\model\MealType.java
