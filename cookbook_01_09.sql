@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 05, 2025 at 04:04 PM
+-- Generation Time: Jan 09, 2025 at 03:21 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -260,7 +260,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `isUserExists` (IN `emailIN` VARCHAR
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `login` (IN `emailIN` VARCHAR(255) CHARSET utf8mb4, IN `passwordIN` VARCHAR(255) CHARSET utf8mb4)   SELECT * from `user` where `user`.`email` = emailIN AND `user`.`password` = SHA1(passwordIN)$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `registerAdmin` (IN `userNameIN` VARCHAR(255) CHARSET utf8mb4, IN `image` TEXT, IN `emailIN` VARCHAR(255), IN `passwordIN` VARCHAR(20))   INSERT INTO `user`(
+CREATE DEFINER=`root`@`localhost` PROCEDURE `registerAdmin` (IN `usernameIN` VARCHAR(255) CHARSET utf8mb4, IN `imageIN` TEXT, IN `emailIN` VARCHAR(255), IN `passwordIN` VARCHAR(20))   INSERT INTO `user`(
 	`user`.`username`,
     `user`.`image`,
     `user`.`email`,
@@ -761,7 +761,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `user`
@@ -772,7 +772,8 @@ INSERT INTO `user` (`id`, `username`, `image`, `email`, `password`, `is_admin`, 
 (2, 'Jane Smith', 'Jane.png', 'jane@hotmail.com', '79ef18bb9e529a91d8941c52b9d47aa71ab1443c', 0, '2023-09-12 06:30:00', 0, NULL),
 (3, 'Balogh Gergely Daniel', 'gergo.png', 'balogh.gergely.daniel@simonyiszki.org', 'd98f69fa1f7cc99d196cbd9d2d47820c5cd317f2', 1, '2024-09-17 10:28:37', 0, NULL),
 (4, 'Kasza David', 'profile.png', 'kasza.david@simonyiszki.org', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', 1, '2024-09-20 11:29:23', 0, NULL),
-(5, 'Ron', 'Ron.png', 'RonWeasel@gmail.com', 'a1c6b74e19c25d2764d20ba7243177c605d5d2a8', 0, '2025-01-03 12:14:41', 0, NULL);
+(5, 'Ron', 'Ron.png', 'RonWeasel@gmail.com', 'a1c6b74e19c25d2764d20ba7243177c605d5d2a8', 0, '2025-01-03 12:14:41', 0, NULL),
+(6, 'Bob', 'Bob.png', 'BreadBob@citromail.com', '9cec8cf728a07d718434d7e87bb43f8643f95494', 1, '2025-01-09 14:17:52', 0, NULL);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
