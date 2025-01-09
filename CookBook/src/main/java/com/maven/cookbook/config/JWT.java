@@ -10,7 +10,8 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
-import io.jsonwebtoken.impl.TextCodec;
+import io.jsonwebtoken.io.Decoders;
+import static io.jsonwebtoken.io.Decoders.BASE64;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.WeakKeyException;
 import java.time.Instant;
@@ -21,14 +22,11 @@ import java.util.Date;
 public class JWT {
     
     /*
-        eyJhbGciOiJIUzI1NiJ9.
-    eyJpc3MiOiJWaXN1ZWxzZSIsInN1YiI6Im1hbmFnZW1lbnQiLCJpZCI6MTI3LCJzY29wZSI6InVzZXIiLCJzc1RhZyI6IkBBQiIsImlhdCI6MTcyNDk1NzMwOSwiZXhwIjoxNzI1NTYyMTA5fQ.
-    
-    Wj7kKUIVtWpLHwEkghRqnAjkb0xO7GJ4mOpiEDgxrs0
+    eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJWaXN1ZWxzZSIsInN1YiI6Im1hbmFnZW1lbnQiLCJpZCI6MTI3LCJzY29wZSI6InVzZXIiLCJzc1RhZyI6IkBBQiIsImlhdCI6MTcyNDk1NzMwOSwiZXhwIjoxNzI1NTYyMTA5fQ.Wj7kKUIVtWpLHwEkghRqnAjkb0xO7GJ4mOpiEDgxrs0
      */
     private static final String SIGN = "09ce78e64c7d6667e04798aa897e2bbc194d0ce5d19aef677b4477ba0932d972";
     private static final byte[] SECRET = Base64.getDecoder().decode(SIGN);
-    private static ExceptionLogger exceptionLogger = new ExceptionLogger(JWT.class);
+    private static final ExceptionLogger exceptionLogger = new ExceptionLogger(JWT.class);
 
     public static String createJWT(User u) {
         Instant now = Instant.now();
@@ -42,7 +40,7 @@ public class JWT {
             .setIssuedAt(Date.from(now))
             .setExpiration(Date.from(now.plus(1, ChronoUnit.DAYS)))
             .signWith(SignatureAlgorithm.HS256,
-                TextCodec.BASE64.decode(SIGN) //Related to a plugin that causes issues
+                Decoders.BASE64.decode(SIGN) //Related to a plugin that causes issues
             )
             .compact();
 
@@ -70,7 +68,9 @@ public class JWT {
     public static boolean isAdmin(String jwt) {
         Jws<Claims> result; //main függvényböl
         System.out.println(jwt);
-        result = Jwts.parser().setSigningKey(Keys.hmacShaKeyFor(SECRET)).parseClaimsJws(jwt); //error, also isn't error handled properly
+        
+        result = Jwts.parser().setSigningKey(Keys.hmacShaKeyFor(SECRET)).parseClaimsJws(jwt); //error, potentially invalid token
+        
         Boolean isAdmin = result.getBody().get("isAdmin", Boolean.class);
         return isAdmin;
     }

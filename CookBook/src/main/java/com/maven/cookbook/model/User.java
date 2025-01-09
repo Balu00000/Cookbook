@@ -262,7 +262,6 @@ public class User implements Serializable {
                 );
                 toReturn = u;
             }
-            
             return toReturn;
             
         } catch (NumberFormatException | ParseException e) {
@@ -377,10 +376,12 @@ public class User implements Serializable {
                     Boolean.parseBoolean(record[5].toString()),
                     formatter.parse(record[6].toString()),
                     Boolean.parseBoolean(record[7].toString()),
-                    record[9] == null ? null : formatter.parse(record[9].toString())
+                    record[8] == null ? null : formatter.parse(record[8].toString())
                 );
+                System.out.println(u);
                 toReturn.add(u);
             }
+            System.out.println(toReturn);
             return toReturn;
             
         } catch (Exception e) {
