@@ -126,6 +126,12 @@ public class User implements Serializable {
         this.isDeleted = isDeleted;
         this.deletedAt = deletedAt;
     }
+    
+    public User(String username, String image, Date createdAt){
+        this.username = username;
+        this.image = image;
+        this.createdAt = createdAt;
+    }
 
     public Integer getId() {
         return id;
@@ -384,12 +390,47 @@ public class User implements Serializable {
             System.out.println(toReturn);
             return toReturn;
             
-        } catch (Exception e) {
+        } catch (NumberFormatException | ParseException e) {
             System.err.println("Hiba: "+ e.getLocalizedMessage());
             return null;
         }finally{
             em.clear();
             em.close();
         }
-     }
+    }
+    
+    public UserDTO getUserProfileInformation(Integer id){
+        EntityManager em = emf.createEntityManager();
+        
+        try {
+            StoredProcedureQuery spq = em.createStoredProcedureQuery("getUserProfileInformation");
+            spq.registerStoredProcedureParameter("idIN", Integer.class, ParameterMode.IN);
+            
+            spq.setParameter("idIN", id);
+            spq.execute();
+            
+            List<Object[]> resultList = spq.getResultList();
+            UserDTO toReturn = null;
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            for(Object[] user : resultList){
+                User u = new User(
+                    user[0].toString(),
+                    user[1].toString(),
+                    formatter.parse(user[2].toString())
+                );
+                
+                Integer postedFood = Integer.valueOf(user[3].toString());
+                
+                toReturn = new UserDTO(u, postedFood);
+            }
+            return toReturn;
+            
+        } catch (NumberFormatException | ParseException e) {
+            System.err.println("Hiba: " + e.getLocalizedMessage());
+            return null;
+        } finally {
+            em.clear();
+            em.close();
+        }
+    }
 }

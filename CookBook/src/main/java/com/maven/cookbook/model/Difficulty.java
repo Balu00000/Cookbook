@@ -113,7 +113,7 @@ public class Difficulty implements Serializable {
 
     @Override
     public String toString() {
-        return "com.maven.cookbook.Difficulty[ id=" + id + " ]";
+        return "com.maven.cookbook.Difficulty[ id=" + id + "]";
     }
     
     public List<Difficulty> getAllDifficulty(){

@@ -8,6 +8,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.json.JSONObject;
@@ -37,10 +38,8 @@ public class FoodController {
     @GET
     @Path("getFoodByUser")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getFoodByUser(String bodyString){
-        JSONObject body = new JSONObject(bodyString);
-        
-        JSONObject obj = layer.getFoodByUser(body.getInt("id"));
+    public Response getFoodByUser(@QueryParam("id") Integer id){
+        JSONObject obj = layer.getFoodByUser(id);
         return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
     }
     
@@ -63,40 +62,45 @@ public class FoodController {
     @GET
     @Path("getFoodByDifficulty")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getFoodByDifficulty(String bodyString){
-        JSONObject body = new JSONObject(bodyString);
+    public Response getFoodByDifficulty(@QueryParam("id") Integer id){
         
-        JSONObject obj = layer.getFoodByDifficulty(body.getInt("id"));
+        JSONObject obj = layer.getFoodByDifficulty(id);
         return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
     }
     
     @GET
     @Path("getFoodByDietary")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getFoodByDietary(String bodyString){
-        JSONObject body = new JSONObject(bodyString);
+    public Response getFoodByDietary(@QueryParam("id") Integer id){
         
-        JSONObject obj = layer.getFoodByDietary(body.getInt("id"));
+        JSONObject obj = layer.getFoodByDietary(id);
         return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
     }
     
     @GET
     @Path("getFoodByCuisine")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getFoodByCuisine(String bodyString){
-        JSONObject body = new JSONObject(bodyString);
-        
-        JSONObject obj = layer.getFoodByCuisine(body.getInt("id"));
+    public Response getFoodByCuisine(@QueryParam("id") Integer id){
+
+        JSONObject obj = layer.getFoodByCuisine(id);
         return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
     }
     
     @GET
     @Path("getFoodByMealType")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getFoodByMealType(String bodyString){
-        JSONObject body = new JSONObject(bodyString);
+    public Response getFoodByMealType(@QueryParam("id") Integer id){
         
-        JSONObject obj = layer.getFoodByMealType(body.getInt("id"));
+        JSONObject obj = layer.getFoodByMealType(id);
+        return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
+    }
+    
+    @GET
+    @Path("getAllFood")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllFood(){
+        
+        JSONObject obj = layer.getAllFood();
         return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
     }
 }

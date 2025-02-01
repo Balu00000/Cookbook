@@ -148,9 +148,14 @@ public class Food implements Serializable {
         this.deletedAt = deletedAt;
     }
 
-    public Food(Integer id, Integer rating) {
+    public Food(Integer id, String name, String image, String description, Integer rating, String instructions, Date addedAt) {
         this.id = id;
+        this.name = name;
+        this.image = image;
+        this.description = description;
         this.rating = rating;
+        this.instructions = instructions;
+        this.addedAt = addedAt;
     }
 
     public Integer getId() {
@@ -282,7 +287,7 @@ public class Food implements Serializable {
         return "com.maven.cookbook.Food[ id=" + id + " ]";
     }
     
-    public List<Food> getFoodByUser(Integer id){
+    public List<FoodDTO> getFoodByUser(Integer id){
         EntityManager em = emf.createEntityManager();
         
         try {
@@ -293,7 +298,7 @@ public class Food implements Serializable {
             
             spq.execute();
             
-            List<Food> toReturn = new ArrayList();
+            List<FoodDTO> toReturn = new ArrayList();
             List<Object[]> resultList = spq.getResultList();
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             
@@ -303,20 +308,19 @@ public class Food implements Serializable {
                     food[1].toString(),
                     food[2].toString(),
                     food[3].toString(),
-                    Integer.valueOf(food[4].toString()),
-                    Integer.valueOf(food[5].toString()),
+                    Integer.valueOf(food[5].toString()), 
                     food[6].toString(),
-                    Integer.valueOf(food[7].toString()),
-                    Integer.valueOf(food[8].toString()),
-                    Integer.valueOf(food[9].toString()),
-                    formatter.parse(food[10].toString()),
-                    Boolean.valueOf(food[11].toString()),
-                    food[12] == null ? null : formatter.parse(food[12].toString())
+                    formatter.parse(food[10].toString())
                 );
-                toReturn.add(f);
+                String username = food[4].toString();
+                String difficultyName = food[7].toString();
+                String mealTypeType = food[8].toString();
+                String cuisineType = food[9].toString();
+                
+                toReturn.add(new FoodDTO(f, username, difficultyName, mealTypeType, cuisineType));
             }
             return toReturn;
-        } catch (Exception e) {
+        } catch (NumberFormatException | ParseException e) {
             System.err.println("Hiba: "+ e.getLocalizedMessage());
             return null;
         }finally{
@@ -325,14 +329,14 @@ public class Food implements Serializable {
         }
     }
 
-    public List<Food> getFoodByRating(){
+    public List<FoodDTO> getFoodByRating(){ //If things are null this will crash
         EntityManager em = emf.createEntityManager();
         
         try {
             StoredProcedureQuery spq = em.createStoredProcedureQuery("getFoodByRating");
             spq.execute();
             
-            List<Food> toReturn = new ArrayList();
+            List<FoodDTO> toReturn = new ArrayList();
             List<Object[]> resultList = spq.getResultList();
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             
@@ -342,20 +346,19 @@ public class Food implements Serializable {
                     food[1].toString(),
                     food[2].toString(),
                     food[3].toString(),
-                    Integer.valueOf(food[4].toString()),
-                    Integer.valueOf(food[5].toString()),
+                    Integer.valueOf(food[5].toString()), 
                     food[6].toString(),
-                    Integer.valueOf(food[7].toString()),
-                    Integer.valueOf(food[8].toString()),
-                    Integer.valueOf(food[9].toString()),
-                    formatter.parse(food[10].toString()),
-                    Boolean.valueOf(food[11].toString()),
-                    food[12] == null ? null : formatter.parse(food[12].toString())
+                    formatter.parse(food[10].toString())
                 );
-                toReturn.add(f);
+                String username = food[4].toString();
+                String difficultyName = food[7].toString();
+                String mealTypeType = food[8].toString();
+                String cuisineType = food[9].toString();
+                
+                toReturn.add(new FoodDTO(f, username, difficultyName, mealTypeType, cuisineType));
             }
             return toReturn;
-        } catch (Exception e) {
+        } catch (NumberFormatException | ParseException e) {
             System.err.println("Hiba: "+ e.getLocalizedMessage());
             return null;
         }finally{
@@ -364,7 +367,7 @@ public class Food implements Serializable {
         }
     }
     
-    public Food getFoodByRandom(){
+    public FoodDTO getFoodByRandom(){
         EntityManager em = emf.createEntityManager();
         
         try {
@@ -372,7 +375,7 @@ public class Food implements Serializable {
             spq.execute();
             
             List<Object[]> resultList = spq.getResultList();
-            Food toReturn = new Food();
+            FoodDTO toReturn = null;
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             for(Object[] food : resultList){
                 Food f = new Food(
@@ -380,17 +383,16 @@ public class Food implements Serializable {
                     food[1].toString(),
                     food[2].toString(),
                     food[3].toString(),
-                    Integer.valueOf(food[4].toString()),
-                    Integer.valueOf(food[5].toString()),
+                    Integer.valueOf(food[5].toString()), 
                     food[6].toString(),
-                    Integer.valueOf(food[7].toString()),
-                    Integer.valueOf(food[8].toString()),
-                    Integer.valueOf(food[9].toString()),
-                    formatter.parse(food[10].toString()),
-                    Boolean.valueOf(food[11].toString()),
-                    food[12] == null ? null : formatter.parse(food[12].toString())
+                    formatter.parse(food[10].toString())
                 );
-                toReturn = f;
+                String username = food[4].toString();
+                String difficultyName = food[7].toString();
+                String mealTypeType = food[8].toString();
+                String cuisineType = food[9].toString();
+                
+                toReturn = new FoodDTO(f, username, difficultyName, mealTypeType, cuisineType);
             }
             
             return toReturn;
@@ -404,7 +406,7 @@ public class Food implements Serializable {
         }
     }
 
-    public List<Food> getFoodByDifficulty(Integer id){
+    public List<FoodDTO> getFoodByDifficulty(Integer id){
         EntityManager em = emf.createEntityManager();
         
         try {
@@ -415,7 +417,7 @@ public class Food implements Serializable {
             
             spq.execute();
             
-            List<Food> toReturn = new ArrayList();
+            List<FoodDTO> toReturn = new ArrayList();
             List<Object[]> resultList = spq.getResultList();
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             
@@ -425,20 +427,19 @@ public class Food implements Serializable {
                     food[1].toString(),
                     food[2].toString(),
                     food[3].toString(),
-                    Integer.valueOf(food[4].toString()),
-                    Integer.valueOf(food[5].toString()),
+                    Integer.valueOf(food[5].toString()), 
                     food[6].toString(),
-                    Integer.valueOf(food[7].toString()),
-                    Integer.valueOf(food[8].toString()),
-                    Integer.valueOf(food[9].toString()),
-                    formatter.parse(food[10].toString()),
-                    Boolean.valueOf(food[11].toString()),
-                    food[12] == null ? null : formatter.parse(food[12].toString())
+                    formatter.parse(food[10].toString())
                 );
-                toReturn.add(f);
+                String username = food[4].toString();
+                String difficultyName = food[7].toString();
+                String mealTypeType = food[8].toString();
+                String cuisineType = food[9].toString();
+                
+                toReturn.add(new FoodDTO(f, username, difficultyName, mealTypeType, cuisineType));
             }
             return toReturn;
-        } catch (Exception e) {
+        } catch (NumberFormatException | ParseException e) {
             System.err.println("Hiba: "+ e.getLocalizedMessage());
             return null;
         }finally{
@@ -447,7 +448,7 @@ public class Food implements Serializable {
         }
     }
     
-    public List<Food> getFoodByDietary(Integer id){
+    public List<FoodDTO> getFoodByDietary(Integer id){
         EntityManager em = emf.createEntityManager();
         
         try {
@@ -458,7 +459,7 @@ public class Food implements Serializable {
             
             spq.execute();
             
-            List<Food> toReturn = new ArrayList();
+            List<FoodDTO> toReturn = new ArrayList();
             List<Object[]> resultList = spq.getResultList();
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             
@@ -468,20 +469,19 @@ public class Food implements Serializable {
                     food[1].toString(),
                     food[2].toString(),
                     food[3].toString(),
-                    Integer.valueOf(food[4].toString()),
-                    Integer.valueOf(food[5].toString()),
+                    Integer.valueOf(food[5].toString()), 
                     food[6].toString(),
-                    Integer.valueOf(food[7].toString()),
-                    Integer.valueOf(food[8].toString()),
-                    Integer.valueOf(food[9].toString()),
-                    formatter.parse(food[10].toString()),
-                    Boolean.valueOf(food[11].toString()),
-                    food[12] == null ? null : formatter.parse(food[12].toString())
+                    formatter.parse(food[10].toString())
                 );
-                toReturn.add(f);
+                String username = food[4].toString();
+                String difficultyName = food[7].toString();
+                String mealTypeType = food[8].toString();
+                String cuisineType = food[9].toString();
+                
+                toReturn.add(new FoodDTO(f, username, difficultyName, mealTypeType, cuisineType));
             }
             return toReturn;
-        } catch (Exception e) {
+        } catch (NumberFormatException | ParseException e) {
             System.err.println("Hiba: "+ e.getLocalizedMessage());
             return null;
         }finally{
@@ -490,7 +490,7 @@ public class Food implements Serializable {
         }
     }
     
-    public List<Food> getFoodByCuisine(Integer id){
+    public List<FoodDTO> getFoodByCuisine(Integer id){
         EntityManager em = emf.createEntityManager();
         
         try {
@@ -501,7 +501,7 @@ public class Food implements Serializable {
             
             spq.execute();
             
-            List<Food> toReturn = new ArrayList();
+            List<FoodDTO> toReturn = new ArrayList();
             List<Object[]> resultList = spq.getResultList();
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             
@@ -511,20 +511,19 @@ public class Food implements Serializable {
                     food[1].toString(),
                     food[2].toString(),
                     food[3].toString(),
-                    Integer.valueOf(food[4].toString()),
-                    Integer.valueOf(food[5].toString()),
+                    Integer.valueOf(food[5].toString()), 
                     food[6].toString(),
-                    Integer.valueOf(food[7].toString()),
-                    Integer.valueOf(food[8].toString()),
-                    Integer.valueOf(food[9].toString()),
-                    formatter.parse(food[10].toString()),
-                    Boolean.valueOf(food[11].toString()),
-                    food[12] == null ? null : formatter.parse(food[12].toString())
+                    formatter.parse(food[10].toString())
                 );
-                toReturn.add(f);
+                String username = food[4].toString();
+                String difficultyName = food[7].toString();
+                String mealTypeType = food[8].toString();
+                String cuisineType = food[9].toString();
+                
+                toReturn.add(new FoodDTO(f, username, difficultyName, mealTypeType, cuisineType));
             }
             return toReturn;
-        } catch (Exception e) {
+        } catch (NumberFormatException | ParseException e) {
             System.err.println("Hiba: "+ e.getLocalizedMessage());
             return null;
         }finally{
@@ -533,7 +532,7 @@ public class Food implements Serializable {
         }
     }
     
-    public List<Food> getFoodByMealType(Integer id){
+    public List<FoodDTO> getFoodByMealType(Integer id){
         EntityManager em = emf.createEntityManager();
         
         try {
@@ -544,7 +543,7 @@ public class Food implements Serializable {
             
             spq.execute();
             
-            List<Food> toReturn = new ArrayList();
+            List<FoodDTO> toReturn = new ArrayList();
             List<Object[]> resultList = spq.getResultList();
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             
@@ -554,20 +553,57 @@ public class Food implements Serializable {
                     food[1].toString(),
                     food[2].toString(),
                     food[3].toString(),
-                    Integer.valueOf(food[4].toString()),
-                    Integer.valueOf(food[5].toString()),
+                    Integer.valueOf(food[5].toString()), 
                     food[6].toString(),
-                    Integer.valueOf(food[7].toString()),
-                    Integer.valueOf(food[8].toString()),
-                    Integer.valueOf(food[9].toString()),
-                    formatter.parse(food[10].toString()),
-                    Boolean.valueOf(food[11].toString()),
-                    food[12] == null ? null : formatter.parse(food[12].toString())
+                    formatter.parse(food[10].toString())
                 );
-                toReturn.add(f);
+                String username = food[4].toString();
+                String difficultyName = food[7].toString();
+                String mealTypeType = food[8].toString();
+                String cuisineType = food[9].toString();
+                
+                toReturn.add(new FoodDTO(f, username, difficultyName, mealTypeType, cuisineType));
             }
             return toReturn;
-        } catch (Exception e) {
+        } catch (NumberFormatException | ParseException e) {
+            System.err.println("Hiba: "+ e.getLocalizedMessage());
+            return null;
+        }finally{
+            em.clear();
+            em.close();
+        }
+    }
+    
+    public List<FoodDTO> getAllFood(){
+        EntityManager em = emf.createEntityManager();
+        
+        try {
+            StoredProcedureQuery spq = em.createStoredProcedureQuery("getAllFood");
+            spq.execute();
+            
+            List<FoodDTO> toReturn = new ArrayList();
+            List<Object[]> resultList = spq.getResultList();
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            
+            for(Object[] food : resultList){
+                Food f = new Food(
+                    Integer.valueOf(food[0].toString()),
+                    food[1].toString(),
+                    food[2].toString(),
+                    food[3].toString(),
+                    Integer.valueOf(food[5].toString()), 
+                    food[6].toString(),
+                    formatter.parse(food[10].toString())
+                );
+                String username = food[4].toString();
+                String difficultyName = food[7].toString();
+                String mealTypeType = food[8].toString();
+                String cuisineType = food[9].toString();
+                
+                toReturn.add(new FoodDTO(f, username, difficultyName, mealTypeType, cuisineType));
+            }
+            return toReturn;
+        } catch (NumberFormatException | ParseException e) {
             System.err.println("Hiba: "+ e.getLocalizedMessage());
             return null;
         }finally{

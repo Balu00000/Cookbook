@@ -2,6 +2,7 @@ package com.maven.cookbook.service; //Default Java Class
 
 import com.maven.cookbook.config.JWT;
 import com.maven.cookbook.model.User;
+import com.maven.cookbook.model.UserDTO;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -183,6 +184,33 @@ public class UserService { //U.Model->U.Service->U.Controller
 
                 result.put(toAdd);
             }
+            toReturn.put("result", result);
+        }
+        toReturn.put("status", status);
+        toReturn.put("statusCode", statusCode);
+        return toReturn;
+    }
+
+    public JSONObject getUserProfileInformation(Integer Id){
+        JSONObject toReturn = new JSONObject();
+        String status = "success";
+        int statusCode = 200;
+        
+        UserDTO modelResult = layer.getUserProfileInformation(Id);
+        if(modelResult == null) {
+            status = "modelException";
+            statusCode = 500;
+        }else if (modelResult.getUser().getImage() == null) {
+            status = "noFoodFound";
+            statusCode = 417;
+        }else {
+            JSONObject result = new JSONObject();
+
+            result.put("username", modelResult.getUser().getUsername());
+            result.put("image", modelResult.getUser().getImage());
+            result.put("createdAt", modelResult.getUser().getCreatedAt());
+            result.put("postedFood", modelResult.getPostedFood());
+
             toReturn.put("result", result);
         }
         toReturn.put("status", status);

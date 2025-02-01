@@ -2,6 +2,7 @@ D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\service\Favo
 D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\config\JWT.java
 D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\model\Favourite.java
 D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\model\Difficulty.java
+D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\model\UserDTO.java
 D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\controller\FoodController.java
 D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\model\Dietary.java
 D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\model\FoodXAllergen.java
@@ -9,6 +10,7 @@ D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\service\Diff
 D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\controller\DietaryController.java
 D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\service\CuisineService.java
 D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\controller\MealTypeController.java
+D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\model\FoodDTO.java
 D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\controller\CuisineController.java
 D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\service\UserService.java
 D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\service\DietaryService.java

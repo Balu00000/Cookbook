@@ -13,6 +13,7 @@ import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.json.JSONObject;
@@ -99,5 +100,14 @@ public class UserController {
             default:
                 return Response.status(400).entity("TokenExpired").type(MediaType.APPLICATION_JSON).build();
         }
+    }
+    
+    @GET
+    @Path("getUserProfileInformation")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUserProfileInformation(@QueryParam("id") Integer id){ //This is an admin only command
+        
+        JSONObject obj = layer.getUserProfileInformation(id);
+        return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
     }
 }

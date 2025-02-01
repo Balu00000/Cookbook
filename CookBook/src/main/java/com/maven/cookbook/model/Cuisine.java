@@ -1,10 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.maven.cookbook.model;
 
-import static com.maven.cookbook.model.User.emf;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;

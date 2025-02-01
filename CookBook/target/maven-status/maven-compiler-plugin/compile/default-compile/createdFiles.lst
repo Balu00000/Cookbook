@@ -5,6 +5,7 @@ com\maven\cookbook\controller\FoodController.class
 com\maven\cookbook\model\Recipe.class
 com\maven\cookbook\service\CuisineService.class
 com\maven\cookbook\controller\UserController.class
+com\maven\cookbook\model\FoodDTO.class
 com\maven\cookbook\controller\CuisineController.class
 com\maven\cookbook\controller\DifficultyController.class
 com\maven\cookbook\model\Favourite.class
@@ -12,6 +13,7 @@ com\maven\cookbook\model\Cuisine.class
 com\maven\cookbook\service\DietaryService.class
 com\maven\cookbook\service\FoodService.class
 com\maven\cookbook\service\UserService.class
+com\maven\cookbook\model\UserDTO.class
 com\maven\cookbook\controller\MealTypeController.class
 com\maven\cookbook\service\FavouriteService.class
 com\maven\cookbook\model\Food.class
