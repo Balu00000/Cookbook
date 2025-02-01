@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 09, 2025 at 03:21 PM
+-- Generation Time: Feb 01, 2025 at 08:35 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -194,6 +194,25 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllDifficulty` ()   SELECT `id`,
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllergen` (IN `idIN` INT(11))   SELECT * FROM `allergen` WHERE `allergen`.`id` = idIN$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllFood` ()   SELECT 
+	`food`.`id`, 
+    `food`.`name` AS "Food Name",
+    `food`.`image`, 
+    `food`.`description`, 
+    `user`.`username`, 
+    `food`.`rating`,
+	`food`.`instructions`, 
+    `difficulty`.`name` AS Difficulty, 
+    `meal_type`.`type` AS "Meal Type", 
+    `cuisine`.`type` AS Cuisine, 
+    `food`.`added_at` 
+FROM `food`
+LEFT JOIN `user` ON `food`.`user_id` = `user`.`id`
+LEFT JOIN `difficulty` ON `food`.`difficulty_id` = `difficulty`.`id`
+LEFT JOIN `meal_type` ON `food`.`meal_type_id` = `meal_type`.`id`
+LEFT JOIN `cuisine` ON `food`.`cuisine_id` = `cuisine`.`id`
+WHERE `food`.`is_deleted` = 0$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllMealType` ()   SELECT * FROM `meal_type`$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllUser` ()   SELECT * FROM `user`$$
@@ -208,35 +227,201 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getFavouriteByUser` (IN `idIN` INT(
 LEFT JOIN `favourite` ON `favourite`.`food_id` = `food`.`id`
 WHERE `favourite`.`user_id` = idIN$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getFood` (IN `idIN` INT(11))   SELECT * FROM `food` WHERE `food`.`id` = idIN$$
-
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getFoodAllergen` (IN `idIN` INT(11))   SELECT * FROM `food_x_allergen` WHERE `food_x_allergen`.`id` = idIN$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getFoodAllergenByFood` (IN `idIN` INT(11))   SELECT * FROM `food_x_allergen` WHERE `food_x_allergen`.`food_id` = idIN$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getFoodByAddedAt` ()   SELECT * FROM `food` ORDER BY `food`.`added_at` DESC$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getFoodByAddedAt` ()   SELECT 
+	`food`.`id`, 
+    `food`.`name` AS "Food Name",
+    `food`.`image`, 
+    `food`.`description`, 
+    `user`.`username`, 
+    `food`.`rating`,
+	`food`.`instructions`, 
+    `difficulty`.`name` AS Difficulty, 
+    `meal_type`.`type` AS "Meal Type", 
+    `cuisine`.`type` AS Cuisine, 
+    `food`.`added_at` 
+FROM `food`
+LEFT JOIN `user` ON `food`.`user_id` = `user`.`id`
+LEFT JOIN `difficulty` ON `food`.`difficulty_id` = `difficulty`.`id`
+LEFT JOIN `meal_type` ON `food`.`meal_type_id` = `meal_type`.`id`
+LEFT JOIN `cuisine` ON `food`.`cuisine_id` = `cuisine`.`id`
+WHERE `food`.`is_deleted` = 0 ORDER BY `food`.`added_at` DESC$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getFoodByCuisine` (IN `idIN` INT(11))   SELECT * FROM `food` WHERE `food`.`cuisine_id` = idIN$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getFoodByCuisine` (IN `idIN` INT(11))   SELECT 
+	`food`.`id`, 
+    `food`.`name` AS "Food Name",
+    `food`.`image`, 
+    `food`.`description`, 
+    `user`.`username`, 
+    `food`.`rating`,
+	`food`.`instructions`, 
+    `difficulty`.`name` AS Difficulty, 
+    `meal_type`.`type` AS "Meal Type", 
+    `cuisine`.`type` AS Cuisine, 
+    `food`.`added_at` 
+FROM `food`
+LEFT JOIN `user` ON `food`.`user_id` = `user`.`id`
+LEFT JOIN `difficulty` ON `food`.`difficulty_id` = `difficulty`.`id`
+LEFT JOIN `meal_type` ON `food`.`meal_type_id` = `meal_type`.`id`
+LEFT JOIN `cuisine` ON `food`.`cuisine_id` = `cuisine`.`id`
+WHERE `food`.`cuisine_id` = idIN AND `food`.`is_deleted` = 0$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getFoodByDietary` (IN `idIN` INT(11))   SELECT `food`.* FROM `food`
-LEFT JOIN `food_x_dietary` ON `food`.`id` = `food_x_dietary`.`id`
-WHERE `food_x_dietary`.`id` = idIN$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getFoodByDietary` (IN `idIN` INT(11))   SELECT 
+	`food`.`id`, 
+    `food`.`name` AS "Food Name",
+    `food`.`image`, 
+    `food`.`description`, 
+    `user`.`username`, 
+    `food`.`rating`,
+	`food`.`instructions`, 
+    `difficulty`.`name` AS Difficulty, 
+    `meal_type`.`type` AS "Meal Type", 
+    `cuisine`.`type` AS Cuisine, 
+    `food`.`added_at` 
+FROM `food`
+LEFT JOIN `user` ON `food`.`user_id` = `user`.`id`
+LEFT JOIN `difficulty` ON `food`.`difficulty_id` = `difficulty`.`id`
+LEFT JOIN `meal_type` ON `food`.`meal_type_id` = `meal_type`.`id`
+LEFT JOIN `cuisine` ON `food`.`cuisine_id` = `cuisine`.`id`
+LEFT JOIN `food_x_dietary` ON `food`.`id` = `food_x_dietary`.`food_id`
+WHERE `food_x_dietary`.`dietary_id` = idIN AND `food`.`is_deleted` = 0$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getFoodByDifficulty` (IN `idIN` INT)   SELECT * FROM `food` WHERE `food`.`difficulty_id` = idIN$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getFoodByDifficulty` (IN `idIN` INT)   SELECT 
+	`food`.`id`, 
+    `food`.`name` AS "Food Name",
+    `food`.`image`, 
+    `food`.`description`, 
+    `user`.`username`, 
+    `food`.`rating`,
+	`food`.`instructions`, 
+    `difficulty`.`name` AS Difficulty, 
+    `meal_type`.`type` AS "Meal Type", 
+    `cuisine`.`type` AS Cuisine, 
+    `food`.`added_at` 
+FROM `food`
+LEFT JOIN `user` ON `food`.`user_id` = `user`.`id`
+LEFT JOIN `difficulty` ON `food`.`difficulty_id` = `difficulty`.`id`
+LEFT JOIN `meal_type` ON `food`.`meal_type_id` = `meal_type`.`id`
+LEFT JOIN `cuisine` ON `food`.`cuisine_id` = `cuisine`.`id`
+WHERE `food`.`difficulty_id` = idIN AND `food`.`is_deleted` = 0$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getFoodByIngredientId` (IN `idIN` INT(11))   SELECT * FROM `food`
-LEFT JOIN `recipe` ON `recipe`.`food_id` = `food`.`id`
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getFoodById` (IN `idIN` INT(11))   SELECT 
+	`food`.`id`, 
+    `food`.`name` AS "Food Name",
+    `food`.`image`, 
+    `food`.`description`, 
+    `user`.`username`, 
+    `food`.`rating`,
+	`food`.`instructions`, 
+    `difficulty`.`name` AS Difficulty, 
+    `meal_type`.`type` AS "Meal Type", 
+    `cuisine`.`type` AS Cuisine, 
+    `food`.`added_at` 
+FROM `food`
+LEFT JOIN `user` ON `food`.`user_id` = `user`.`id`
+LEFT JOIN `difficulty` ON `food`.`difficulty_id` = `difficulty`.`id`
+LEFT JOIN `meal_type` ON `food`.`meal_type_id` = `meal_type`.`id`
+LEFT JOIN `cuisine` ON `food`.`cuisine_id` = `cuisine`.`id`
+WHERE `food`.`id` = idIN AND `food`.`is_deleted` = 0$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getFoodByIngredientId` (IN `idIN` INT(11))   SELECT 
+	`food`.`id`, 
+    `food`.`name` AS "Food Name",
+    `food`.`image`, 
+    `food`.`description`, 
+    `user`.`username`, 
+    `food`.`rating`,
+	`food`.`instructions`, 
+    `difficulty`.`name` AS Difficulty, 
+    `meal_type`.`type` AS "Meal Type", 
+    `cuisine`.`type` AS Cuisine, 
+    `food`.`added_at` 
+FROM `food`
+LEFT JOIN `user` ON `food`.`user_id` = `user`.`id`
+LEFT JOIN `difficulty` ON `food`.`difficulty_id` = `difficulty`.`id`
+LEFT JOIN `meal_type` ON `food`.`meal_type_id` = `meal_type`.`id`
+LEFT JOIN `cuisine` ON `food`.`cuisine_id` = `cuisine`.`id`
+LEFT JOIN `recipe` ON `food`.`id` = `recipe`.`food_id`
 WHERE `recipe`.`ingredient_id` = idIN$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getFoodByMealType` (IN `idIN` INT(11))   SELECT `food`.* FROM `food` 
-LEFT JOIN `meal_type` ON  `meal_type`.`id` = `food`.`meal_type_id`
-WHERE `meal_type`.`id` = idIN$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getFoodByMealType` (IN `idIN` INT(11))   SELECT 
+	`food`.`id`, 
+    `food`.`name` AS "Food Name",
+    `food`.`image`, 
+    `food`.`description`, 
+    `user`.`username`, 
+    `food`.`rating`,
+	`food`.`instructions`, 
+    `difficulty`.`name` AS Difficulty, 
+    `meal_type`.`type` AS "Meal Type", 
+    `cuisine`.`type` AS Cuisine, 
+    `food`.`added_at` 
+FROM `food`
+LEFT JOIN `user` ON `food`.`user_id` = `user`.`id`
+LEFT JOIN `difficulty` ON `food`.`difficulty_id` = `difficulty`.`id`
+LEFT JOIN `meal_type` ON `food`.`meal_type_id` = `meal_type`.`id`
+LEFT JOIN `cuisine` ON `food`.`cuisine_id` = `cuisine`.`id`
+WHERE `food`.`meal_type_id` = idIN AND `food`.`is_deleted` = 0$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getFoodByRandom` ()   SELECT * FROM `food` ORDER BY RAND() LIMIT 1$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getFoodByRandom` ()   SELECT 
+	`food`.`id`, 
+    `food`.`name` AS "Food Name",
+    `food`.`image`, 
+    `food`.`description`, 
+    `user`.`username`, 
+    `food`.`rating`,
+	`food`.`instructions`, 
+    `difficulty`.`name` AS Difficulty, 
+    `meal_type`.`type` AS "Meal Type", 
+    `cuisine`.`type` AS Cuisine, 
+    `food`.`added_at` 
+FROM `food`
+LEFT JOIN `user` ON `food`.`user_id` = `user`.`id`
+LEFT JOIN `difficulty` ON `food`.`difficulty_id` = `difficulty`.`id`
+LEFT JOIN `meal_type` ON `food`.`meal_type_id` = `meal_type`.`id`
+LEFT JOIN `cuisine` ON `food`.`cuisine_id` = `cuisine`.`id`
+WHERE `food`.`is_deleted` = 0 ORDER BY RAND() LIMIT 1$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getFoodByRating` ()   SELECT * FROM `food` ORDER BY `food`.`rating` DESC$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getFoodByRating` ()   SELECT 
+	`food`.`id`, 
+    `food`.`name` AS "Food Name",
+    `food`.`image`, 
+    `food`.`description`, 
+    `user`.`username`, 
+    `food`.`rating`,
+	`food`.`instructions`, 
+    `difficulty`.`name` AS Difficulty, 
+    `meal_type`.`type` AS "Meal Type", 
+    `cuisine`.`type` AS Cuisine, 
+    `food`.`added_at` 
+FROM `food`
+LEFT JOIN `user` ON `food`.`user_id` = `user`.`id`
+LEFT JOIN `difficulty` ON `food`.`difficulty_id` = `difficulty`.`id`
+LEFT JOIN `meal_type` ON `food`.`meal_type_id` = `meal_type`.`id`
+LEFT JOIN `cuisine` ON `food`.`cuisine_id` = `cuisine`.`id`
+WHERE `food`.`is_deleted` = 0 ORDER BY `food`.`rating` DESC$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getFoodByUser` (IN `idIN` INT(11))   SELECT `food`.* FROM `food` WHERE `food`.`user_id` = idIN$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getFoodByUser` (IN `idIN` INT(11))   SELECT 
+	`food`.`id`, 
+    `food`.`name` AS "Food Name",
+    `food`.`image`, 
+    `food`.`description`, 
+    `user`.`username`, 
+    `food`.`rating`,
+	`food`.`instructions`, 
+    `difficulty`.`name` AS Difficulty, 
+    `meal_type`.`type` AS "Meal Type", 
+    `cuisine`.`type` AS Cuisine, 
+    `food`.`added_at` 
+FROM `food`
+LEFT JOIN `user` ON `food`.`user_id` = `user`.`id`
+LEFT JOIN `difficulty` ON `food`.`difficulty_id` = `difficulty`.`id`
+LEFT JOIN `meal_type` ON `food`.`meal_type_id` = `meal_type`.`id`
+LEFT JOIN `cuisine` ON `food`.`cuisine_id` = `cuisine`.`id`
+WHERE `food`.`user_id` = idIN AND `food`.`is_deleted` = 0$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getFoodDietary` (IN `idIN` INT(11))   SELECT * FROM `food_x_dietary` WHERE `food_x_dietary`.`id` = idIN$$
 
@@ -251,6 +436,13 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getRecipeByFoodId` (IN `idIN` INT(1
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getRecipeByFoodIdButBetter` (IN `idIN` INT(11))   SELECT `name` FROM `recipe` 
 LEFT JOIN `ingredient` ON `recipe`.`ingredient_id` = `ingredient`.`id`
 WHERE `recipe`.`food_id` = idIN$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getUserProfileInformation` (IN `idIN` INT(11))   SELECT `user`.`username`, 
+		`user`.`image`, 
+        `user`.`created_at`,
+       (SELECT COUNT(`food`.`id`) FROM `food` WHERE `food`.`user_id` = idIN) AS "Recipes Posted"
+FROM `user`
+WHERE `user`.`id` = idIN$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `isUserExists` (IN `emailIN` VARCHAR(255) CHARSET utf8mb4, OUT `resultOUT` BOOLEAN)   set resultOUT = EXISTS(
 	SELECT `user`.`id`
@@ -333,6 +525,10 @@ SET `food_x_dietary`.`dietary_id` = dietaryIdIN,
 `food_x_dietary`.`food_id` = foodIdIN
 WHERE `food_x_dietary`.`id` = idIN$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `updateFoodImage` (IN `idIN` INT(11), IN `imageIN` TEXT CHARSET utf8mb4)   UPDATE `food`
+SET `food`.`image` = imageIN
+WHERE `food`.`id` = idIN$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `updateIngredient` (IN `idIN` INT(11), IN `nameIN` VARCHAR(255) CHARSET utf8mb4, IN `proteinIN` FLOAT, IN `carbIN` FLOAT, IN `fatIN` FLOAT, IN `cholesterolIN` FLOAT, IN `fiberIN` FLOAT)   UPDATE `ingredient`
 SET `ingredient`.`name` = nameIN,
 `ingredient`.`protein` = proteinIN,
@@ -359,6 +555,10 @@ SET `user`.`username` = usernameIN,
 `user`.`email`= emailIN,
 `user`.`password` = SHA1(passwordIN),
 `user`.`is_admin` = isAdminIN
+WHERE `user`.`id` = idIN$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `updateUserImage` (IN `idIN` INT(11), IN `imageIN` TEXT CHARSET utf8mb4)   UPDATE `user`
+SET `user`.`image` = imageIN
 WHERE `user`.`id` = idIN$$
 
 DELIMITER ;
@@ -534,14 +734,14 @@ CREATE TABLE IF NOT EXISTS `food` (
 
 INSERT INTO `food` (`id`, `name`, `image`, `description`, `user_id`, `rating`, `instructions`, `difficulty_id`, `meal_type_id`, `cuisine_id`, `added_at`, `is_deleted`, `deleted_at`) VALUES
 (1, 'Spaghetti Bolognese', 'spaghetti.png', 'A classic Italian pasta dish with a rich meat sauce.', 3, 2, '1. Boil the Spaghetti: Bring a large pot of salted water to a boil. Add the spaghetti and cook according to the package instructions (usually 8-10 minutes), until al dente. Drain the pasta and set it aside. \n\n2. Prepare the Meat Sauce: Heat 2 tablespoons of olive oil in a large pan over medium heat. Add 1 finely chopped onion and 2 minced garlic cloves, and sauté until the onion becomes soft and translucent. Add 500g of ground beef to the pan and cook until browned, breaking the meat up with a wooden spoon as it cooks. \n\n3. Add the Vegetables: Stir in 1 grated carrot and 1 chopped celery stalk, and cook for 5 minutes until the vegetables soften. \n\n4. Cook the Sauce: Add 400g of canned crushed tomatoes, 1 tablespoon of tomato paste, 1 teaspoon of sugar, and a splash of red wine (optional) to the pan. Season with salt, pepper, 1 teaspoon of dried oregano, and 1 teaspoon of dried basil. Stir everything together and bring the sauce to a simmer. Lower the heat and let the sauce simmer gently for 20-30 minutes, stirring occasionally. \n\n5. Final Touches: Taste and adjust the seasoning as needed. Stir in 2 tablespoons of cream or milk for a richer sauce (optional). Serve the Bolognese sauce over the cooked spaghetti. Top with freshly grated Parmesan cheese and fresh basil, if desired.', 2, 3, 1, '2023-09-15 12:00:00', 0, NULL),
-(2, 'Birria Tacos', 'tacos.png', 'Birria is a mainstay of Mexican cuisine, a stew that originated in the state of Jalisco traditionally made from goat, beef, or lamb.', 3, 0, '§Sprinkle the chuck roast and short ribs all over with 2 tablespoons salt. Combine roast, ribs, and adobo in a large nonreactive bowl and toss to mix. §Cover and chill for at least 4 hours or up to 24 hours. §Preheat oven to 149°C. §Transfer adobo mixture to a large (9 1/2-quart) Dutch oven and add 8 cups of water. §Bring to a simmer, uncovered, over medium heat, stirring occasionally. §Cover with lid and place in preheated oven. §Bake until meat is fork-tender for about 4 hours. §Remove chuck roast and short ribs from braising broth and transfer to a large bowl, cover with aluminum foil to keep warm. §Return broth in Dutch oven to heat over medium and cook, uncovered, skimming off fat as needed, until reduced to about 8 cups, 15 to 20 minutes. §Season broth with salt to taste. §Shred meat, discard bones and toss with 1 1/2 cups of the broth. §Stir together onion, cilantro, and remaining 1/4 teaspoon salt in a small bowl, set aside. §Heat a large nonstick electric griddle to 204°C or a large (12-inch) cast-iron skillet over medium-high. Using a paper towel dipped in canola oil, lightly grease griddle. If using fresh tortillas, stack two tortillas, and use tongs to dip them together into adobo broth. (If using packaged tortillas, dip one tortilla per taco.) §Place stacked tortillas on griddle, top with 1/4 cup meat. Repeat with as many tortilla stacks as will comfortably fit on griddle. Cook until bottom tortilla is lightly browned and crispy for 1 to 2 minutes. §Fold tacos in half, gently pressing with a spatula. Transfer to a serving plate. Repeat process with oil, adobo broth, remaining tortillas, and remaining meat. §Serve tacos hot with onion-cilantro mixture, lime wedges, and remaining adobo broth for dipping or sipping.', 1, 2, 2, '2023-09-16 10:30:00', 0, NULL),
-(3, 'Highwayman Dumpling', 'h_dumpling.png', 'These dumplings are usually served with spätzle or crest pasta.', 4, 0, '§Grind up the raw chicken breasts, spice, mix with eggs and form moderately sized dumplings. §Cut up the onions into small pieces, simmer with oil once soft add cut up mushroom and spice. §Add dumplings once the oil is hot enough and cook them for 20-25 minutes on low heat. §', 2, 2, 6, '2024-10-03 11:34:33', 0, NULL),
-(4, 'Savoy cabbage stew', 'savoy_cabbage_stew.png', 'Bits of crinkly Savoy cabbage and potato chunks crowd this creamy and mild vegetable stew flavored with caraway seeds. Using tender new potatos and a few tablespoons of sour cream to finish turn this everyday dish into a luscious treat.', 4, 1, '§Cut the cabbage into small pieces, then scald with hot water. §Boil the cabbage pieces with salt, black pepper and onion. §Cut the garlic into small pieces along with the caraway then add it to the cabbage. §Once the cabbage cooks half-way through add the diced potato and nutmeg. §When the cabbage has fully boiled, make a roux with some ground chili peppers, flour and oil then mix with the cabbage while still boiling. §The recipe can be eaten with fried eggs, beef stew or in itself. ', 1, 2, 6, '2024-09-20 11:54:05', 0, NULL),
+(2, 'Birria Tacos', 'tacos.png', 'Birria is a mainstay of Mexican cuisine, a stew that originated in the state of Jalisco traditionally made from goat, beef, or lamb.', 3, 0, 'Sprinkle the chuck roast and short ribs all over with 2 tablespoons salt. Combine roast, ribs, and adobo in a large nonreactive bowl and toss to mix. §Cover and chill for at least 4 hours or up to 24 hours. §Preheat oven to 149°C. §Transfer adobo mixture to a large (9 1/2-quart) Dutch oven and add 8 cups of water. §Bring to a simmer, uncovered, over medium heat, stirring occasionally. §Cover with lid and place in preheated oven. §Bake until meat is fork-tender for about 4 hours. §Remove chuck roast and short ribs from braising broth and transfer to a large bowl, cover with aluminum foil to keep warm. §Return broth in Dutch oven to heat over medium and cook, uncovered, skimming off fat as needed, until reduced to about 8 cups, 15 to 20 minutes. §Season broth with salt to taste. §Shred meat, discard bones and toss with 1 1/2 cups of the broth. §Stir together onion, cilantro, and remaining 1/4 teaspoon salt in a small bowl, set aside. §Heat a large nonstick electric griddle to 204°C or a large (12-inch) cast-iron skillet over medium-high. Using a paper towel dipped in canola oil, lightly grease griddle. If using fresh tortillas, stack two tortillas, and use tongs to dip them together into adobo broth. (If using packaged tortillas, dip one tortilla per taco.) §Place stacked tortillas on griddle, top with 1/4 cup meat. Repeat with as many tortilla stacks as will comfortably fit on griddle. Cook until bottom tortilla is lightly browned and crispy for 1 to 2 minutes. §Fold tacos in half, gently pressing with a spatula. Transfer to a serving plate. Repeat process with oil, adobo broth, remaining tortillas, and remaining meat. §Serve tacos hot with onion-cilantro mixture, lime wedges, and remaining adobo broth for dipping or sipping.', 1, 2, 2, '2023-09-16 10:30:00', 0, NULL),
+(3, 'Highwayman Dumpling', 'h_dumpling.png', 'These dumplings are usually served with spätzle or crest pasta.', 4, 0, 'Grind up the raw chicken breasts, spice, mix with eggs and form moderately sized dumplings. §Cut up the onions into small pieces, simmer with oil once soft add cut up mushroom and spice. §Add dumplings once the oil is hot enough and cook them for 20-25 minutes on low heat. §', 2, 2, 6, '2024-10-03 11:34:33', 0, NULL),
+(4, 'Savoy cabbage stew', 'savoy_cabbage_stew.png', 'Bits of crinkly Savoy cabbage and potato chunks crowd this creamy and mild vegetable stew flavored with caraway seeds. Using tender new potatos and a few tablespoons of sour cream to finish turn this everyday dish into a luscious treat.', 4, 1, 'Cut the cabbage into small pieces, then scald with hot water. §Boil the cabbage pieces with salt, black pepper and onion. §Cut the garlic into small pieces along with the caraway then add it to the cabbage. §Once the cabbage cooks half-way through add the diced potato and nutmeg. §When the cabbage has fully boiled, make a roux with some ground chili peppers, flour and oil then mix with the cabbage while still boiling. §The recipe can be eaten with fried eggs, beef stew or in itself. ', 1, 2, 6, '2024-09-20 11:54:05', 0, NULL),
 (5, 'Cabbage hajtóka', 'hajtoka.png', 'A cabbage filled pastry.', 4, 0, 'Todo', 1, 4, 6, '2024-10-03 10:52:39', 0, NULL),
 (6, 'Potato Pancakes', 'tocsni.png', 'These special pancakes are made from grated potato and flour, fried in fat or oil', 4, 1, 'Todo', 1, 2, 9, '2024-10-03 11:09:03', 0, NULL),
 (7, 'Garlic Soup', 'garlic_soup.png', 'The hungarian rendition of the classic garlic soup.', 4, 1, 'Todo', 2, 2, 6, '2024-10-03 11:17:46', 0, NULL),
 (8, 'Grandma\'s grilled fish', 'grilled_fish.png', 'Grandma\'s beloved grilled fish. ', 4, 0, 'Todo', 1, 2, 6, '2024-10-03 11:41:36', 0, NULL),
-(10, 'Key Lime Pie', 'limepie.png', 'This is an American desert made from limes. Key lime pie dates back to the late 1800s in the Florida Keys. Modern refrigeration wasn’t available at the time, so fresh milk wasn’t a common commodity. Instead, canned milk was widely used.', 3, 1, '§Heat the oven to 160C/fan 140C/gas 3. §Whizz 300g oatmeal biscuits to crumbs in a food processor (or put in a strong plastic bag and bash with a rolling pin). §Mix with 110g melted butter and press into the base and up the sides of a 22cm loose-based tart tin. Bake in the oven for 10 minutes. Remove and cool. §Put 3 medium egg yolks in a large bowl and whisk for a minute with electric beaters. §Add a can of condensed milk and whisk for 3 minutes, then add the finely grated zest and juice of 4 limes and whisk again for 3 minutes. §Pour the filling into the cooled base then put back in the oven for 15 minutes. Cool then chill for at least 6 hours or overnight if you like. When you are ready to serve, carefully remove the pie from the tin and put on a serving plate. §To decorate, softly whip together 300ml double cream and 1 tbsp icing sugar. §Dollop or pipe the cream onto the top of the pie and finish with extra lime zest.', 2, 0, 10, '2024-10-22 10:43:43', 0, NULL);
+(10, 'Key Lime Pie', 'lemon_pie.png', 'This is an American desert made from limes. Key lime pie dates back to the late 1800s in the Florida Keys. Modern refrigeration wasn’t available at the time, so fresh milk wasn’t a common commodity. Instead, canned milk was widely used.', 3, 1, 'Heat the oven to 160C fan 140C gas §Whizz 300g oatmeal biscuits to crumbs in a food processor (or put in a strong plastic bag and bash with a rolling pin). §Mix with 110g melted butter and press into the base and up the sides of a 22cm loose-based tart tin. Bake in the oven for 10 minutes. Remove and cool. §Put 3 medium egg yolks in a large bowl and whisk for a minute with electric beaters. §Add a can of condensed milk and whisk for 3 minutes, then add the finely grated zest and juice of 4 limes and whisk again for 3 minutes. §Pour the filling into the cooled base then put back in the oven for 15 minutes. Cool then chill for at least 6 hours or overnight if you like. When you are ready to serve, carefully remove the pie from the tin and put on a serving plate. §To decorate, softly whip together 300ml double cream and 1 tbsp icing sugar. §Dollop or pipe the cream onto the top of the pie and finish with extra lime zest.', 2, 5, 10, '2024-10-22 10:43:43', 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -771,7 +971,7 @@ INSERT INTO `user` (`id`, `username`, `image`, `email`, `password`, `is_admin`, 
 (1, 'John Doe', 'john.png', 'john@citromail.com', 'cbfdac6008f9cab4083784cbd1874f76618d2a97', 0, '2023-09-10 10:00:00', 0, NULL),
 (2, 'Jane Smith', 'Jane.png', 'jane@hotmail.com', '79ef18bb9e529a91d8941c52b9d47aa71ab1443c', 0, '2023-09-12 06:30:00', 0, NULL),
 (3, 'Balogh Gergely Daniel', 'gergo.png', 'balogh.gergely.daniel@simonyiszki.org', 'd98f69fa1f7cc99d196cbd9d2d47820c5cd317f2', 1, '2024-09-17 10:28:37', 0, NULL),
-(4, 'Kasza David', 'profile.png', 'kasza.david@simonyiszki.org', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', 1, '2024-09-20 11:29:23', 0, NULL),
+(4, 'Kasza David', 'billy.png', 'kasza.david@simonyiszki.org', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', 1, '2024-09-20 11:29:23', 0, NULL),
 (5, 'Ron', 'Ron.png', 'RonWeasel@gmail.com', 'a1c6b74e19c25d2764d20ba7243177c605d5d2a8', 0, '2025-01-03 12:14:41', 0, NULL),
 (6, 'Bob', 'Bob.png', 'BreadBob@citromail.com', '9cec8cf728a07d718434d7e87bb43f8643f95494', 1, '2025-01-09 14:17:52', 0, NULL);
 COMMIT;
