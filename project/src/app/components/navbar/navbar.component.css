@@ -1,0 +1,30 @@
+svg{
+    margin-bottom: 2px;
+}
+
+nav{
+    background-color: #3A0CA3 !important;
+    font-size: x-large;
+    padding-bottom: 10px;
+}
+
+#asd svg{
+    margin-left: 2px;
+}
+
+#btn{
+    color: white;
+}
+
+#btn svg{
+    height: 30px;
+    width: auto;
+}
+
+#logout{
+    background-color: red;;
+}
+
+.nav-link{
+    color: white !important;
+}

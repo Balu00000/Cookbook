@@ -1,0 +1,14 @@
+<app-navbar></app-navbar>
+<h1>{{recipeName}}</h1>
+<h2>Short Description: <br>{{recipeDescription}}</h2>
+<p><img src="" id="iomage" alt={{recipeImage}}></p>
+<p>Difficutly: {{recipeDifficulty}}</p>
+<p>Favorited: {{recipeFavoritedByPeople}}</p>
+<div>
+  <h2>Recipe Instructions</h2>
+  <ol>
+    <li *ngFor="let step of recipeInstructionsSegments">
+      {{ step }}
+    </li>
+  </ol>
+</div>

@@ -1,0 +1,25 @@
+#difficulty, #mealType, #cuisines, #diatery{
+  width: 120px;
+}
+
+.dropdown-header {
+  font-weight: bold;
+  cursor: pointer;
+  width: 114px;
+}
+
+.dropdown-menu {
+  display: contents; 
+  position: absolute;
+  margin-top: 5px;
+  padding: 10px;
+  width: 200px;
+}
+
+.arrow-down::after {
+  content: "▼";
+}
+
+.arrow-up::after {
+  content: "▲";
+}
