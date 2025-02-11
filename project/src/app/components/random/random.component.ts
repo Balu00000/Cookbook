@@ -36,7 +36,7 @@ export class RandomComponent {
       this.recipeName =                 randomData.result.name
       this.recipeDescription =          randomData.result.description
       this.recipeImage =                randomData.result.image
-      this.recipeDifficulty =           randomData.result.difficultyId
+      this.recipeDifficulty =           randomData.result.difficulty
       this.recipeFavoritedByPeople =    randomData.result.rating
       this.recipeInstructions =         randomData.result.instructions
       this.recipeInstructionsSegments = this.recipeInstructions.split('§')

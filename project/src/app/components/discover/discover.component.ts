@@ -1,11 +1,13 @@
 import { Component, ElementRef, ViewChild, Renderer2, ChangeDetectorRef } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { CommonModule } from '@angular/common';
+import { GetAllFoodService } from '../../services/get-all-food.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-discover',
   standalone: true,
-  imports: [NavbarComponent, CommonModule],
+  imports: [NavbarComponent, CommonModule, FormsModule],
   templateUrl: './discover.component.html',
   styleUrl: './discover.component.css'
 })
@@ -20,14 +22,69 @@ export class DiscoverComponent {
   mealTypes: { type: string }[] = []
   cuisines: { type: string }[] = []
   dietarys: { type: string }[] = []
+  
+  allFood:any[] = []
+  filteredFood: any[] = [];
+
+  selectedDifficulties: { [key: string]: boolean } = {};
+  selectedMealTypes: { [key: string]: boolean } = {};
+  selectedCuisines: { [key: string]: boolean } = {};
+  selectedDietarys: { [key: string]: boolean } = {};
+
 
   baseURL: string = "http://127.0.0.1:8080/CookBook-1.0-SNAPSHOT/webresources/"
 
-  /*difficulties:{name:string }[] = []
-  mealTypes:{name:string }[] = []
-  mealTypes:{name:string }[] = []
-  difficulties:{name:string }[] = []*/
+  constructor(private foodFetch:GetAllFoodService){}
 
+  async ngOnInit(){
+    this.allFood = await this.foodFetch.LALALALALALAL();
+    this.filteredFood = this.allFood;
+  }
+
+  toggleSelection(category: string, value: string) {
+    switch (category) {
+      case 'difficulty':
+        this.selectedDifficulties[value] = !this.selectedDifficulties[value];
+        break;
+      case 'mealType':
+        this.selectedMealTypes[value] = !this.selectedMealTypes[value]; 
+        break;
+      case 'cuisine':
+        this.selectedCuisines[value] = !this.selectedCuisines[value];
+        break;
+      case 'dietary':
+        this.selectedDietarys[value] = !this.selectedDietarys[value];
+        break;
+    }
+    this.applyFilters();
+  }
+
+  applyFilters() {
+    this.filteredFood = this.allFood.filter(item =>
+      (Object.keys(this.selectedDifficulties).length === 0 || this.selectedDifficulties[item.difficultyName] === true) &&
+      (Object.keys(this.selectedMealTypes).length === 0 || this.selectedMealTypes[item.mealTypeName] === true) &&
+      (Object.keys(this.selectedCuisines).length === 0 || this.selectedCuisines[item.cuisineName] === true) &&
+      (Object.keys(this.selectedDietarys).length === 0 || this.selectedDietarys[item.dietaryType] === true)
+    );
+  }
+
+  clearFilters() {
+    // Reset the selected filters
+    this.selectedDifficulties = {};
+    this.selectedMealTypes = {};
+    this.selectedCuisines = {};
+    this.selectedDietarys = {};
+    this.applyFilters()
+  }
+
+  get isFilterActive(): boolean {
+    return Object.values(this.selectedDifficulties).some(value => value) || 
+           Object.values(this.selectedMealTypes).some(value => value) || 
+           Object.values(this.selectedCuisines).some(value => value) || 
+           Object.values(this.selectedDietarys).some(value => value);
+  }
+  
+  
   async difficulty() {
     try {
       const difficultyResponse = await fetch(this.baseURL + "difficulty/getAllDifficulty")
@@ -101,7 +158,5 @@ export class DiscoverComponent {
     } catch (error) {
       console.error('Error fetching data:', error);
     }
-  }
-
-  
+  }  
 }
