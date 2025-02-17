@@ -27,5 +27,6 @@ public class ApplicationConfig extends Application {
         resources.add(com.maven.cookbook.controller.FoodController.class);
         resources.add(com.maven.cookbook.controller.MealTypeController.class);
         resources.add(com.maven.cookbook.controller.UserController.class);
+        resources.add(com.maven.cookbook.filters.CORSFilter.class);
     }
 }
