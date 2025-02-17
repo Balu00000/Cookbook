@@ -10,6 +10,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
+import javax.ws.rs.PATCH;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
@@ -105,9 +106,17 @@ public class UserController {
     @GET
     @Path("getUserProfileInformation")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getUserProfileInformation(@QueryParam("id") Integer id){ //This is an admin only command
+    public Response getUserProfileInformation(@QueryParam("id") Integer id){
         
         JSONObject obj = layer.getUserProfileInformation(id);
+        return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
+    }
+    
+    @POST
+    @Path("deleteUserById")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response deleteUserById(@HeaderParam("token") String jwt, @QueryParam("id") Integer id){ //This is an admin only command -- Todo Write null value handler
+        JSONObject obj = layer.deleteUserById(id, jwt);
         return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
     }
 }

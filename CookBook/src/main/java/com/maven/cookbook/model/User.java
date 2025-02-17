@@ -433,4 +433,25 @@ public class User implements Serializable {
             em.close();
         }
     }
+    
+    public Boolean deleteUserById(Integer id){
+        EntityManager em = emf.createEntityManager();
+        
+        try {
+            StoredProcedureQuery spq = em.createStoredProcedureQuery("deleteUserById");
+            spq.registerStoredProcedureParameter("idIN", Integer.class, ParameterMode.IN);
+            
+            spq.setParameter("idIN", id);
+            
+            spq.execute();
+            
+            return true;
+        } catch (Exception e) {
+            System.err.println("Hiba: " + e.getLocalizedMessage());
+            return null;
+        } finally {
+            em.clear();
+            em.close();
+        }
+    }
 }

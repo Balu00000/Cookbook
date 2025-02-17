@@ -6,6 +6,8 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.QueryParam;
@@ -101,6 +103,15 @@ public class FoodController {
     public Response getAllFood(){
         
         JSONObject obj = layer.getAllFood();
+        return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
+    }
+    
+    @POST
+    @Path("deleteFoodById")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response deleteFoodById(@HeaderParam("token") String jwt, @QueryParam("id") Integer id){ //This is an admin only command -- Todo Write null value handler
+        
+        JSONObject obj = layer.deleteFoodById(id, jwt);
         return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
     }
 }

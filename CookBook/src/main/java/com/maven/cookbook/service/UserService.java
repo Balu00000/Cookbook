@@ -217,4 +217,23 @@ public class UserService { //U.Model->U.Service->U.Controller
         toReturn.put("statusCode", statusCode);
         return toReturn;
     }
+    public JSONObject deleteUserById(Integer Id, String jwt){
+        JSONObject toReturn = new JSONObject();
+        String status = "success";
+        int statusCode = 200;
+        if(JWT.isAdmin(jwt)) {
+            boolean deleteUserById = layer.deleteUserById(Id);
+            if(deleteUserById == false){
+                status = "fail";
+                statusCode = 417;
+            }
+        }else{
+            status = "PermissionError";
+            statusCode=417;
+        }
+        
+        toReturn.put("status", status);
+        toReturn.put("statusCode", statusCode);
+        return toReturn;
+    }
 }

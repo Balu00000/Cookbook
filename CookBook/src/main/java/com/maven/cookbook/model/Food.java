@@ -611,4 +611,25 @@ public class Food implements Serializable {
             em.close();
         }
     }
+    
+    public Boolean deleteFoodById(Integer id){
+        EntityManager em = emf.createEntityManager();
+        
+        try {
+            StoredProcedureQuery spq = em.createStoredProcedureQuery("deleteFoodById");
+            spq.registerStoredProcedureParameter("idIN", Integer.class, ParameterMode.IN);
+            
+            spq.setParameter("idIN", id);
+            
+            spq.execute();
+            
+            return true;
+        } catch (Exception e) {
+            System.err.println("Hiba: " + e.getLocalizedMessage());
+            return null;
+        } finally {
+            em.clear();
+            em.close();
+        }
+    }
 }
