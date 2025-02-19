@@ -210,6 +210,7 @@ public class UserService { //U.Model->U.Service->U.Controller
             result.put("image", modelResult.getUser().getImage());
             result.put("createdAt", modelResult.getUser().getCreatedAt());
             result.put("postedFood", modelResult.getPostedFood());
+            result.put("favouritedFood", modelResult.getFavouriteFood());
 
             toReturn.put("result", result);
         }

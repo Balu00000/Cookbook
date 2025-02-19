@@ -420,8 +420,9 @@ public class User implements Serializable {
                 );
                 
                 Integer postedFood = Integer.valueOf(user[3].toString());
+                Integer favouritedFood = Integer.valueOf(user[4].toString());
                 
-                toReturn = new UserDTO(u, postedFood);
+                toReturn = new UserDTO(u, postedFood, favouritedFood);
             }
             return toReturn;
             

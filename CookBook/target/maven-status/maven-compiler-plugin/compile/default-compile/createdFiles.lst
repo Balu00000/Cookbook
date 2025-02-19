@@ -5,6 +5,7 @@ com\maven\cookbook\controller\FoodController.class
 com\maven\cookbook\model\Recipe.class
 com\maven\cookbook\service\CuisineService.class
 com\maven\cookbook\controller\UserController.class
+com\maven\cookbook\filters\CORSFilter.class
 com\maven\cookbook\model\FoodDTO.class
 com\maven\cookbook\controller\CuisineController.class
 com\maven\cookbook\controller\DifficultyController.class

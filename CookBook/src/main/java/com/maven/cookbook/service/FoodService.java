@@ -346,4 +346,42 @@ public class FoodService { //F.Model->F.Service->F.Controller
         toReturn.put("statusCode", statusCode);
         return toReturn;
     }
+    
+    public JSONObject getFoodByIngredients(String ingredients) {
+        JSONObject toReturn = new JSONObject();
+        String status = "success";
+        int statusCode = 200;
+        List<FoodDTO> modelResult = layer.getFoodByIngredients(ingredients);
+        if(modelResult == null) {
+            status = "modelException";
+            statusCode = 500;
+        }else if (modelResult.isEmpty()) {
+            status = "noFoodFound";
+            statusCode = 417;
+        }else {
+            JSONArray result = new JSONArray();
+
+            for(FoodDTO food: modelResult) {
+                JSONObject toAdd = new JSONObject();
+                
+                toAdd.put("id", food.getFood().getId());
+                toAdd.put("name", food.getFood().getName());
+                toAdd.put("image", food.getFood().getImage());
+                toAdd.put("description", food.getFood().getDescription());
+                toAdd.put("userId", food.getUsername());
+                toAdd.put("rating", food.getFood().getRating());
+                toAdd.put("instructions", food.getFood().getInstructions());
+                toAdd.put("difficultyName", food.getDifficultyName());
+                toAdd.put("mealTypeName", food.getMealTypeType());
+                toAdd.put("cuisineName", food.getCuisineType());
+                toAdd.put("addedAt", food.getFood().getAddedAt());
+
+                result.put(toAdd);
+            }
+            toReturn.put("result", result);
+        }
+        toReturn.put("status", status);
+        toReturn.put("statusCode", statusCode);
+        return toReturn;
+    }
 }

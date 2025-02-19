@@ -3,10 +3,12 @@ package com.maven.cookbook.model;
 public class UserDTO{
     private User user;
     private Integer postedFood;
+    private Integer favouriteFood;
 
-    public UserDTO(User user, Integer postedFood) {
+    public UserDTO(User user, Integer postedFood, Integer favouriteFood) {
         this.user = user;
         this.postedFood = postedFood;
+        this.favouriteFood = favouriteFood;
     }
 
     public User getUser() {
@@ -23,5 +25,13 @@ public class UserDTO{
 
     public void setPostedFood(Integer postedFood) {
         this.postedFood = postedFood;
+    }
+    
+    public Integer getFavouriteFood() {
+        return favouriteFood;
+    }
+
+    public void setFavouriteFood(Integer favouriteFood) {
+        this.favouriteFood = favouriteFood;
     }
 }

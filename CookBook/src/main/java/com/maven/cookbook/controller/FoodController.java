@@ -114,4 +114,13 @@ public class FoodController {
         JSONObject obj = layer.deleteFoodById(id, jwt);
         return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
     }
+    
+    @GET
+    @Path("getFoodByIngredients")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getFoodByIngredients(@QueryParam("ingr") String ingredient){
+        
+        JSONObject obj = layer.getFoodByIngredients(ingredient);
+        return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
+    }
 }

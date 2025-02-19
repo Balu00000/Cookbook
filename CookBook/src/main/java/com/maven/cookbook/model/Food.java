@@ -632,4 +632,45 @@ public class Food implements Serializable {
             em.close();
         }
     }
+    
+    public List<FoodDTO> getFoodByIngredients(String ingredients){
+        EntityManager em = emf.createEntityManager();
+        
+        try {
+            StoredProcedureQuery spq = em.createStoredProcedureQuery("getFoodByIngredients");
+            spq.registerStoredProcedureParameter("ingredientsIN", String.class, ParameterMode.IN);
+            
+            spq.setParameter("ingredientsIN", ingredients);
+            spq.execute();
+            
+            List<FoodDTO> toReturn = new ArrayList();
+            List<Object[]> resultList = spq.getResultList();
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            
+            for(Object[] food : resultList){
+                Food f = new Food(
+                    Integer.valueOf(food[0].toString()),
+                    food[1].toString(),
+                    food[2].toString(),
+                    food[3].toString(),
+                    Integer.valueOf(food[5].toString()), 
+                    food[6].toString(),
+                    formatter.parse(food[10].toString())
+                );
+                String username = food[4].toString();
+                String difficultyName = food[7].toString();
+                String mealTypeType = food[8].toString();
+                String cuisineType = food[9].toString();
+                
+                toReturn.add(new FoodDTO(f, username, difficultyName, mealTypeType, cuisineType));
+            }
+            return toReturn;
+        } catch (NumberFormatException | ParseException e) {
+            System.err.println("Hiba: "+ e.getLocalizedMessage());
+            return null;
+        }finally{
+            em.clear();
+            em.close();
+        }
+    }
 }
