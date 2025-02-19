@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 17, 2025 at 10:30 AM
+-- Generation Time: Feb 19, 2025 at 06:34 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -347,6 +347,59 @@ LEFT JOIN `cuisine` ON `food`.`cuisine_id` = `cuisine`.`id`
 LEFT JOIN `recipe` ON `food`.`id` = `recipe`.`food_id`
 WHERE `recipe`.`ingredient_id` = idIN$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getFoodByIngredients` (IN `ingredientsIN` VARCHAR(255) CHARSET utf8mb4)   BEGIN
+    DECLARE ingredient VARCHAR(255);
+    DECLARE pos INT DEFAULT 1;
+    DECLARE next_pos INT DEFAULT 0;
+    DECLARE length INT DEFAULT 0;
+
+    CREATE TEMPORARY TABLE IF NOT EXISTS TempIngredients (ingredient_name VARCHAR(255));
+
+    SET length = CHAR_LENGTH(ingredientsIN);
+
+    WHILE pos <= length DO
+        SET next_pos = LOCATE(',', ingredientsIN, pos);
+
+        IF next_pos = 0 THEN
+            SET ingredient = TRIM(SUBSTRING(ingredientsIN, pos));
+            SET pos = length + 1;
+        ELSE
+            SET ingredient = TRIM(SUBSTRING(ingredientsIN, pos, next_pos - pos));
+            SET pos = next_pos + 1;
+        END IF;
+
+        IF ingredient <> '' THEN
+            INSERT INTO TempIngredients (ingredient_name) VALUES (ingredient);
+        END IF;
+    END WHILE;
+
+    SELECT 
+	`food`.`id`, 
+    `food`.`name` AS "Food Name",
+    `food`.`image`, 
+    `food`.`description`, 
+    `user`.`username`, 
+    `food`.`rating`,
+	`food`.`instructions`, 
+    `difficulty`.`name` AS Difficulty, 
+    `meal_type`.`type` AS "Meal Type", 
+    `cuisine`.`type` AS Cuisine, 
+    `food`.`added_at`
+    FROM `food`
+    LEFT JOIN `recipe` ON `food`.`id` = `recipe`.`food_id`
+    LEFT JOIN `ingredient` ON `recipe`.`ingredient_id` = `ingredient`.`id`
+    LEFT JOIN `user` ON `food`.`user_id` = `user`.`id`
+	LEFT JOIN `difficulty` ON `food`.`difficulty_id` = `difficulty`.`id`
+	LEFT JOIN `meal_type` ON `food`.`meal_type_id` = `meal_type`.`id`
+	LEFT JOIN `cuisine` ON `food`.`cuisine_id` = `cuisine`.`id`
+    JOIN TempIngredients ti ON `ingredient`.`name` = ti.ingredient_name
+    WHERE `food`.`is_deleted` = 0
+    GROUP BY `food`.`id`
+    HAVING COUNT(DISTINCT ti.ingredient_name) = (SELECT COUNT(*) FROM TempIngredients);
+
+    DROP TEMPORARY TABLE TempIngredients;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getFoodByMealType` (IN `idIN` INT(11))   SELECT 
 	`food`.`id`, 
     `food`.`name` AS "Food Name",
@@ -440,7 +493,8 @@ WHERE `recipe`.`food_id` = idIN$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getUserProfileInformation` (IN `idIN` INT(11))   SELECT `user`.`username`, 
 		`user`.`image`, 
         `user`.`created_at`,
-       (SELECT COUNT(`food`.`id`) FROM `food` WHERE `food`.`user_id` = idIN) AS "Recipes Posted"
+       (SELECT COUNT(`food`.`id`) FROM `food` WHERE `food`.`user_id` = idIN) AS "Recipes Posted",
+       (SELECT COUNT(`favourite`.`id`) FROM `favourite` WHERE `favourite`.`user_id` = idIN) AS "Favourites"
 FROM `user`
 WHERE `user`.`id` = idIN$$
 
@@ -479,6 +533,29 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `registerUser` (IN `usernameIN` VARC
     sha1(passwordIN),
     0
 )$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `searchByIngredient` (IN `ingredientsIN` TEXT CHARSET utf8mb4)   BEGIN
+    -- Temporary table to store input ingredients
+    CREATE TEMPORARY TABLE TempIngredients (ingredient_name VARCHAR(255));
+    
+    -- Splitting the input list into individual ingredients
+    SET @sql = CONCAT('INSERT INTO TempIngredients (ingredient_name) ',
+                      'SELECT TRIM(value) FROM JSON_TABLE(CONCAT("[\"", REPLACE(ingredientsIN, ",", "\",\""), "\"]"), "$") AS jt(value)');
+    PREPARE stmt FROM @sql;
+    EXECUTE stmt;
+    DEALLOCATE PREPARE stmt;
+    
+    -- Find recipes that contain all the specified ingredients
+    SELECT r.recipe_id, r.recipe_name
+    FROM recipes r
+    JOIN recipe_ingredients ri ON r.recipe_id = ri.recipe_id
+    JOIN TempIngredients ti ON ri.ingredient_name = ti.ingredient_name
+    GROUP BY r.recipe_id
+    HAVING COUNT(DISTINCT ti.ingredient_name) = (SELECT COUNT(*) FROM TempIngredients);
+    
+    -- Drop the temporary table
+    DROP TEMPORARY TABLE TempIngredients;
+END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `updateAllergen` (IN `idIN` INT(11), IN `typeIN` VARCHAR(255) CHARSET utf8mb4, IN `effectIN` VARCHAR(255) CHARSET utf8mb4)   UPDATE `allergen` 
 SET `allergen`.`type` = typeIN, 
