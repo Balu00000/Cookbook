@@ -10,3 +10,9 @@
     color: white;
     
 }
+
+img{
+    max-width: 30rem;
+    max-height: 20rem;
+    position: relative;
+}

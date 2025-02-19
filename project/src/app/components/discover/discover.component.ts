@@ -5,11 +5,10 @@ import { GetAllFoodService } from '../../services/get-all-food.service';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-discover',
-  standalone: true,
-  imports: [NavbarComponent, CommonModule, FormsModule],
-  templateUrl: './discover.component.html',
-  styleUrl: './discover.component.css'
+    selector: 'app-discover',
+    imports: [NavbarComponent, CommonModule, FormsModule],
+    templateUrl: './discover.component.html',
+    styleUrl: './discover.component.css'
 })
 export class DiscoverComponent {
 

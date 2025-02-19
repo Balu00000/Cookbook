@@ -1,33 +1,49 @@
 <app-navbar></app-navbar>
 
 <div class="row">
-    <div class="col-sm-12 col-md-2 col-xl-2">
-        <p>aaaaaaaaaaaaaaaaaaaa</p>
-    </div>
-    <div class="col-sm-12 col-md-10 col-xl-10">
-        <p>asdaaaadaaaaaaaaa</p>
-        <hr>
-        <p>Joined: xxxx.xx.xx</p>
-        <p>Added: X amount of Recipes</p>
+  <div class="col-sm-12 col-md-2 col-xl-2">
+    <p>{{ user.image || "img" }}</p>
+  </div>
+  <div class="col-sm-12 col-md-10 col-xl-10">
+    <p>{{ user.username || "User" }}</p>
+    <hr />
+    <p>Joined: {{ user.createdAt || "You never joined" }}</p>
+    <p>
+      Added: {{ user.postedFood + " amount of Recipes" || "You never posted" }}
+    </p>
 
-        <div id="logout-delete">
-            <input type="button" value="Log Out!">
-            <input type="button" value="Delete Account">
-        </div>
+    <div id="logout-delete">
+      <input type="button" value="Log Out!" />
+      <input type="button" value="Delete Account" />
     </div>
+  </div>
 </div>
 
-<div class="row"> 
-    <!--TODO Change width and give arrows, steal from bootstrap copy it and make it into Favorites one as well --->
-    <p>Added (X)</p>
-    <hr>
+<div class="row" id="added">
+  <!--TODO Change width and give arrows, steal from bootstrap copy it and make it into Favorites one as well --->
+  <p>Added ({{ user.postedFood || 0 }})</p>
+  <hr />
+  @for (item of userAdded; track item) {
+
+  <div class="col-sm-12 col-md-5 col-xl-5">
+    <p>{{item.name || "No Food Name Found"}}</p>
+  </div>
+  <div class="col-sm-12 col-md-7 col-xl-7">
+    <p>{{item.image || "No Food Image Found"}}</p>
+  </div>
+  }
+</div>
+
+<div class="row" id="favorites">
+    <p>Favorite ({{ user.favoriteFood || "we do not know" }})</p>
+    <hr />
+    @for (item of userFavorites; track item) {
+  
     <div class="col-sm-12 col-md-5 col-xl-5">
-        <p>llllllllllllll</p>
+      <p>{{item.name || "No Food Name Found"}}</p>
     </div>
     <div class="col-sm-12 col-md-7 col-xl-7">
-        <p>sodifndddddddddddddddddddddddd</p>
+      <img src="{{item.image}}" alt="No Food Image Found">
     </div>
-</div>
-<div id="favorites">
-
+    }
 </div>

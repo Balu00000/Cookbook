@@ -6,17 +6,26 @@ import { Router } from '@angular/router';
 })
 export class LoggedInServiceService {
   private readonly TOKEN_KEY = 'auth_token';  // Key used to store the token in localStorage
+  private readonly ID = "user_id"
 
   constructor() {}
 
   // Method to log in the user and store the token in localStorage
-  login(token: string): void {
-    localStorage.setItem(this.TOKEN_KEY, token);
+  login(token: string, id: string, remember: boolean): void {
+    sessionStorage.setItem(this.TOKEN_KEY, token);
+    sessionStorage.setItem(this.ID, id)
+    if(remember === true){
+      sessionStorage.setItem(this.ID, id)
+      sessionStorage.setItem(this.TOKEN_KEY, token);
+      localStorage.setItem(this.TOKEN_KEY, token)
+      localStorage.setItem(this.ID, id)
+    }
   }
 
   // Method to log out the user and clear the token from localStorage
   logout(): void {
     localStorage.removeItem(this.TOKEN_KEY);
+    localStorage.removeItem(this.ID)
   }
 
   // Method to check if the user is authenticated
@@ -29,5 +38,8 @@ export class LoggedInServiceService {
   getToken(): string | null {
     return localStorage.getItem(this.TOKEN_KEY);
   }
-  
+
+  whatUser():string |null{
+    return localStorage.getItem(this.ID)
+  }
 }

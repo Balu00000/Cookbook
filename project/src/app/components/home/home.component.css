@@ -1,0 +1,17 @@
+c-carousel{
+    background-color: black;
+    color: aqua;
+    z-index: 100000;
+    max-width: 480px;
+}
+
+c-carousel-caption{
+    background-color: rgba(255, 255, 255, 0.7);
+    color: black;
+}
+
+c-carousel img{
+    max-width: 30rem;
+    max-height: 20rem;
+    position: relative;
+}

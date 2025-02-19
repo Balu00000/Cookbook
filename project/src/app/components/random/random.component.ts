@@ -4,11 +4,10 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-random',
-  standalone: true,
-  imports: [NavbarComponent, FormsModule, CommonModule],
-  templateUrl: './random.component.html',
-  styleUrl: './random.component.css'
+    selector: 'app-random',
+    imports: [NavbarComponent, FormsModule, CommonModule],
+    templateUrl: './random.component.html',
+    styleUrl: './random.component.css'
 })
 export class RandomComponent {
 

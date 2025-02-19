@@ -13,12 +13,9 @@ export class GetAllFoodService {
       const response = await fetch(url)
       const data = await response.json()
       console.log(data.result);
-      
       return data.result
-      
     }catch(ex){
-      console.error("very no good" + ex);
-      
+      console.error("very no good" + ex); 
     }
   }
 }

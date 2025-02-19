@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output, Input } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -9,11 +9,10 @@ import { LoggedInServiceService } from '../../services/logged-in-service.service
 import { ɵASYNC_ANIMATION_LOADING_SCHEDULER_FN } from '@angular/platform-browser/animations/async';
 
 @Component({
-  selector: 'app-register',
-  standalone: true,
-  imports: [NavbarComponent, CommonModule, FormsModule],
-  templateUrl: './register.component.html',
-  styleUrl: './register.component.css'
+    selector: 'app-register',
+    imports: [NavbarComponent, CommonModule, FormsModule],
+    templateUrl: './register.component.html',
+    styleUrl: './register.component.css'
 })
 export class RegisterComponent {
   showLogin = false; // To toggle between login and register views
@@ -26,7 +25,7 @@ export class RegisterComponent {
   registerUsername: string = "";
   registerPassword: string = "";
 
-  remember: boolean = false;
+  remember: boolean = false;  
   acceptEULA: boolean = false;
   admin: boolean = false;
 
@@ -53,12 +52,12 @@ export class RegisterComponent {
           if (response.result.isAdmin === true) {
             console.log("hes adming");
             this.admin = true
-            this.loggedIn.login(response.result.jwt);
+            this.loggedIn.login(response.result.jwt, response.result.id, this.remember);
             this.router.navigate(['/home']);
           } else {
             console.log("hes not adming");
             this.admin = false
-            this.loggedIn.login(response.result.jwt);
+            this.loggedIn.login(response.result.jwt, response.result.id, this.remember);
             this.router.navigate(['/home'])
           }
 
