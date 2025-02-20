@@ -9,9 +9,11 @@ import {
   CarouselInnerComponent,
   CarouselItemComponent,
   ThemeDirective,
+  ButtonDirective
 } from '@coreui/angular';
 import { RouterLink } from '@angular/router';
 import { ChangeDetectorRef } from '@angular/core'; // Import ChangeDetectorRef
+import { TruncatePipe } from '../../_pipes/truncate.pipe';
 
 @Component({
   selector: 'app-home',
@@ -27,6 +29,8 @@ import { ChangeDetectorRef } from '@angular/core'; // Import ChangeDetectorRef
     CarouselControlComponent,
     CarouselItemComponent,
     ThemeDirective,
+    TruncatePipe,
+    ButtonDirective
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',

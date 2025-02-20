@@ -5,30 +5,34 @@
 
 @if (isLoaded && items.length > 0) {
 
-  <c-carousel>
-    <c-carousel-indicators></c-carousel-indicators>
-    <c-carousel-inner>
-      @for (slide of items; track slide.id) {
-        
-        <c-carousel-item>
-          <img alt="{{ slide.name }}" class="d-block w-100" loading="lazy" src="{{ slide.image }}" />
-          <c-carousel-caption class="d-none d-md-block">
+<c-carousel [interval]="5000">
+  <c-carousel-indicators></c-carousel-indicators>
+  <c-carousel-inner>
+    @for (slide of items; track slide.id) {
+
+    <c-carousel-item>
+      <img
+        alt="{{ slide.name }}"
+        class="d-block w-100"
+        loading="lazy"
+        src="{{ slide.image }}"
+      />
+      <c-carousel-caption class="d-none d-md-block">
         <h3>{{ slide.name }}</h3>
-        <p>{{ slide.description }}</p>
+        <p>{{ slide.description | truncate : 70 }}</p>
+        <a
+          cButton
+          [routerLink]="slide.name"
+          color="info"
+          shape="rounded-pill"
+          role="button"
+          >Explore!</a
+        >
       </c-carousel-caption>
     </c-carousel-item>
-  }
-</c-carousel-inner>
-<c-carousel-control
-[routerLink]
-caption="Previous"
-direction="prev"
-></c-carousel-control>
-<c-carousel-control
-[routerLink]
-caption="Next"
-direction="next"
-></c-carousel-control>
+    }
+  </c-carousel-inner>
+  <c-carousel-control [routerLink] caption="Previous" direction="prev" />
+  <c-carousel-control [routerLink] caption="Next" direction="next" />
 </c-carousel>
-
 }
