@@ -10,7 +10,7 @@ import {
   CarouselItemComponent,
   ThemeDirective,
   ButtonDirective
-} from '@coreui/angular';
+} from '@coreui/angular-pro';
 import { RouterLink } from '@angular/router';
 import { ChangeDetectorRef } from '@angular/core'; // Import ChangeDetectorRef
 import { TruncatePipe } from '../../_pipes/truncate.pipe';

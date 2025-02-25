@@ -35,6 +35,10 @@ export class NavbarComponent {
 		}
 	}
 
+	onAdminClick(): void{
+		this.router.navigate(['/admin'])
+	}
+
 	// Optional: To handle auto-login or checking status on page load
 	ngOnInit() {
 		if (this.authService.isAuthenticated()) {

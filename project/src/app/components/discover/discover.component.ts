@@ -3,10 +3,11 @@ import { NavbarComponent } from '../navbar/navbar.component';
 import { CommonModule } from '@angular/common';
 import { GetAllFoodService } from '../../services/get-all-food.service';
 import { FormsModule } from '@angular/forms';
+import { TruncatePipe } from '../../_pipes/truncate.pipe';
 
 @Component({
     selector: 'app-discover',
-    imports: [NavbarComponent, CommonModule, FormsModule],
+    imports: [NavbarComponent, CommonModule, FormsModule, TruncatePipe],
     templateUrl: './discover.component.html',
     styleUrl: './discover.component.css'
 })

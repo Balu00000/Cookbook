@@ -17,9 +17,25 @@ import { ɵASYNC_ANIMATION_LOADING_SCHEDULER_FN } from '@angular/platform-browse
 export class RegisterComponent {
   showLogin = false; // To toggle between login and register views
 
-  toggleAuth(type: string) {
-    this.showLogin = type === 'login';
+
+  toggleAuth(authType: string) {
+    this.showLogin = authType === 'login';
+  
+    setTimeout(() => {
+      const slider = document.querySelector('.slider') as HTMLElement;
+      const loginButton = document.getElementById('login');
+      const registerButton = document.getElementById('register');
+  
+      if (slider && loginButton && registerButton) {
+        const targetButton = authType === 'login' ? loginButton : registerButton;
+  
+        // Move the slider to the exact position of the selected button
+        slider.style.transform = `translateX(${targetButton.offsetLeft - 10}px)`;
+        slider.style.width = `${targetButton.offsetWidth}px`; // Adjust width dynamically
+      }
+    }, 50);  // Small delay to ensure DOM updates
   }
+  
 
   registerEmail: string = "";
   registerUsername: string = "";
@@ -89,4 +105,6 @@ export class RegisterComponent {
 
     }
   }
+
+  
 }

@@ -13,6 +13,6 @@
 
 img{
     max-width: 30rem;
-    max-height: 20rem;
+    height: auto;
     position: relative;
 }

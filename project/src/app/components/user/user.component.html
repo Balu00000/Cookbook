@@ -13,7 +13,7 @@
     </p>
 
     <div id="logout-delete">
-      <input type="button" value="Log Out!" />
+      <input type="button" (click)="logout()" value="Log Out!" />
       <input type="button" value="Delete Account" />
     </div>
   </div>
@@ -29,7 +29,7 @@
     <p>{{item.name || "No Food Name Found"}}</p>
   </div>
   <div class="col-sm-12 col-md-7 col-xl-7">
-    <p>{{item.image || "No Food Image Found"}}</p>
+    <img src="{{item.image}}" alt="No Food Image Found">
   </div>
   }
 </div>

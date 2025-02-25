@@ -1,70 +1,60 @@
-<app-navbar></app-navbar>
-<div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-md-6">
-      <div class="auth-container shadow">
-        <!-- Header with Toggle Buttons -->
-        <div class="auth-header">
-          <div class="slider" [ngClass]="{'right': showLogin}"></div>
-          <span class="auth-option" id="register" [ngClass]="{'active': !showLogin}" (click)="toggleAuth('register') ">Register</span>
-          /
-          <span class="auth-option" id="login" [ngClass]="{'active': showLogin}" (click)="toggleAuth('login')">Login</span>
-        </div>
-        <!-- Forms -->
-        <div class="auth-body">
-          <!-- Register Form -->
-          <form *ngIf="!showLogin" class="form-content">
-            <div class="mb-3">
-              <label for="registerEmail" class="form-label">Email</label>
-              <input type="text" class="form-control" id="registerEmail" placeholder="random@email.com" [(ngModel)]="registerEmail" name="registerEmail">
-            </div>
-            <div class="mb-3">
-              <label for="registerUsername" class="form-label">Username</label>
-              <input type="text" class="form-control" placeholder="Username1..."  [(ngModel)]="registerUsername" name="registerUsername">
-            </div>
-            <div class="mb-3">
-              <label for="registerPassword" class="form-label">Password</label>
-              <input type="password" class="form-control" id="registerPassword" placeholder="something..." [(ngModel)]="registerPassword" name="registerPassword">
-            </div>
-            <div class="form-check mb-3">
-              <input class="form-check-input" type="checkbox" id="acceptEULA" [(ngModel)]="acceptEULA" name="eula">
-              <label class="form-check-label" for="acceptEULA">
-                I accept the <a href="#">EULA</a>
-              </label>
-            </div>
-            <button type="submit" class="btn btn-gradient w-100" (click)="onRegister()" href="home">Register</button>
-          </form>
-          
-          <!-- Login Form -->
-          <form *ngIf="showLogin" class="form-content">
-            <div class="mb-3">
-              <label for="loginEmail" class="form-label">Email/Username</label>
-              <input type="email" class="form-control" id="loginEmail" placeholder="random@gmail.com" [(ngModel)]="loginEmailName" name="loginEmailName">
-            </div>
-            <div class="mb-3">
-              <label for="loginPassword" class="form-label">Password</label>
-              <input type="password" class="form-control" id="loginPassword" placeholder="Password..." [(ngModel)]="loginPassword" name="loginPassword">
-            </div>
-            <div class="form-check mb-3">
-              <input class="form-check-input" type="checkbox" id="rememberMe" [(ngModel)]="remember" name="checkbox">
-              <label class="form-check-label" for="rememberMe" >
-                Remember me
-              </label>
-            </div>
-            <button type="submit" class="btn btn-gradient w-100" (click)="onLogin()" href="user">Login</button>
-          </form>
+  <app-navbar></app-navbar>
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="auth-container shadow">
+          <!-- Header with Toggle Buttons -->
+          <div class="auth-header">
+            <div class="slider" [ngClass]="{'right': showLogin}"></div>
+            <span class="auth-option" id="register" [ngClass]="{'active': !showLogin}" (click)="toggleAuth('register') ">Register</span>
+            /
+            <span class="auth-option" id="login" [ngClass]="{'active': showLogin}" (click)="toggleAuth('login')">Login</span>
+          </div>
+          <!-- Forms -->
+          <div class="auth-body">
+            <!-- Register Form -->
+            <form *ngIf="!showLogin" class="form-content">
+              <div class="mb-3">
+                <label for="registerEmail" class="form-label">Email</label>
+                <input type="text" class="form-control" id="registerEmail" placeholder="random@email.com" [(ngModel)]="registerEmail" name="registerEmail">
+              </div>
+              <div class="mb-3">
+                <label for="registerUsername" class="form-label">Username</label>
+                <input type="text" class="form-control" placeholder="Username1..."  [(ngModel)]="registerUsername" name="registerUsername">
+              </div>
+              <div class="mb-3">
+                <label for="registerPassword" class="form-label">Password</label>
+                <input type="password" class="form-control" id="registerPassword" placeholder="something..." [(ngModel)]="registerPassword" name="registerPassword">
+              </div>
+              <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="acceptEULA" [(ngModel)]="acceptEULA" name="eula">
+                <label class="form-check-label" for="acceptEULA">
+                  I accept the <a href="#">EULA</a>
+                </label>
+              </div>
+              <button type="submit" class="btn btn-gradient w-100" (click)="onRegister()" href="home">Register</button>
+            </form>
+            
+            <!-- Login Form -->
+            <form *ngIf="showLogin" class="form-content">
+              <div class="mb-3">
+                <label for="loginEmail" class="form-label">Email/Username</label>
+                <input type="email" class="form-control" id="loginEmail" placeholder="random@gmail.com" [(ngModel)]="loginEmailName" name="loginEmailName">
+              </div>
+              <div class="mb-3">
+                <label for="loginPassword" class="form-label">Password</label>
+                <input type="password" class="form-control" id="loginPassword" placeholder="Password..." [(ngModel)]="loginPassword" name="loginPassword">
+              </div>
+              <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="rememberMe" [(ngModel)]="remember" name="checkbox">
+                <label class="form-check-label" for="rememberMe" >
+                  Remember me
+                </label>
+              </div>
+              <button type="submit" class="btn btn-gradient w-100" (click)="onLogin()" href="user">Login</button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
-
-<p>register email: {{registerEmail}}</p>
-<p>register username: {{registerUsername}}</p>
-<p>register password: {{registerPassword}}</p>
-<p>login emailname: {{loginEmailName}}</p>
-<p>login password: {{loginPassword}}</p>
-<p>remember: {{remember}}</p>
-<p>acceptEULA: {{acceptEULA}}</p>
-<p>GRAAAAA: {{data}}</p>
-<p>Admin? {{admin}}</p>

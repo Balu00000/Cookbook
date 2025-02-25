@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { LoggedInServiceService } from '../../services/logged-in-service.service';
 import { ResourceLoader } from '@angular/compiler';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-user',
@@ -11,7 +12,7 @@ import { ResourceLoader } from '@angular/compiler';
 })
 export class UserComponent {
 
-	constructor(private whatUser: LoggedInServiceService){}
+	constructor(private whatUser: LoggedInServiceService, private authService: LoggedInServiceService, private router: Router){}
 
 	ngOnInit(){
 		this.fetchingUser()
@@ -22,6 +23,8 @@ export class UserComponent {
 	user: any = {}
 	userAdded: any = []
 	userFavorites: any = []
+
+	counter: number = 0
 
 	userURL: string = "http://127.0.0.1:8080/CookBook-1.0-SNAPSHOT/webresources/user/getUserProfileInformation?"
 	addedURL: string = "http://127.0.0.1:8080/CookBook-1.0-SNAPSHOT/webresources/food/getFoodByUser?"
@@ -76,5 +79,10 @@ export class UserComponent {
 		{
 			console.error("failed to fetch" + ex);
 		}
+	}
+
+	logout(){
+		this.authService.logout()
+		this.router.navigate(['/home'])
 	}
 }

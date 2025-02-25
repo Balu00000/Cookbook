@@ -1,99 +1,93 @@
 /* Container Styles */
 .auth-container {
-	background: white;
-	border-radius: 12px;
-	padding: 30px;
-	box-shadow: 0 4px 10px #b5179e !important;
-	position: relative;
-	overflow: hidden;
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 4px 10px #b5179e !important;
+  position: relative;
+  overflow: hidden;
 }
 
 /* Header with Sliding Background */
 .auth-header {
-	position: relative;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	font-size: 1.5rem;
-	font-weight: bold;
-	margin-bottom: 20px;
-	color: #aaa;
-	overflow: hidden;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #aaa;
+  overflow: hidden;
 }
 
 .auth-option {
-	cursor: pointer;
-	position: relative;
-	z-index: 1;
-	padding: 10px 20px;
-	transition: color 0.3s ease-in-out;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  padding: 10px 20px;
+  transition: color 0.3s ease-in-out;
 }
 
 .auth-option.active {
-	color: black;
+  color: black;
 }
 
 .slider {
-	position: absolute;
-	top: 0;
-	left: 10px;
-	height: 100%;
-	width: 110px;
-	background: linear-gradient(white, rgba(181, 23, 158, 0.5));
-	border-radius: 23px;
-	z-index: 0;
-	transition: transform 0.4s ease-in-out;
-
-}
-
-.slider.right {
-	transform: translateX(410%);
-	width: 111px;
+  position: absolute;
+  top: 0;
+  left: 10px; /* Starting position */
+  height: 100%;
+  width: 110px; /* Default width */
+  background: linear-gradient(white, rgba(181, 23, 158, 0.5));
+  border-radius: 23px;
+  z-index: 0;
+  transition: transform 0.4s ease-in-out, width 0.4s ease-in-out;
 }
 
 /* Form Styles */
 .form-content {
-	animation: fadeIn 0.5s;
+  animation: fadeIn 0.5s;
 }
 
 .form-label {
-	font-size: 0.9rem;
-	font-weight: 500;
-	color: #333;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #333;
 }
 
 .form-check-label a {
-	text-decoration: none;
-	color: #007bff;
+  text-decoration: none;
+  color: #007bff;
 }
 
 .form-check-label a:hover {
-	text-decoration: underline;
+  text-decoration: underline;
 }
 
 .btn-gradient {
-	background: linear-gradient(45deg, #f72585, #7209b7);
-	color: white;
-	border: none;
-	padding: 10px 20px;
-	font-size: 1rem;
-	font-weight: bold;
-	border-radius: 8px;
-	transition: background 0.3s ease-in-out;
+  background: linear-gradient(45deg, #f72585, #7209b7);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 8px;
+  transition: background 0.3s ease-in-out;
 }
 
 .btn-gradient:hover {
-	box-shadow: 5px 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 5px 5px rgba(0, 0, 0, 0.3);
 }
 
 /* Animation */
 @keyframes fadeIn {
-	from {
-		opacity: 0;
-		transform: translateY(10px);
-	}
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
