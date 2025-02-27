@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 19, 2025 at 06:34 PM
+-- Generation Time: Feb 27, 2025 at 02:08 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -67,7 +67,86 @@ SELECT `food`.`rating` INTO @rat FROM `food` WHERE `food`.`id` = foodIdIN;
 UPDATE `food` SET `food`.`rating` = @rat + 1 WHERE `food`.`id` = foodIdIN;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `addFood` (IN `nameIN` VARCHAR(255) CHARSET utf8mb4, IN `imageIN` TEXT, IN `descriptionIN` TEXT CHARSET utf8mb4, IN `userIdIN` INT(11), IN `instructionsIN` TEXT CHARSET utf8mb4, IN `difficultyIdIN` INT(11), IN `mealTypeIdIN` INT(11), IN `cuisineIdIN` INT(11), IN `allergenIdIN` INT(11))   BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `addFood` (IN `nameIN` VARCHAR(255) CHARSET utf8mb4, IN `imageIN` TEXT, IN `descriptionIN` TEXT, IN `preptimeIN` VARCHAR(100) CHARSET utf8mb4, IN `userIdIN` INT(11), IN `instructionsIN` TEXT, IN `difficultyIdIN` INT(11), IN `mealTypeIdIN` INT(11), IN `cuisineIdIN` INT(11), IN `ingredientsIN` TEXT)   BEGIN
+INSERT INTO `food`( 
+    `name`,
+    `image`,
+    `description`,
+    `prep_time`,
+    `user_id`,
+    `instructions`,
+    `difficulty_id`,
+    `meal_type_id`,
+    `cuisine_id`
+)
+VALUES(
+    nameIN,
+    imageIN,
+    descriptionIN,
+    preptimeIN,
+    userIdIN,
+    instructionsIN,
+    difficultyIdIN,
+    mealTypeIdIN,
+    cuisineIdIN
+);
+
+SET @foodId = LAST_INSERT_ID();
+
+WHILE LOCATE(';', ingredientsIN) > 0 DO
+	SET @ingredient = SUBSTRING_INDEX(ingredientsIN, ';', 1);
+	SET @ingredientName = TRIM(SUBSTRING_INDEX(@ingredient, ',', 1));
+    SET @amount = SUBSTRING_INDEX(SUBSTRING_INDEX(@ingredient, ',', -2), ',', 1);
+    SET @measurement = SUBSTRING_INDEX(@ingredient, ',', -1);
+    
+    SET @ingredientId = NULL;
+    SET @allergenId = NULL;
+    
+    SELECT `id` INTO @ingredientId FROM `ingredient` WHERE `name` = @ingredientName;
+    SELECT `id` INTO @allergenId FROM `allergen` WHERE `type` = @ingredientName;
+    IF @allergenId IS NULL THEN 
+        SET @allergenId = 0;
+    END IF;
+    SELECT @ingredientName, @ingredientId, @allergenId;
+    
+    INSERT INTO `recipe` (`food_id`, `ingredient_id`, `amount`, `measurement`) 
+    VALUES (@foodId, @ingredientId, @amount, @measurement);
+    INSERT INTO `food_x_allergen` (`food_id`, `allergen_id`) 
+    VALUES (@foodId, @allergenId);
+    SET ingredientsIN = SUBSTRING(ingredientsIN, LOCATE(';', ingredientsIN) + 1);
+END WHILE;
+IF TRIM(ingredientsIN) != '' THEN
+	SET @ingredientName = TRIM(SUBSTRING_INDEX(ingredientsIN, ',', 1));
+    SET @amount = SUBSTRING_INDEX(SUBSTRING_INDEX(ingredientsIN, ',', -2), ',', 1);
+    SET @measurement = SUBSTRING_INDEX(ingredientsIN, ',', -1);
+    
+    SET @ingredientId = NULL;
+    SET @allergenId = NULL;
+    
+    SELECT `id` INTO @ingredientId FROM `ingredient` WHERE `name` = @ingredientName;
+    SELECT `id` INTO @allergenId FROM `allergen` WHERE `type` = @ingredientName;
+    IF @allergenId IS NULL THEN 
+        SET @allergenId = 0;
+    END IF;
+    SELECT @ingredientName, @ingredientId, @allergenId;
+    
+	INSERT INTO `recipe` (`food_id`, `ingredient_id`, `amount`, `measurement`) 
+    VALUES (@foodId, @ingredientId, @amount, @measurement);
+    INSERT INTO `food_x_allergen` (`food_id`, `allergen_id`) 
+    VALUES (@foodId, @allergenId);
+END IF;
+
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `addFoodAllergen` (IN `foodIdIN` INT(11), IN `allergenIdIN` INT(11))   INSERT INTO `food_x_allergen`(
+    `food_x_allergen`.`allergen_id`, 
+    `food_x_allergen`.`food_id`
+)VALUES(
+    allergenIdIN,
+    foodIdIN
+)$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `addFoodbutWorse` (IN `nameIN` VARCHAR(255) CHARSET utf8mb4, IN `imageIN` TEXT, IN `descriptionIN` TEXT CHARSET utf8mb4, IN `userIdIN` INT(11), IN `instructionsIN` TEXT CHARSET utf8mb4, IN `difficultyIdIN` INT(11), IN `mealTypeIdIN` INT(11), IN `cuisineIdIN` INT(11), IN `allergenIdIN` INT(11))   BEGIN
 
 INSERT INTO `food`( 
     `food`.`name`,
@@ -106,14 +185,6 @@ INSERT INTO `food_x_allergen` (
 );
 
 END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `addFoodAllergen` (IN `foodIdIN` INT(11), IN `allergenIdIN` INT(11))   INSERT INTO `food_x_allergen`(
-    `food_x_allergen`.`allergen_id`, 
-    `food_x_allergen`.`food_id`
-)VALUES(
-    allergenIdIN,
-    foodIdIN
-)$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `addFoodDietary` (IN `dietaryIdIN` INT(11), IN `foodIdIN` INT(11))   INSERT INTO `food_x_dietary`(
     `food_x_dietary`.`dietary_id`,
@@ -693,7 +764,7 @@ CREATE TABLE IF NOT EXISTS `cuisine` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `type` varchar(255) DEFAULT NULL COMMENT 'Italian, Mexican, etc',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `cuisine`
@@ -707,8 +778,8 @@ INSERT INTO `cuisine` (`id`, `type`) VALUES
 (5, 'French'),
 (6, 'Hungarian'),
 (7, 'Lithuanian'),
-(9, 'Slovakian'),
-(10, 'American');
+(8, 'Slovakian'),
+(9, 'American');
 
 -- --------------------------------------------------------
 
@@ -767,20 +838,20 @@ CREATE TABLE IF NOT EXISTS `favourite` (
   `user_id` int(11) DEFAULT NULL,
   `food_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `favourite`
 --
 
 INSERT INTO `favourite` (`id`, `user_id`, `food_id`) VALUES
-(2, 2, 3),
-(9, 3, 10),
-(10, 4, 1),
-(11, 4, 6),
-(12, 4, 7),
-(13, 1, 4),
-(14, 1, 1);
+(1, 2, 3),
+(2, 3, 10),
+(3, 4, 1),
+(4, 4, 6),
+(5, 4, 7),
+(6, 1, 4),
+(7, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -793,32 +864,33 @@ CREATE TABLE IF NOT EXISTS `food` (
   `name` varchar(255) DEFAULT NULL,
   `image` text DEFAULT NULL,
   `description` text DEFAULT NULL,
+  `prep_time` varchar(255) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
   `rating` int(11) NOT NULL DEFAULT 0,
   `instructions` text DEFAULT NULL,
   `difficulty_id` int(11) DEFAULT NULL,
   `meal_type_id` int(11) DEFAULT NULL,
   `cuisine_id` int(11) DEFAULT NULL,
-  `added_at` timestamp NULL DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT NULL,
+  `added_at` timestamp NULL DEFAULT current_timestamp(),
+  `is_deleted` tinyint(1) DEFAULT 0,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `food`
 --
 
-INSERT INTO `food` (`id`, `name`, `image`, `description`, `user_id`, `rating`, `instructions`, `difficulty_id`, `meal_type_id`, `cuisine_id`, `added_at`, `is_deleted`, `deleted_at`) VALUES
-(1, 'Spaghetti Bolognese', 'spaghetti.png', 'A classic Italian pasta dish with a rich meat sauce.', 3, 2, '1. Boil the Spaghetti: Bring a large pot of salted water to a boil. Add the spaghetti and cook according to the package instructions (usually 8-10 minutes), until al dente. Drain the pasta and set it aside. \n\n2. Prepare the Meat Sauce: Heat 2 tablespoons of olive oil in a large pan over medium heat. Add 1 finely chopped onion and 2 minced garlic cloves, and sauté until the onion becomes soft and translucent. Add 500g of ground beef to the pan and cook until browned, breaking the meat up with a wooden spoon as it cooks. \n\n3. Add the Vegetables: Stir in 1 grated carrot and 1 chopped celery stalk, and cook for 5 minutes until the vegetables soften. \n\n4. Cook the Sauce: Add 400g of canned crushed tomatoes, 1 tablespoon of tomato paste, 1 teaspoon of sugar, and a splash of red wine (optional) to the pan. Season with salt, pepper, 1 teaspoon of dried oregano, and 1 teaspoon of dried basil. Stir everything together and bring the sauce to a simmer. Lower the heat and let the sauce simmer gently for 20-30 minutes, stirring occasionally. \n\n5. Final Touches: Taste and adjust the seasoning as needed. Stir in 2 tablespoons of cream or milk for a richer sauce (optional). Serve the Bolognese sauce over the cooked spaghetti. Top with freshly grated Parmesan cheese and fresh basil, if desired.', 2, 3, 1, '2023-09-15 12:00:00', 0, NULL),
-(2, 'Birria Tacos', 'tacos.png', 'Birria is a mainstay of Mexican cuisine, a stew that originated in the state of Jalisco traditionally made from goat, beef, or lamb.', 3, 0, 'Sprinkle the chuck roast and short ribs all over with 2 tablespoons salt. Combine roast, ribs, and adobo in a large nonreactive bowl and toss to mix. §Cover and chill for at least 4 hours or up to 24 hours. §Preheat oven to 149°C. §Transfer adobo mixture to a large (9 1/2-quart) Dutch oven and add 8 cups of water. §Bring to a simmer, uncovered, over medium heat, stirring occasionally. §Cover with lid and place in preheated oven. §Bake until meat is fork-tender for about 4 hours. §Remove chuck roast and short ribs from braising broth and transfer to a large bowl, cover with aluminum foil to keep warm. §Return broth in Dutch oven to heat over medium and cook, uncovered, skimming off fat as needed, until reduced to about 8 cups, 15 to 20 minutes. §Season broth with salt to taste. §Shred meat, discard bones and toss with 1 1/2 cups of the broth. §Stir together onion, cilantro, and remaining 1/4 teaspoon salt in a small bowl, set aside. §Heat a large nonstick electric griddle to 204°C or a large (12-inch) cast-iron skillet over medium-high. Using a paper towel dipped in canola oil, lightly grease griddle. If using fresh tortillas, stack two tortillas, and use tongs to dip them together into adobo broth. (If using packaged tortillas, dip one tortilla per taco.) §Place stacked tortillas on griddle, top with 1/4 cup meat. Repeat with as many tortilla stacks as will comfortably fit on griddle. Cook until bottom tortilla is lightly browned and crispy for 1 to 2 minutes. §Fold tacos in half, gently pressing with a spatula. Transfer to a serving plate. Repeat process with oil, adobo broth, remaining tortillas, and remaining meat. §Serve tacos hot with onion-cilantro mixture, lime wedges, and remaining adobo broth for dipping or sipping.', 1, 2, 2, '2023-09-16 10:30:00', 1, '2025-02-17 09:28:37'),
-(3, 'Highwayman Dumpling', 'h_dumpling.png', 'These dumplings are usually served with spätzle or crest pasta.', 4, 0, 'Grind up the raw chicken breasts, spice, mix with eggs and form moderately sized dumplings. §Cut up the onions into small pieces, simmer with oil once soft add cut up mushroom and spice. §Add dumplings once the oil is hot enough and cook them for 20-25 minutes on low heat. §', 2, 2, 6, '2024-10-03 11:34:33', 0, NULL),
-(4, 'Savoy cabbage stew', 'savoy_cabbage_stew.png', 'Bits of crinkly Savoy cabbage and potato chunks crowd this creamy and mild vegetable stew flavored with caraway seeds. Using tender new potatos and a few tablespoons of sour cream to finish turn this everyday dish into a luscious treat.', 4, 1, 'Cut the cabbage into small pieces, then scald with hot water. §Boil the cabbage pieces with salt, black pepper and onion. §Cut the garlic into small pieces along with the caraway then add it to the cabbage. §Once the cabbage cooks half-way through add the diced potato and nutmeg. §When the cabbage has fully boiled, make a roux with some ground chili peppers, flour and oil then mix with the cabbage while still boiling. §The recipe can be eaten with fried eggs, beef stew or in itself. ', 1, 2, 6, '2024-09-20 11:54:05', 0, NULL),
-(5, 'Cabbage hajtóka', 'hajtoka.png', 'A cabbage filled pastry.', 4, 0, 'Todo', 1, 4, 6, '2024-10-03 10:52:39', 0, NULL),
-(6, 'Potato Pancakes', 'tocsni.png', 'These special pancakes are made from grated potato and flour, fried in fat or oil', 4, 1, 'Todo', 1, 2, 9, '2024-10-03 11:09:03', 0, NULL),
-(7, 'Garlic Soup', 'garlic_soup.png', 'The hungarian rendition of the classic garlic soup.', 4, 1, 'Todo', 2, 2, 6, '2024-10-03 11:17:46', 0, NULL),
-(8, 'Grandma\'s grilled fish', 'grilled_fish.png', 'Grandma\'s beloved grilled fish. ', 4, 0, 'Todo', 1, 2, 6, '2024-10-03 11:41:36', 0, NULL),
-(10, 'Key Lime Pie', 'lemon_pie.png', 'This is an American desert made from limes. Key lime pie dates back to the late 1800s in the Florida Keys. Modern refrigeration wasn’t available at the time, so fresh milk wasn’t a common commodity. Instead, canned milk was widely used.', 3, 1, 'Heat the oven to 160C fan 140C gas §Whizz 300g oatmeal biscuits to crumbs in a food processor (or put in a strong plastic bag and bash with a rolling pin). §Mix with 110g melted butter and press into the base and up the sides of a 22cm loose-based tart tin. Bake in the oven for 10 minutes. Remove and cool. §Put 3 medium egg yolks in a large bowl and whisk for a minute with electric beaters. §Add a can of condensed milk and whisk for 3 minutes, then add the finely grated zest and juice of 4 limes and whisk again for 3 minutes. §Pour the filling into the cooled base then put back in the oven for 15 minutes. Cool then chill for at least 6 hours or overnight if you like. When you are ready to serve, carefully remove the pie from the tin and put on a serving plate. §To decorate, softly whip together 300ml double cream and 1 tbsp icing sugar. §Dollop or pipe the cream onto the top of the pie and finish with extra lime zest.', 2, 5, 10, '2024-10-22 10:43:43', 0, NULL);
+INSERT INTO `food` (`id`, `name`, `image`, `description`, `prep_time`, `user_id`, `rating`, `instructions`, `difficulty_id`, `meal_type_id`, `cuisine_id`, `added_at`, `is_deleted`, `deleted_at`) VALUES
+(1, 'Spaghetti Bolognese', 'spaghetti.png', 'A classic Italian pasta dish with a rich meat sauce.', '', 3, 2, '1. Boil the Spaghetti: Bring a large pot of salted water to a boil. Add the spaghetti and cook according to the package instructions (usually 8-10 minutes), until al dente. Drain the pasta and set it aside. \n\n2. Prepare the Meat Sauce: Heat 2 tablespoons of olive oil in a large pan over medium heat. Add 1 finely chopped onion and 2 minced garlic cloves, and sauté until the onion becomes soft and translucent. Add 500g of ground beef to the pan and cook until browned, breaking the meat up with a wooden spoon as it cooks. \n\n3. Add the Vegetables: Stir in 1 grated carrot and 1 chopped celery stalk, and cook for 5 minutes until the vegetables soften. \n\n4. Cook the Sauce: Add 400g of canned crushed tomatoes, 1 tablespoon of tomato paste, 1 teaspoon of sugar, and a splash of red wine (optional) to the pan. Season with salt, pepper, 1 teaspoon of dried oregano, and 1 teaspoon of dried basil. Stir everything together and bring the sauce to a simmer. Lower the heat and let the sauce simmer gently for 20-30 minutes, stirring occasionally. \n\n5. Final Touches: Taste and adjust the seasoning as needed. Stir in 2 tablespoons of cream or milk for a richer sauce (optional). Serve the Bolognese sauce over the cooked spaghetti. Top with freshly grated Parmesan cheese and fresh basil, if desired.', 2, 3, 1, '2023-09-15 12:00:00', 0, NULL),
+(2, 'Birria Tacos', 'tacos.png', 'Birria is a mainstay of Mexican cuisine, a stew that originated in the state of Jalisco traditionally made from goat, beef, or lamb.', '', 3, 0, 'Sprinkle the chuck roast and short ribs all over with 2 tablespoons salt. Combine roast, ribs, and adobo in a large nonreactive bowl and toss to mix. §Cover and chill for at least 4 hours or up to 24 hours. §Preheat oven to 149°C. §Transfer adobo mixture to a large (9 1/2-quart) Dutch oven and add 8 cups of water. §Bring to a simmer, uncovered, over medium heat, stirring occasionally. §Cover with lid and place in preheated oven. §Bake until meat is fork-tender for about 4 hours. §Remove chuck roast and short ribs from braising broth and transfer to a large bowl, cover with aluminum foil to keep warm. §Return broth in Dutch oven to heat over medium and cook, uncovered, skimming off fat as needed, until reduced to about 8 cups, 15 to 20 minutes. §Season broth with salt to taste. §Shred meat, discard bones and toss with 1 1/2 cups of the broth. §Stir together onion, cilantro, and remaining 1/4 teaspoon salt in a small bowl, set aside. §Heat a large nonstick electric griddle to 204°C or a large (12-inch) cast-iron skillet over medium-high. Using a paper towel dipped in canola oil, lightly grease griddle. If using fresh tortillas, stack two tortillas, and use tongs to dip them together into adobo broth. (If using packaged tortillas, dip one tortilla per taco.) §Place stacked tortillas on griddle, top with 1/4 cup meat. Repeat with as many tortilla stacks as will comfortably fit on griddle. Cook until bottom tortilla is lightly browned and crispy for 1 to 2 minutes. §Fold tacos in half, gently pressing with a spatula. Transfer to a serving plate. Repeat process with oil, adobo broth, remaining tortillas, and remaining meat. §Serve tacos hot with onion-cilantro mixture, lime wedges, and remaining adobo broth for dipping or sipping.', 1, 2, 2, '2023-09-16 10:30:00', 1, '2025-02-17 09:28:37'),
+(3, 'Highwayman Dumpling', 'h_dumpling.png', 'These dumplings are usually served with spätzle or crest pasta.', '', 4, 0, 'Grind up the raw chicken breasts, spice, mix with eggs and form moderately sized dumplings. §Cut up the onions into small pieces, simmer with oil once soft add cut up mushroom and spice. §Add dumplings once the oil is hot enough and cook them for 20-25 minutes on low heat. §', 2, 2, 6, '2024-10-03 11:34:33', 0, NULL),
+(4, 'Savoy cabbage stew', 'savoy_cabbage_stew.png', 'Bits of crinkly Savoy cabbage and potato chunks crowd this creamy and mild vegetable stew flavored with caraway seeds. Using tender new potatos and a few tablespoons of sour cream to finish turn this everyday dish into a luscious treat.', '', 4, 1, 'Cut the cabbage into small pieces, then scald with hot water. §Boil the cabbage pieces with salt, black pepper and onion. §Cut the garlic into small pieces along with the caraway then add it to the cabbage. §Once the cabbage cooks half-way through add the diced potato and nutmeg. §When the cabbage has fully boiled, make a roux with some ground chili peppers, flour and oil then mix with the cabbage while still boiling. §The recipe can be eaten with fried eggs, beef stew or in itself. ', 1, 2, 6, '2024-09-20 11:54:05', 0, NULL),
+(5, 'Cabbage hajtóka', 'hajtoka.png', 'A cabbage filled pastry.', '', 4, 0, 'Todo', 1, 4, 6, '2024-10-03 10:52:39', 0, NULL),
+(6, 'Potato Pancakes', 'tocsni.png', 'These special pancakes are made from grated potato and flour, fried in fat or oil', '', 4, 1, 'Todo', 1, 2, 9, '2024-10-03 11:09:03', 0, NULL),
+(7, 'Garlic Soup', 'garlic_soup.png', 'The hungarian rendition of the classic garlic soup.', '', 4, 1, 'Todo', 2, 2, 6, '2024-10-03 11:17:46', 0, NULL),
+(8, 'Grandma\'s grilled fish', 'grilled_fish.png', 'Grandma\'s beloved grilled fish. ', '', 4, 0, 'Todo', 1, 2, 6, '2024-10-03 11:41:36', 0, NULL),
+(9, 'Key Lime Pie', 'lemon_pie.png', 'This is an American desert made from limes. Key lime pie dates back to the late 1800s in the Florida Keys. Modern refrigeration wasn’t available at the time, so fresh milk wasn’t a common commodity. Instead, canned milk was widely used.', '', 3, 1, 'Heat the oven to 160C fan 140C gas §Whizz 300g oatmeal biscuits to crumbs in a food processor (or put in a strong plastic bag and bash with a rolling pin). §Mix with 110g melted butter and press into the base and up the sides of a 22cm loose-based tart tin. Bake in the oven for 10 minutes. Remove and cool. §Put 3 medium egg yolks in a large bowl and whisk for a minute with electric beaters. §Add a can of condensed milk and whisk for 3 minutes, then add the finely grated zest and juice of 4 limes and whisk again for 3 minutes. §Pour the filling into the cooled base then put back in the oven for 15 minutes. Cool then chill for at least 6 hours or overnight if you like. When you are ready to serve, carefully remove the pie from the tin and put on a serving plate. §To decorate, softly whip together 300ml double cream and 1 tbsp icing sugar. §Dollop or pipe the cream onto the top of the pie and finish with extra lime zest.', 2, 5, 10, '2024-10-22 10:43:43', 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -831,32 +903,7 @@ CREATE TABLE IF NOT EXISTS `food_x_allergen` (
   `food_id` int(11) NOT NULL,
   `allergen_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `food_x_allergen`
---
-
-INSERT INTO `food_x_allergen` (`id`, `food_id`, `allergen_id`) VALUES
-(1, 1, 2),
-(3, 7, 10),
-(4, 8, 8),
-(5, 8, 25),
-(6, 3, 14),
-(7, 3, 24),
-(8, 3, 7),
-(9, 3, 25),
-(10, 4, 10),
-(11, 4, 2),
-(12, 5, 2),
-(13, 5, 7),
-(14, 5, 3),
-(15, 6, 2),
-(16, 6, 25),
-(17, 7, 6),
-(18, 7, 7),
-(19, 8, 2),
-(20, 10, 2);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -869,7 +916,7 @@ CREATE TABLE IF NOT EXISTS `food_x_dietary` (
   `dietary_id` int(11) DEFAULT NULL,
   `food_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -886,7 +933,7 @@ CREATE TABLE IF NOT EXISTS `ingredient` (
   `cholesterol` float DEFAULT NULL,
   `fiber` float DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `ingredient`
@@ -916,8 +963,9 @@ INSERT INTO `ingredient` (`id`, `name`, `protein`, `carb`, `fat`, `cholesterol`,
 (21, 'Vermicelli', 0.1, 82, 0.1, 0, 3.9),
 (22, 'Haricot Beans', 6, 13, 0.7, 0, 11),
 (23, 'Smoked Loin', 23, 0, 19, 86, 0),
-(25, 'Matchstick Pasta', 5, 25, 1.1, 33, 0),
-(26, 'White Onion', 1.4, 10, 0.2, 0, 1.4),
+(24, 'Matchstick Pasta', 5, 25, 1.1, 33, 0),
+(25, 'White Onion', 1.4, 10, 0.2, 0, 1.4),
+(26, 'Ground Nutmeg', 6, 49, 36, 0, 20.8),
 (27, 'Vinegar', 0, 0, 0, 0, 0),
 (28, 'Dried Bread Roll', 11, 52, 6, 4, 2),
 (29, 'Parsley', 3, 6, 0.8, 0, 3.3),
@@ -927,11 +975,10 @@ INSERT INTO `ingredient` (`id`, `name`, `protein`, `carb`, `fat`, `cholesterol`,
 (33, 'Water', 0, 0, 0, 0, 0),
 (34, 'Pork Ribs', 23, 0, 28, 84, 0),
 (35, 'Parsnip', 0.9, 10, 0.2, 0, 2.8),
+(36, 'Cascabel Chili', 12.9, 63.6, 6.4, 0, 0.9),
 (37, 'Ground Paprika', 14, 54, 13, 0, 35),
 (38, 'Dried Pepper', 1.9, 9, 0.4, 0, 1.5),
-(39, 'Common Carp', 17.8, 0, 5.6, 66, 0),
-(41, 'Cascabel Chili', 12.9, 63.6, 6.4, 0, 0.9),
-(42, 'Ground Nutmeg', 6, 49, 36, 0, 20.8);
+(39, 'Common Carp', 17.8, 0, 5.6, 66, 0);
 
 -- --------------------------------------------------------
 
@@ -969,57 +1016,7 @@ CREATE TABLE IF NOT EXISTS `recipe` (
   `amount` int(11) DEFAULT NULL,
   `measurement` varchar(255) DEFAULT NULL COMMENT 'gram, db, etc',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `recipe`
---
-
-INSERT INTO `recipe` (`id`, `food_id`, `ingredient_id`, `amount`, `measurement`) VALUES
-(1, 3, 30, 60, 'dkg'),
-(2, 3, 31, 40, 'dkg'),
-(3, 3, 13, 1, 'dl'),
-(4, 3, 6, 2, 'big heads'),
-(5, 3, 2, 2, 'pieces'),
-(6, 3, 37, 1, 'pinch'),
-(7, 3, 9, 1, 'pinch'),
-(8, 3, 10, 1, 'pinch'),
-(9, 4, 4, 1, 'head'),
-(10, 4, 5, 2, 'cloves'),
-(11, 4, 6, 5, 'dkg'),
-(12, 4, 7, 30, 'dkg'),
-(13, 4, 8, 20, 'pieces'),
-(14, 4, 1, 2, 'spoonful'),
-(15, 4, 9, 2, 'pinch'),
-(16, 4, 10, 2, 'pinch'),
-(17, 4, 42, 20, 'dkg'),
-(18, 4, 12, 1, 'piece'),
-(19, 4, 13, 1, 'dl'),
-(20, 5, 1, 60, 'dkg'),
-(21, 5, 2, 2, 'pieces'),
-(22, 5, 3, 4, 'dl'),
-(23, 5, 14, 2, 'dkg'),
-(24, 5, 15, 6, 'dkg'),
-(25, 5, 16, 1, 'teaspoon'),
-(26, 5, 9, 1, 'pinch'),
-(27, 6, 7, 1, 'kg'),
-(28, 6, 1, 100, 'dkg'),
-(29, 6, 9, 1, 'pinch'),
-(30, 6, 10, 1, 'pinch'),
-(31, 6, 5, 2, 'cloves'),
-(32, 7, 7, 1, 'piece'),
-(33, 7, 18, 1, 'l'),
-(34, 7, 20, 1, 'piece'),
-(35, 7, 19, 10, 'dkg'),
-(36, 7, 5, 3, 'clove'),
-(37, 7, 2, 1, 'piece'),
-(38, 7, 21, 1, 'bag'),
-(39, 7, 38, 1, 'teaspoon'),
-(40, 8, 39, 1, 'kg'),
-(41, 8, 1, 100, 'dkg'),
-(42, 8, 9, 1, 'pinch'),
-(43, 8, 12, 10, 'g'),
-(44, 8, 15, 3, 'dkg');
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
