@@ -13,7 +13,7 @@
   [tableFootProps]="{color: 'warning'}"
   [tableHeadProps]="{color: 'warning'}"
   [tableProps]="{ hover: true, striped: true, responsive: true }"
-  activePage="2"
+  activePage="1"
   cleaner
   clickableRows
   footer
@@ -33,8 +33,8 @@
     <div [visible]="this.details_visible[item.id]===true" cCollapse>
       <c-card class="rounded-0">
         <c-card-body>
-          <h5>{{ item['name'] }}</h5>
-          <p class="text-muted">User since: {{ item['registered'] }}</p>
+          <h5>{{ item['username'] }}</h5>
+          <p class="text-muted">User since: {{ item['createdAt'] }}</p>
         </c-card-body>
         <c-card-footer>
           <button cButton color="info" size="sm">

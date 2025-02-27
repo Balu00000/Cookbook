@@ -14,11 +14,10 @@ import {
   SmartTableComponent,
   TableActiveDirective,
   TableColorDirective,
-  TemplateIdDirective
+  TemplateIdDirective,
 } from '@coreui/angular-pro';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { InterpolationConfig } from '@angular/compiler';
-
 
 @Component({
   selector: 'app-admin',
@@ -39,11 +38,10 @@ import { InterpolationConfig } from '@angular/compiler';
     TableColorDirective,
     TemplateIdDirective,
     NavbarComponent,
-  ]
+  ],
 })
 export class AdminComponent {
-
-  ngOnInit(){
+  ngOnInit() {
     this.fetch();
   }
 
@@ -97,39 +95,59 @@ export class AdminComponent {
       console.error("Error during fetch:", exc);
     }
   } */
-    async fetch() {
-      try {
-        // const token = sessionStorage.getItem('auth_token');
-        // console.log("Token being used:", token);
-  
-        const response = await fetch("http://127.0.0.1:8080/CookBook-1.0-SNAPSHOT/webresources/user/getAllUser")
-        const data = await response.json()
-        return this.yuh = data
-        }catch(exc){
-          console.error("fetch erro: " + exc);
-        }
-      }
+  async fetch() {
+    try {
+      // const token = sessionStorage.getItem('auth_token');
+      // console.log("Token being used:", token);
 
-    
+      const response = await fetch(
+        'http://127.0.0.1:8080/CookBook-1.0-SNAPSHOT/webresources/user/getAllUser'
+      );
+      const data = await response.json();
+      console.log(data.result);
+      return (this.usersData = data.result);
+    } catch (exc) {
+      console.error('fetch erro: ' + exc);
+    }
+  }
 
-  usersData: IItem[] = this.yuh;
+  usersData: IItem[] = [];
 
   columns: (IColumn | string)[] = [
     {
-      key: 'name',
-      _style: { width: '40%' },
-      _props: { color: 'danger', class: 'fw-bold' }
+      key: 'id',
+      label: 'id',
+      _style: { width: '2%' },
     },
-    'registered',
-    { key: 'role', filter: false, sorter: false, _style: { width: '15%' }, _classes: 'text-muted small' },
-    { key: 'status', _style: { width: '15%' } },
+    {
+      key: 'username',
+      label: 'name',
+      _style: { width: '40%' },
+      _props: { color: 'danger', class: 'fw-bold' },
+    },
+    {
+      key: 'email',
+      label: 'Email',
+      _style: { width: '30%' },
+      _props: { color: 'pimary', class: 'fw-bold' },
+    },
+    {
+      key: 'isAdmin',
+      label: 'Admin',
+      _style: { width: '15%' },
+    },
+    { 
+      key: 'isDeleted',
+      label: 'Deleted', 
+      _style: { width: '2%' } 
+    },
     {
       key: 'show',
       label: '',
       _style: { width: '5%' },
       filter: false,
-      sorter: false
-    }
+      sorter: false,
+    },
   ];
 
   getBadge(status: string) {
