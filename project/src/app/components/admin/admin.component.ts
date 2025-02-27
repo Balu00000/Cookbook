@@ -17,6 +17,8 @@ import {
   TemplateIdDirective
 } from '@coreui/angular-pro';
 import { NavbarComponent } from '../navbar/navbar.component';
+import { InterpolationConfig } from '@angular/compiler';
+
 
 @Component({
   selector: 'app-admin',
@@ -36,57 +38,80 @@ import { NavbarComponent } from '../navbar/navbar.component';
     TableActiveDirective,
     TableColorDirective,
     TemplateIdDirective,
-    NavbarComponent
+    NavbarComponent,
   ]
 })
 export class AdminComponent {
 
   ngOnInit(){
-    this.fetch()
+    this.fetch();
   }
 
-  yuh: IItem[] = []
+  yuh: IItem[] = [];
 
-  token = sessionStorage.getItem('auth_token')
+  token = sessionStorage.getItem('auth_token');
 
-  async fetch(){
+  decodedToken: any;
+
+  /* async fetch() {
     try {
-      // Always retrieve the token when calling the fetch method
       const token = sessionStorage.getItem('auth_token');
-      console.error("Token being used:", token);
-      
+      console.log("Token being used:", token);
+
       const response = await fetch("http://127.0.0.1:8080/CookBook-1.0-SNAPSHOT/webresources/user/getAllUser", {
         method: 'GET',
         headers: {
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
-          'Authorization': token ? `Bearer ${token}` : ''
-        }
+        },
+        credentials: 'include', // This is important if you're sending cookies or sessions
       });
-      
-      // Check the response's content type before parsing
+
+      // Check if the response status is 401 or 400, and the response body is "TokenExpired"
+      if (response.status === 401 || response.status === 400) {
+        const responseText = await response.text();
+        if (responseText.includes("TokenExpired")) {
+          console.error("The token has expired. Please log in again.");
+          return; // Exit early since the token is expired
+        } else {
+          console.error("Bad request:", responseText);
+          return;
+        }
+      }
+
+      // Now handle the JSON response if the status is not 400 or 401
       const contentType = response.headers.get('Content-Type');
       let personData;
+
       if (contentType && contentType.indexOf("application/json") !== -1) {
-        personData = await response.json();
+        personData = await response.json(); // Parse the JSON response
       } else {
-        personData = await response.text();
+        personData = await response.text(); // Handle any non-JSON response
       }
-      
+
       console.log("Response from server:", personData);
-      
-      // Optionally, check if the server returned a "TokenExpired" message
-      if (personData === "TokenExpired") {
-        // Handle token expiration: redirect to login or refresh token logic
-        console.error("The token is expired. Please log in again.");
-      }
-      
+
+      // Return the parsed data
       return this.yuh = personData;
     } catch (exc) {
       console.error("Error during fetch:", exc);
     }
-  }
+  } */
+    async fetch() {
+      try {
+        // const token = sessionStorage.getItem('auth_token');
+        // console.log("Token being used:", token);
   
-  
+        const response = await fetch("http://127.0.0.1:8080/CookBook-1.0-SNAPSHOT/webresources/user/getAllUser")
+        const data = await response.json()
+        return this.yuh = data
+        }catch(exc){
+          console.error("fetch erro: " + exc);
+        }
+      }
+
+    
+
   usersData: IItem[] = this.yuh;
 
   columns: (IColumn | string)[] = [
