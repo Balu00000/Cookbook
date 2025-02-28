@@ -149,41 +149,46 @@ public class UserService { //U.Model->U.Service->U.Controller
             status = "PermissionError";
             statusCode=417;
         }
-        
         toReturn.put("status", status);
         toReturn.put("statusCode", statusCode);
         return toReturn;
     }
 
-    public JSONObject getAllUser() {
+    public JSONObject getAllUser(String jwt) {
         JSONObject toReturn = new JSONObject();
         String status = "success";
         int statusCode = 200;
-        List<User> modelResult = layer.getAllUser();
-        if(modelResult == null) {
-            status = "modelException";
-            statusCode = 500;
-        }else if (modelResult.isEmpty()) {
-            status = "noUserFound";
-            statusCode = 417;
-        }else {
-            JSONArray result = new JSONArray();
+        
+        if(JWT.isAdmin(jwt)) {
+            List<User> modelResult = layer.getAllUser();
+            if(modelResult == null) {
+                status = "modelException";
+                statusCode = 500;
+            }else if (modelResult.isEmpty()) {
+                status = "noUserFound";
+                statusCode = 417;
+            }else {
+                JSONArray result = new JSONArray();
 
-            for(User actualUser: modelResult) {
-                JSONObject toAdd = new JSONObject();
-                
-                toAdd.put("id", actualUser.getId());
-                toAdd.put("username", actualUser.getUsername());
-                toAdd.put("email", actualUser.getEmail());
-                toAdd.put("password", actualUser.getPassword());
-                toAdd.put("isAdmin", actualUser.getIsAdmin());
-                toAdd.put("createdAt", actualUser.getCreatedAt());
-                toAdd.put("isDeleted", actualUser.getIsDeleted());
-                toAdd.put("deletedAt", actualUser.getDeletedAt());
+                for(User actualUser: modelResult) {
+                    JSONObject toAdd = new JSONObject();
 
-                result.put(toAdd);
+                    toAdd.put("id", actualUser.getId());
+                    toAdd.put("username", actualUser.getUsername());
+                    toAdd.put("email", actualUser.getEmail());
+                    toAdd.put("password", actualUser.getPassword());
+                    toAdd.put("isAdmin", actualUser.getIsAdmin());
+                    toAdd.put("createdAt", actualUser.getCreatedAt());
+                    toAdd.put("isDeleted", actualUser.getIsDeleted());
+                    toAdd.put("deletedAt", actualUser.getDeletedAt());
+
+                    result.put(toAdd);
+                }
+                toReturn.put("result", result);
             }
-            toReturn.put("result", result);
+        }else{
+            status = "PermissionError";
+            statusCode=417;
         }
         toReturn.put("status", status);
         toReturn.put("statusCode", statusCode);

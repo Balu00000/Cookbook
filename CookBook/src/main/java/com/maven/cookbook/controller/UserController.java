@@ -90,17 +90,8 @@ public class UserController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllUser(@HeaderParam("token") String jwt){ //This is an admin only command
         
-        int isValid = JWT.validateJWT(jwt);
-        System.out.println(isValid);
-        switch (isValid) {
-            case 1:
-                JSONObject obj = layer.getAllUser();
-                return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
-            case 2:
-                return Response.status(400).entity("InvalidToken").type(MediaType.APPLICATION_JSON).build();
-            default:
-                return Response.status(400).entity("TokenExpired").type(MediaType.APPLICATION_JSON).build();
-        }
+        JSONObject obj = layer.getAllUser(jwt);
+        return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
     }
     
     @GET
