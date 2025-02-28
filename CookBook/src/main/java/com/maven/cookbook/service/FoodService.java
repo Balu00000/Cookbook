@@ -384,4 +384,19 @@ public class FoodService { //F.Model->F.Service->F.Controller
         toReturn.put("statusCode", statusCode);
         return toReturn;
     }
+    
+    public JSONObject addFood(Food f, String ingredients) {
+        JSONObject toReturn = new JSONObject();
+        String status = "success";
+        int statusCode = 200;
+        
+        boolean registerUser = layer.addFood(f, ingredients);
+            if(registerUser == false){
+                status = "fail";
+                statusCode = 417;
+            }
+        toReturn.put("status", status);
+        toReturn.put("statusCode", statusCode);
+        return toReturn;
+    }
 }

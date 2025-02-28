@@ -1,5 +1,6 @@
 package com.maven.cookbook.controller;
 
+import com.maven.cookbook.model.Food;
 import com.maven.cookbook.service.FoodService;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -121,6 +122,29 @@ public class FoodController {
     public Response getFoodByIngredients(@QueryParam("ingr") String ingredient){
         
         JSONObject obj = layer.getFoodByIngredients(ingredient);
+        return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
+    }
+    
+    @POST
+    @Path("addFood")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response addFood(String bodyString){
+        JSONObject body = new JSONObject(bodyString);
+        
+        Food f = new Food(
+            body.getString("username"),
+            body.getString("image"),
+            body.getString("description"),
+            body.getString("preptime"),
+            body.getInt("userid"),
+            body.getString("instructions"),
+            body.getInt("difficultyid"),
+            body.getInt("mealtypeid"),
+            body.getInt("cuisineid")
+        );
+        
+        JSONObject obj = layer.addFood(f, body.getString("ingredients"));
+        
         return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
     }
 }

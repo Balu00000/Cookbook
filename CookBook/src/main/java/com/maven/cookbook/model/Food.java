@@ -178,6 +178,18 @@ public class Food implements Serializable {
         this.instructions = instructions;
         this.addedAt = addedAt;
     }
+    public Food(String name, String image, String description, String preptime,Integer userid, String instructions, Integer difficultyid, Integer mealtypeid, Integer cuisineid) {
+        this.name = name;
+        this.image = image;
+        this.description = description;
+        this.prepTime = preptime;
+        this.userId = userid;
+        this.instructions = instructions;
+        this.difficultyId = difficultyid;
+        this.mealTypeId = mealtypeid;   
+        this.cuisineId = cuisineid; 
+    }
+    
 
     public Integer getId() {
         return id;
@@ -706,6 +718,46 @@ public class Food implements Serializable {
             return toReturn;
         } catch (NumberFormatException | ParseException e) {
             System.err.println("Hiba: "+ e.getLocalizedMessage());
+            return null;
+        }finally{
+            em.clear();
+            em.close();
+        }
+    }
+    public Boolean addFood(Food f, String ingredients){
+        EntityManager em = emf.createEntityManager();
+        
+        try {
+            StoredProcedureQuery spq = em.createStoredProcedureQuery("addFood");
+            
+            spq.registerStoredProcedureParameter("nameIN", String.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("imageIN", String.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("descriptionIN", String.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("preptimeIN", String.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("userIdIN", Integer.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("instructionsIN", String.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("difficultyIdIN", Integer.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("mealTypeIdIN", Integer.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("cuisineIdIN", Integer.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("ingredientsIN", String.class, ParameterMode.IN);
+            
+            spq.setParameter("nameIN", f.getName());
+            spq.setParameter("imageIN", f.getImage());
+            spq.setParameter("descriptionIN", f.getDescription());
+            spq.setParameter("preptimeIN", f.getPrepTime());
+            spq.setParameter("userIdIN", f.getUserId());
+            spq.setParameter("instructionsIN", f.getInstructions());
+            spq.setParameter("difficultyIdIN", f.getDifficultyId());
+            spq.setParameter("mealTypeIdIN", f.getMealTypeId());
+            spq.setParameter("cuisineIdIN", f.getCuisineId());
+            spq.setParameter("ingredientsIN", ingredients);
+            
+            spq.execute();
+            
+            return true;
+            
+        }catch(Exception e){
+            System.err.println("Hiba: " + e.getLocalizedMessage());
             return null;
         }finally{
             em.clear();
