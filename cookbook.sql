@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 27, 2025 at 02:08 PM
+-- Generation Time: Feb 28, 2025 at 12:05 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -269,7 +269,8 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllFood` ()   SELECT
 	`food`.`id`, 
     `food`.`name` AS "Food Name",
     `food`.`image`, 
-    `food`.`description`, 
+    `food`.`description`,
+    `food`.`prep_time`,
     `user`.`username`, 
     `food`.`rating`,
 	`food`.`instructions`, 
@@ -890,7 +891,7 @@ INSERT INTO `food` (`id`, `name`, `image`, `description`, `prep_time`, `user_id`
 (6, 'Potato Pancakes', 'tocsni.png', 'These special pancakes are made from grated potato and flour, fried in fat or oil', '', 4, 1, 'Todo', 1, 2, 9, '2024-10-03 11:09:03', 0, NULL),
 (7, 'Garlic Soup', 'garlic_soup.png', 'The hungarian rendition of the classic garlic soup.', '', 4, 1, 'Todo', 2, 2, 6, '2024-10-03 11:17:46', 0, NULL),
 (8, 'Grandma\'s grilled fish', 'grilled_fish.png', 'Grandma\'s beloved grilled fish. ', '', 4, 0, 'Todo', 1, 2, 6, '2024-10-03 11:41:36', 0, NULL),
-(9, 'Key Lime Pie', 'lemon_pie.png', 'This is an American desert made from limes. Key lime pie dates back to the late 1800s in the Florida Keys. Modern refrigeration wasn’t available at the time, so fresh milk wasn’t a common commodity. Instead, canned milk was widely used.', '', 3, 1, 'Heat the oven to 160C fan 140C gas §Whizz 300g oatmeal biscuits to crumbs in a food processor (or put in a strong plastic bag and bash with a rolling pin). §Mix with 110g melted butter and press into the base and up the sides of a 22cm loose-based tart tin. Bake in the oven for 10 minutes. Remove and cool. §Put 3 medium egg yolks in a large bowl and whisk for a minute with electric beaters. §Add a can of condensed milk and whisk for 3 minutes, then add the finely grated zest and juice of 4 limes and whisk again for 3 minutes. §Pour the filling into the cooled base then put back in the oven for 15 minutes. Cool then chill for at least 6 hours or overnight if you like. When you are ready to serve, carefully remove the pie from the tin and put on a serving plate. §To decorate, softly whip together 300ml double cream and 1 tbsp icing sugar. §Dollop or pipe the cream onto the top of the pie and finish with extra lime zest.', 2, 5, 10, '2024-10-22 10:43:43', 0, NULL);
+(9, 'Key Lime Pie', 'lemon_pie.png', 'This is an American desert made from limes. Key lime pie dates back to the late 1800s in the Florida Keys. Modern refrigeration wasn’t available at the time, so fresh milk wasn’t a common commodity. Instead, canned milk was widely used.', '', 3, 1, 'Heat the oven to 160C fan 140C gas §Whizz 300g oatmeal biscuits to crumbs in a food processor (or put in a strong plastic bag and bash with a rolling pin). §Mix with 110g melted butter and press into the base and up the sides of a 22cm loose-based tart tin. Bake in the oven for 10 minutes. Remove and cool. §Put 3 medium egg yolks in a large bowl and whisk for a minute with electric beaters. §Add a can of condensed milk and whisk for 3 minutes, then add the finely grated zest and juice of 4 limes and whisk again for 3 minutes. §Pour the filling into the cooled base then put back in the oven for 15 minutes. Cool then chill for at least 6 hours or overnight if you like. When you are ready to serve, carefully remove the pie from the tin and put on a serving plate. §To decorate, softly whip together 300ml double cream and 1 tbsp icing sugar. §Dollop or pipe the cream onto the top of the pie and finish with extra lime zest.', 2, 5, 9, '2024-10-22 10:43:43', 0, NULL);
 
 -- --------------------------------------------------------
 
