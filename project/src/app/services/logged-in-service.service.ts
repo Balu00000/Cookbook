@@ -7,17 +7,20 @@ import { Router } from '@angular/router';
 export class LoggedInServiceService {
   private readonly TOKEN_KEY = 'auth_token';  // Key used to store the token in localStorage
   private readonly ID = "user_id"
+  private readonly IS_ADMIN = "isAdmin"
 
   constructor() {}
 
   // Method to log in the user and store the token in localStorage
-  login(token: string, id: string, remember: boolean): void {
+  login(token: string, id: string, isAdmin:string, remember: boolean): void {
     if(remember){
       localStorage.setItem(this.TOKEN_KEY, token);
       localStorage.setItem(this.ID, id)
+      localStorage.setItem(this.IS_ADMIN, isAdmin)
     }else{
       sessionStorage.setItem(this.TOKEN_KEY, token)
       sessionStorage.setItem(this.ID, id)
+      sessionStorage.setItem(this.IS_ADMIN, isAdmin)
     }
   }
 
@@ -25,8 +28,10 @@ export class LoggedInServiceService {
   logout(): void {
     localStorage.removeItem(this.TOKEN_KEY);
     localStorage.removeItem(this.ID)
+    localStorage.removeItem(this.IS_ADMIN)
     sessionStorage.removeItem(this.TOKEN_KEY)
     sessionStorage.removeItem(this.ID)
+    sessionStorage.removeItem(this.IS_ADMIN)
   }
 
   // Method to check if the user is authenticated
@@ -42,6 +47,14 @@ export class LoggedInServiceService {
   // Method to get the token (optional, if you need to access the token elsewhere)
   getToken(): string | null {
     return localStorage.getItem(this.TOKEN_KEY);
+  }
+
+  isUserAdmin():string | null{
+    if(!localStorage.getItem(this.IS_ADMIN)){
+      return sessionStorage.getItem(this.IS_ADMIN)
+    }else{
+      return localStorage.getItem(this.IS_ADMIN)
+    }
   }
 
   whatUser():string |null{

@@ -5,7 +5,7 @@
   [columnSorter]="true"
   [columns]="columns"
   [itemsPerPageSelect]="true"
-  [itemsPerPage]="5"
+  [itemsPerPage]="10"
   [items]="usersData"
   [sorterValue]="{ column: 'name', state: 'asc' }"
   [tableBodyProps]="{align: 'middle'}"
@@ -35,6 +35,7 @@
         <c-card-body>
           <h5>{{ item['username'] }}</h5>
           <p class="text-muted">User since: {{ item['createdAt'] }}</p>
+          <p class="text-muted">User Deleted since: {{ item['deletedAt'] }}</p>
         </c-card-body>
         <c-card-footer>
           <button cButton color="info" size="sm">
@@ -48,9 +49,9 @@
     </div>
   </ng-template>
   <ng-template cTemplateId="tableData" let-columnName="columnName" let-item="item" let-tdContent="tdContent">
-    <td [cAlign]="smartTable.getTableDataCellProps(item, columnName)?.['align']"
-        [cTableActive]="smartTable.getTableDataCellProps(item, columnName)?.['active']"
-        [cTableColor]="smartTable.getTableDataCellProps(item, columnName)?.['color']"
+    <td [cAlign]="smartTable.getTableDataCellProps(item, columnName)['align']"
+        [cTableActive]="smartTable.getTableDataCellProps(item, columnName)['active']"
+        [cTableColor]="smartTable.getTableDataCellProps(item, columnName)['color']"
         [ngClass]="smartTable.getTableDataCellClass(item, columnName)"
     >
       @switch (columnName) {

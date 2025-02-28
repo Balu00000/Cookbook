@@ -68,12 +68,12 @@ export class RegisterComponent {
           if (response.result.isAdmin === true) {
             console.log("hes adming");
             this.admin = true
-            this.loggedIn.login(response.result.jwt, response.result.id, this.remember);
+            this.loggedIn.login(response.result.jwt, response.result.id, response.result.isAdmin, this.remember );
             this.router.navigate(['/home']);
           } else {
             console.log("hes not adming");
             this.admin = false
-            this.loggedIn.login(response.result.jwt, response.result.id, this.remember);
+            this.loggedIn.login(response.result.jwt, response.result.id, response.result.isAdmin, this.remember);
             this.router.navigate(['/home'])
           }
 
