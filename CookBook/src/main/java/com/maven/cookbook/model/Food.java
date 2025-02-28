@@ -25,21 +25,35 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @Table(name = "food")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Food.findAll", query = "SELECT f FROM Food f"),
-    @NamedQuery(name = "Food.findById", query = "SELECT f FROM Food f WHERE f.id = :id"),
-    @NamedQuery(name = "Food.findByName", query = "SELECT f FROM Food f WHERE f.name = :name"),
-    @NamedQuery(name = "Food.findByUserId", query = "SELECT f FROM Food f WHERE f.userId = :userId"),
-    @NamedQuery(name = "Food.findByRating", query = "SELECT f FROM Food f WHERE f.rating = :rating"),
-    @NamedQuery(name = "Food.findByDifficultyId", query = "SELECT f FROM Food f WHERE f.difficultyId = :difficultyId"),
-    @NamedQuery(name = "Food.findByMealTypeId", query = "SELECT f FROM Food f WHERE f.mealTypeId = :mealTypeId"),
-    @NamedQuery(name = "Food.findByCuisineId", query = "SELECT f FROM Food f WHERE f.cuisineId = :cuisineId"),
-    @NamedQuery(name = "Food.findByAddedAt", query = "SELECT f FROM Food f WHERE f.addedAt = :addedAt"),
-    @NamedQuery(name = "Food.findByIsDeleted", query = "SELECT f FROM Food f WHERE f.isDeleted = :isDeleted"),
-    @NamedQuery(name = "Food.findByDeletedAt", query = "SELECT f FROM Food f WHERE f.deletedAt = :deletedAt")})
+    @NamedQuery(name = "Food.findById", query
+            = "SELECT f FROM Food f WHERE f.id = :id"),
+    @NamedQuery(name = "Food.findByName", query
+            = "SELECT f FROM Food f WHERE f.name = :name"),
+    @NamedQuery(name = "Food.findByPrepTime", query
+            = "SELECT f FROM Food f WHERE f.prepTime = :prepTime"),
+    @NamedQuery(name = "Food.findByUserId", query
+            = "SELECT f FROM Food f WHERE f.userId = :userId"),
+    @NamedQuery(name = "Food.findByRating", query
+            = "SELECT f FROM Food f WHERE f.rating = :rating"),
+    @NamedQuery(name = "Food.findByDifficultyId", query
+            = "SELECT f FROM Food f WHERE f.difficultyId = :difficultyId"),
+    @NamedQuery(name = "Food.findByMealTypeId", query
+            = "SELECT f FROM Food f WHERE f.mealTypeId = :mealTypeId"),
+    @NamedQuery(name = "Food.findByCuisineId", query
+            = "SELECT f FROM Food f WHERE f.cuisineId = :cuisineId"),
+    @NamedQuery(name = "Food.findByAddedAt", query
+            = "SELECT f FROM Food f WHERE f.addedAt = :addedAt"),
+    @NamedQuery(name = "Food.findByIsDeleted", query
+            = "SELECT f FROM Food f WHERE f.isDeleted = :isDeleted"),
+    @NamedQuery(name = "Food.findByDeletedAt", query
+            = "SELECT f FROM Food f WHERE f.deletedAt = :deletedAt")})
 public class Food implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -59,12 +73,15 @@ public class Food implements Serializable {
     @Size(max = 65535)
     @Column(name = "description")
     private String description;
+    @Size(max = 255)
+    @Column(name = "prep_time")
+    private String prepTime;
     @Column(name = "user_id")
     private Integer userId;
     @Basic(optional = false)
     @NotNull
     @Column(name = "rating")
-    private Integer rating;
+    private int rating;
     @Lob
     @Size(max = 65535)
     @Column(name = "instructions")
@@ -95,6 +112,7 @@ public class Food implements Serializable {
         name
         image
         description
+        preptime
         userId
         rating
         instructions
@@ -115,6 +133,7 @@ public class Food implements Serializable {
             this.name = f.getName();
             this.image = f.getImage();
             this.description = f.getDescription();
+            this.prepTime = f.getPrepTime();
             this.userId = f.getUserId();
             this.rating = f.getRating();
             this.instructions = f.getInstructions();
@@ -131,12 +150,13 @@ public class Food implements Serializable {
             em.close();
         }
     }
-    
-    public Food(Integer id, String name, String image, String description, Integer userId, Integer rating,String instructions, Integer difficultyId, Integer mealTypeId, Integer cuisineId, Date addedAt, Boolean isDeleted, Date deletedAt){
+
+    public Food(Integer id, String name, String image, String description, String preptime, Integer userId, Integer rating,String instructions, Integer difficultyId, Integer mealTypeId, Integer cuisineId, Date addedAt, Boolean isDeleted, Date deletedAt){
         this.id = id;
         this.name = name;
         this.image = image;
         this.description = description;
+        this.prepTime = preptime;
         this.userId = userId;
         this.rating = rating;
         this.instructions = instructions;
@@ -148,11 +168,12 @@ public class Food implements Serializable {
         this.deletedAt = deletedAt;
     }
 
-    public Food(Integer id, String name, String image, String description, Integer rating, String instructions, Date addedAt) {
+    public Food(Integer id, String name, String image, String description, String preptime, Integer rating, String instructions, Date addedAt) {
         this.id = id;
         this.name = name;
         this.image = image;
         this.description = description;
+        this.prepTime = preptime;
         this.rating = rating;
         this.instructions = instructions;
         this.addedAt = addedAt;
@@ -190,6 +211,14 @@ public class Food implements Serializable {
         this.description = description;
     }
 
+    public String getPrepTime() {
+        return prepTime;
+    }
+
+    public void setPrepTime(String prepTime) {
+        this.prepTime = prepTime;
+    }
+
     public Integer getUserId() {
         return userId;
     }
@@ -198,11 +227,11 @@ public class Food implements Serializable {
         this.userId = userId;
     }
 
-    public Integer getRating() {
+    public int getRating() {
         return rating;
     }
 
-    public void setRating(Integer rating) {
+    public void setRating(int rating) {
         this.rating = rating;
     }
 
@@ -276,7 +305,8 @@ public class Food implements Serializable {
             return false;
         }
         Food other = (Food) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.id == null && other.id != null) ||
+                (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -284,7 +314,7 @@ public class Food implements Serializable {
 
     @Override
     public String toString() {
-        return "com.maven.cookbook.Food[ id=" + id + " ]";
+        return "com.maven.cookbook.model.Food[ id=" + id + " ]";
     }
     
     public List<FoodDTO> getFoodByUser(Integer id){
@@ -308,14 +338,15 @@ public class Food implements Serializable {
                     food[1].toString(),
                     food[2].toString(),
                     food[3].toString(),
-                    Integer.valueOf(food[5].toString()), 
-                    food[6].toString(),
-                    formatter.parse(food[10].toString())
+                    food[4].toString(),   
+                    Integer.valueOf(food[6].toString()), 
+                    food[7].toString(),
+                    formatter.parse(food[11].toString())
                 );
-                String username = food[4].toString();
-                String difficultyName = food[7].toString();
-                String mealTypeType = food[8].toString();
-                String cuisineType = food[9].toString();
+                String username = food[5].toString();
+                String difficultyName = food[8].toString();
+                String mealTypeType = food[9].toString();
+                String cuisineType = food[10].toString();
                 
                 toReturn.add(new FoodDTO(f, username, difficultyName, mealTypeType, cuisineType));
             }
@@ -346,14 +377,15 @@ public class Food implements Serializable {
                     food[1].toString(),
                     food[2].toString(),
                     food[3].toString(),
-                    Integer.valueOf(food[5].toString()), 
-                    food[6].toString(),
-                    formatter.parse(food[10].toString())
+                    food[4].toString(),
+                    Integer.valueOf(food[6].toString()), 
+                    food[7].toString(),
+                    formatter.parse(food[11].toString())
                 );
-                String username = food[4].toString();
-                String difficultyName = food[7].toString();
-                String mealTypeType = food[8].toString();
-                String cuisineType = food[9].toString();
+                String username = food[5].toString();
+                String difficultyName = food[8].toString();
+                String mealTypeType = food[9].toString();
+                String cuisineType = food[10].toString();
                 
                 toReturn.add(new FoodDTO(f, username, difficultyName, mealTypeType, cuisineType));
             }
@@ -383,14 +415,15 @@ public class Food implements Serializable {
                     food[1].toString(),
                     food[2].toString(),
                     food[3].toString(),
-                    Integer.valueOf(food[5].toString()), 
-                    food[6].toString(),
-                    formatter.parse(food[10].toString())
+                    food[4].toString(),
+                    Integer.valueOf(food[6].toString()), 
+                    food[7].toString(),
+                    formatter.parse(food[11].toString())
                 );
-                String username = food[4].toString();
-                String difficultyName = food[7].toString();
-                String mealTypeType = food[8].toString();
-                String cuisineType = food[9].toString();
+                String username = food[5].toString();
+                String difficultyName = food[8].toString();
+                String mealTypeType = food[9].toString();
+                String cuisineType = food[10].toString();
                 
                 toReturn = new FoodDTO(f, username, difficultyName, mealTypeType, cuisineType);
             }
@@ -427,14 +460,15 @@ public class Food implements Serializable {
                     food[1].toString(),
                     food[2].toString(),
                     food[3].toString(),
-                    Integer.valueOf(food[5].toString()), 
-                    food[6].toString(),
-                    formatter.parse(food[10].toString())
+                    food[4].toString(),
+                    Integer.valueOf(food[6].toString()), 
+                    food[7].toString(),
+                    formatter.parse(food[11].toString())
                 );
-                String username = food[4].toString();
-                String difficultyName = food[7].toString();
-                String mealTypeType = food[8].toString();
-                String cuisineType = food[9].toString();
+                String username = food[5].toString();
+                String difficultyName = food[8].toString();
+                String mealTypeType = food[9].toString();
+                String cuisineType = food[10].toString();
                 
                 toReturn.add(new FoodDTO(f, username, difficultyName, mealTypeType, cuisineType));
             }
@@ -469,14 +503,15 @@ public class Food implements Serializable {
                     food[1].toString(),
                     food[2].toString(),
                     food[3].toString(),
-                    Integer.valueOf(food[5].toString()), 
-                    food[6].toString(),
-                    formatter.parse(food[10].toString())
+                    food[4].toString(),
+                    Integer.valueOf(food[6].toString()), 
+                    food[7].toString(),
+                    formatter.parse(food[11].toString())
                 );
-                String username = food[4].toString();
-                String difficultyName = food[7].toString();
-                String mealTypeType = food[8].toString();
-                String cuisineType = food[9].toString();
+                String username = food[5].toString();
+                String difficultyName = food[8].toString();
+                String mealTypeType = food[9].toString();
+                String cuisineType = food[10].toString();
                 
                 toReturn.add(new FoodDTO(f, username, difficultyName, mealTypeType, cuisineType));
             }
@@ -511,14 +546,15 @@ public class Food implements Serializable {
                     food[1].toString(),
                     food[2].toString(),
                     food[3].toString(),
-                    Integer.valueOf(food[5].toString()), 
-                    food[6].toString(),
-                    formatter.parse(food[10].toString())
+                    food[4].toString(),
+                    Integer.valueOf(food[6].toString()), 
+                    food[7].toString(),
+                    formatter.parse(food[11].toString())
                 );
-                String username = food[4].toString();
-                String difficultyName = food[7].toString();
-                String mealTypeType = food[8].toString();
-                String cuisineType = food[9].toString();
+                String username = food[5].toString();
+                String difficultyName = food[8].toString();
+                String mealTypeType = food[9].toString();
+                String cuisineType = food[10].toString();
                 
                 toReturn.add(new FoodDTO(f, username, difficultyName, mealTypeType, cuisineType));
             }
@@ -553,14 +589,15 @@ public class Food implements Serializable {
                     food[1].toString(),
                     food[2].toString(),
                     food[3].toString(),
-                    Integer.valueOf(food[5].toString()), 
-                    food[6].toString(),
-                    formatter.parse(food[10].toString())
+                    food[4].toString(),
+                    Integer.valueOf(food[6].toString()), 
+                    food[7].toString(),
+                    formatter.parse(food[11].toString())
                 );
-                String username = food[4].toString();
-                String difficultyName = food[7].toString();
-                String mealTypeType = food[8].toString();
-                String cuisineType = food[9].toString();
+                String username = food[5].toString();
+                String difficultyName = food[8].toString();
+                String mealTypeType = food[9].toString();
+                String cuisineType = food[10].toString();
                 
                 toReturn.add(new FoodDTO(f, username, difficultyName, mealTypeType, cuisineType));
             }
@@ -591,14 +628,15 @@ public class Food implements Serializable {
                     food[1].toString(),
                     food[2].toString(),
                     food[3].toString(),
-                    Integer.valueOf(food[5].toString()), 
-                    food[6].toString(),
-                    formatter.parse(food[10].toString())
+                    food[4].toString(),
+                    Integer.valueOf(food[6].toString()), 
+                    food[7].toString(),
+                    formatter.parse(food[11].toString())
                 );
-                String username = food[4].toString();
-                String difficultyName = food[7].toString();
-                String mealTypeType = food[8].toString();
-                String cuisineType = food[9].toString();
+                String username = food[5].toString();
+                String difficultyName = food[8].toString();
+                String mealTypeType = food[9].toString();
+                String cuisineType = food[10].toString();
                 
                 toReturn.add(new FoodDTO(f, username, difficultyName, mealTypeType, cuisineType));
             }
@@ -653,14 +691,15 @@ public class Food implements Serializable {
                     food[1].toString(),
                     food[2].toString(),
                     food[3].toString(),
-                    Integer.valueOf(food[5].toString()), 
-                    food[6].toString(),
-                    formatter.parse(food[10].toString())
+                    food[4].toString(),
+                    Integer.valueOf(food[6].toString()), 
+                    food[7].toString(),
+                    formatter.parse(food[11].toString())
                 );
-                String username = food[4].toString();
-                String difficultyName = food[7].toString();
-                String mealTypeType = food[8].toString();
-                String cuisineType = food[9].toString();
+                String username = food[5].toString();
+                String difficultyName = food[8].toString();
+                String mealTypeType = food[9].toString();
+                String cuisineType = food[10].toString();
                 
                 toReturn.add(new FoodDTO(f, username, difficultyName, mealTypeType, cuisineType));
             }

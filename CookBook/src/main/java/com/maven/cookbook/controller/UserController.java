@@ -10,7 +10,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
-import javax.ws.rs.PATCH;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
@@ -23,7 +22,7 @@ import org.json.JSONObject;
 public class UserController {
     @Context
     private UriInfo context;
-    private UserService layer = new UserService(); 
+    private final UserService layer = new UserService(); 
 
     public UserController() {
     }
@@ -92,6 +91,7 @@ public class UserController {
     public Response getAllUser(@HeaderParam("token") String jwt){ //This is an admin only command
         
         int isValid = JWT.validateJWT(jwt);
+        System.out.println(isValid);
         switch (isValid) {
             case 1:
                 JSONObject obj = layer.getAllUser();

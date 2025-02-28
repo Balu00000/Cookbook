@@ -142,15 +142,16 @@ public class Favourite implements Serializable {
                     food[1].toString(),
                     food[2].toString(),
                     food[3].toString(),
-                    Integer.valueOf(food[4].toString()),
+                    food[4].toString(),
                     Integer.valueOf(food[5].toString()),
-                    food[6].toString(),
-                    Integer.valueOf(food[7].toString()),
+                    Integer.valueOf(food[6].toString()),
+                    food[7].toString(),
                     Integer.valueOf(food[8].toString()),
                     Integer.valueOf(food[9].toString()),
-                    formatter.parse(food[10].toString()),
-                    Boolean.valueOf(food[11].toString()),
-                    food[12] == null ? null : formatter.parse(food[12].toString())
+                    Integer.valueOf(food[10].toString()),
+                    formatter.parse(food[11].toString()),
+                    Boolean.valueOf(food[12].toString()),
+                    food[13] == null ? null : formatter.parse(food[13].toString())
                 );
                 toReturn.add(f);
             }

@@ -13,6 +13,7 @@ D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\controller\M
 D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\model\FoodDTO.java
 D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\controller\CuisineController.java
 D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\service\UserService.java
+D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\filters\CORSFilter.java
 D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\service\DietaryService.java
 D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\model\Food.java
 D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\model\User.java

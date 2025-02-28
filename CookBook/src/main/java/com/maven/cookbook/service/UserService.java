@@ -71,7 +71,6 @@ public class UserService { //U.Model->U.Service->U.Controller
                     toReturn.put("result", result);
                 }
             }
-
         } else {
             status = "invalidEmail";
             statusCode = 417;
@@ -103,7 +102,7 @@ public class UserService { //U.Model->U.Service->U.Controller
                         statusCode = 417;
                     }
                 }
-            }else{
+            } else {
                 status = "InvalidPassword";
                 statusCode = 417;
             }
@@ -178,7 +177,7 @@ public class UserService { //U.Model->U.Service->U.Controller
                 toAdd.put("email", actualUser.getEmail());
                 toAdd.put("password", actualUser.getPassword());
                 toAdd.put("isAdmin", actualUser.getIsAdmin());
-                toAdd.put("createdAt", actualUser.getDeletedAt());
+                toAdd.put("createdAt", actualUser.getCreatedAt());
                 toAdd.put("isDeleted", actualUser.getIsDeleted());
                 toAdd.put("deletedAt", actualUser.getDeletedAt());
 

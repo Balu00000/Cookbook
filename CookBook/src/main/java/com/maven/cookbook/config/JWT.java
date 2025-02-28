@@ -11,7 +11,6 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
-import static io.jsonwebtoken.io.Decoders.BASE64;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.WeakKeyException;
 import java.time.Instant;
@@ -40,7 +39,7 @@ public class JWT {
             .setIssuedAt(Date.from(now))
             .setExpiration(Date.from(now.plus(1, ChronoUnit.DAYS)))
             .signWith(SignatureAlgorithm.HS256,
-                Decoders.BASE64.decode(SIGN) //Related to a plugin that causes issues
+                Decoders.BASE64.decode(SIGN)
             )
             .compact();
 
@@ -60,7 +59,6 @@ public class JWT {
                 return 2; //Ez akkor történik amikor egy érvénytelen tokent akarunk validáltatni
             }
         } catch (ExpiredJwtException | MalformedJwtException | UnsupportedJwtException | SignatureException | WeakKeyException | IllegalArgumentException e) {
-//            System.err.println("JWT validation error: " + e.getLocalizedMessage());
             exceptionLogger.errorLog(e);
             return 3; //Akkor történik ha lejárt a JWT-k
         }
@@ -69,7 +67,7 @@ public class JWT {
         Jws<Claims> result; //main függvényböl
         System.out.println(jwt);
         
-        result = Jwts.parser().setSigningKey(Keys.hmacShaKeyFor(SECRET)).parseClaimsJws(jwt); //error, potentially invalid token
+        result = Jwts.parser().setSigningKey(Keys.hmacShaKeyFor(SECRET)).parseClaimsJws(jwt);
         
         Boolean isAdmin = result.getBody().get("isAdmin", Boolean.class);
         return isAdmin;
