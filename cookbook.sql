@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 28, 2025 at 12:05 PM
+-- Generation Time: Mar 01, 2025 at 09:31 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -307,7 +307,8 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getFoodByAddedAt` ()   SELECT
 	`food`.`id`, 
     `food`.`name` AS "Food Name",
     `food`.`image`, 
-    `food`.`description`, 
+    `food`.`description`,
+    `food`.`prep_time`,
     `user`.`username`, 
     `food`.`rating`,
 	`food`.`instructions`, 
@@ -326,7 +327,8 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getFoodByCuisine` (IN `idIN` INT(11
 	`food`.`id`, 
     `food`.`name` AS "Food Name",
     `food`.`image`, 
-    `food`.`description`, 
+    `food`.`description`,
+    `food`.`prep_time`,
     `user`.`username`, 
     `food`.`rating`,
 	`food`.`instructions`, 
@@ -345,7 +347,8 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getFoodByDietary` (IN `idIN` INT(11
 	`food`.`id`, 
     `food`.`name` AS "Food Name",
     `food`.`image`, 
-    `food`.`description`, 
+    `food`.`description`,
+    `food`.`prep_time`,
     `user`.`username`, 
     `food`.`rating`,
 	`food`.`instructions`, 
@@ -365,7 +368,8 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getFoodByDifficulty` (IN `idIN` INT
 	`food`.`id`, 
     `food`.`name` AS "Food Name",
     `food`.`image`, 
-    `food`.`description`, 
+    `food`.`description`,
+    `food`.`prep_time`,
     `user`.`username`, 
     `food`.`rating`,
 	`food`.`instructions`, 
@@ -384,7 +388,8 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getFoodById` (IN `idIN` INT(11))   
 	`food`.`id`, 
     `food`.`name` AS "Food Name",
     `food`.`image`, 
-    `food`.`description`, 
+    `food`.`description`,
+    `food`.`prep_time`,
     `user`.`username`, 
     `food`.`rating`,
 	`food`.`instructions`, 
@@ -403,7 +408,8 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getFoodByIngredientId` (IN `idIN` I
 	`food`.`id`, 
     `food`.`name` AS "Food Name",
     `food`.`image`, 
-    `food`.`description`, 
+    `food`.`description`,
+    `food`.`prep_time`,
     `user`.`username`, 
     `food`.`rating`,
 	`food`.`instructions`, 
@@ -446,18 +452,19 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getFoodByIngredients` (IN `ingredie
     END WHILE;
 
     SELECT 
-	`food`.`id`, 
+    `food`.`id`, 
     `food`.`name` AS "Food Name",
     `food`.`image`, 
-    `food`.`description`, 
+    `food`.`description`,
+    `food`.`prep_time`,
     `user`.`username`, 
     `food`.`rating`,
-	`food`.`instructions`, 
+    `food`.`instructions`, 
     `difficulty`.`name` AS Difficulty, 
     `meal_type`.`type` AS "Meal Type", 
     `cuisine`.`type` AS Cuisine, 
-    `food`.`added_at`
-    FROM `food`
+    `food`.`added_at` 
+	FROM `food`
     LEFT JOIN `recipe` ON `food`.`id` = `recipe`.`food_id`
     LEFT JOIN `ingredient` ON `recipe`.`ingredient_id` = `ingredient`.`id`
     LEFT JOIN `user` ON `food`.`user_id` = `user`.`id`
@@ -472,11 +479,12 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getFoodByIngredients` (IN `ingredie
     DROP TEMPORARY TABLE TempIngredients;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getFoodByMealType` (IN `idIN` INT(11))   SELECT 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getFoodByMealType` (IN `idIN` INT(11))   SELECT
 	`food`.`id`, 
     `food`.`name` AS "Food Name",
     `food`.`image`, 
-    `food`.`description`, 
+    `food`.`description`,
+    `food`.`prep_time`,
     `user`.`username`, 
     `food`.`rating`,
 	`food`.`instructions`, 
@@ -495,7 +503,8 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getFoodByRandom` ()   SELECT
 	`food`.`id`, 
     `food`.`name` AS "Food Name",
     `food`.`image`, 
-    `food`.`description`, 
+    `food`.`description`,
+    `food`.`prep_time`,
     `user`.`username`, 
     `food`.`rating`,
 	`food`.`instructions`, 
@@ -514,7 +523,8 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getFoodByRating` ()   SELECT
 	`food`.`id`, 
     `food`.`name` AS "Food Name",
     `food`.`image`, 
-    `food`.`description`, 
+    `food`.`description`,
+    `food`.`prep_time`,
     `user`.`username`, 
     `food`.`rating`,
 	`food`.`instructions`, 
@@ -533,7 +543,8 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getFoodByUser` (IN `idIN` INT(11)) 
 	`food`.`id`, 
     `food`.`name` AS "Food Name",
     `food`.`image`, 
-    `food`.`description`, 
+    `food`.`description`,
+    `food`.`prep_time`,
     `user`.`username`, 
     `food`.`rating`,
 	`food`.`instructions`, 
