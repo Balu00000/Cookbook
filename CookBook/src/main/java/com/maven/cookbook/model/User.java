@@ -24,23 +24,32 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @Table(name = "user")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
-    @NamedQuery(name = "User.findById", query = "SELECT u FROM User u WHERE u.id = :id"),
-    @NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = :username"),
-    @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email"),
-    @NamedQuery(name = "User.findByPassword", query = "SELECT u FROM User u WHERE u.password = :password"),
-    @NamedQuery(name = "User.findByIsAdmin", query = "SELECT u FROM User u WHERE u.isAdmin = :isAdmin"),
-    @NamedQuery(name = "User.findByCreatedAt", query = "SELECT u FROM User u WHERE u.createdAt = :createdAt"),
-    @NamedQuery(name = "User.findByIsDeleted", query = "SELECT u FROM User u WHERE u.isDeleted = :isDeleted"),
-    @NamedQuery(name = "User.findByDeletedAt", query = "SELECT u FROM User u WHERE u.deletedAt = :deletedAt")})
+    @NamedQuery(name = "User.findById", query
+            = "SELECT u FROM User u WHERE u.id = :id"),
+    @NamedQuery(name = "User.findByUsername", query
+            = "SELECT u FROM User u WHERE u.username = :username"),
+    @NamedQuery(name = "User.findByEmail", query
+            = "SELECT u FROM User u WHERE u.email = :email"),
+    @NamedQuery(name = "User.findByPassword", query
+            = "SELECT u FROM User u WHERE u.password = :password"),
+    @NamedQuery(name = "User.findByIsAdmin", query
+            = "SELECT u FROM User u WHERE u.isAdmin = :isAdmin"),
+    @NamedQuery(name = "User.findByCreatedAt", query
+            = "SELECT u FROM User u WHERE u.createdAt = :createdAt"),
+    @NamedQuery(name = "User.findByIsDeleted", query
+            = "SELECT u FROM User u WHERE u.isDeleted = :isDeleted"),
+    @NamedQuery(name = "User.findByDeletedAt", query
+            = "SELECT u FROM User u WHERE u.deletedAt = :deletedAt")})
 public class User implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,10 +62,9 @@ public class User implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Lob
-    @Size(min = 1, max = 65535)
     @Column(name = "image")
-    private String image;
-    @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
+    private byte[] image;
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Size(max = 255)
     @Column(name = "email")
     private String email;
@@ -114,20 +122,26 @@ public class User implements Serializable {
             em.close();
         }
     }
-
-    public User(Integer id, String username, String image, String email, String password, boolean isAdmin, Date createdAt, boolean isDeleted, Date deletedAt) {
+    
+    public User(Integer id, String username, byte[] image, String email, boolean isAdmin, Date createdAt, boolean isDeleted, Date deletedAt) {
         this.id = id;
         this.username = username; 
         this.image = image;
         this.email = email;
-        this.password = password;
         this.isAdmin = isAdmin;
         this.createdAt = createdAt;
         this.isDeleted = isDeleted;
         this.deletedAt = deletedAt;
     }
     
-    public User(String username, String image, Date createdAt){
+    public User(String username, byte[] image, String email, String password) {
+        this.username = username;
+        this.image = image;
+        this.email = email;
+        this.password = password;
+    }
+    
+    public User(String username, byte[] image, Date createdAt){
         this.username = username;
         this.image = image;
         this.createdAt = createdAt;
@@ -149,11 +163,11 @@ public class User implements Serializable {
         this.username = username;
     }
 
-    public String getImage() {
+    public byte[] getImage() {
         return image;
     }
 
-    public void setImage(String image) {
+    public void setImage(byte[] image) {
         this.image = image;
     }
 
@@ -211,13 +225,6 @@ public class User implements Serializable {
         hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
-    
-    public User(String username, String image, String email, String password) {
-        this.username = username;
-        this.image = image;
-        this.email = email;
-        this.password = password;
-    }
 
     @Override
     public boolean equals(Object object) {
@@ -226,7 +233,8 @@ public class User implements Serializable {
             return false;
         }
         User other = (User) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.id == null && other.id != null) ||
+                (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -234,9 +242,9 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "com.maven.cookbook.User[ id=" + id + " ]";
+        return "com.maven.cookbook.model.User[ id=" + id + " ]";
     }
-    
+
     public User login(String email, String password) {
         EntityManager em = emf.createEntityManager();
 
@@ -258,13 +266,12 @@ public class User implements Serializable {
                 User u = new User(
                     Integer.valueOf(o[0].toString()),
                     o[1].toString(),
-                    o[2].toString(),
+                    (byte[]) o[2],
                     o[3].toString(),
-                    o[4].toString(),
-                    Boolean.parseBoolean(o[5].toString()),
-                    formatter.parse(o[6].toString()),
-                    Boolean.parseBoolean(o[7].toString()),
-                    o[8] == null ? null : formatter.parse(o[8].toString())
+                    Boolean.parseBoolean(o[4].toString()),
+                    formatter.parse(o[5].toString()),
+                    Boolean.parseBoolean(o[6].toString()),
+                    o[7] == null ? null : formatter.parse(o[7].toString())
                 );
                 toReturn = u;
             }
@@ -376,15 +383,13 @@ public class User implements Serializable {
                 User u = new User(
                     Integer.valueOf(record[0].toString()),
                     record[1].toString(),
-                    record[2].toString(),
+                    (byte[]) record[2],
                     record[3].toString(),
-                    record[4].toString(),
-                    Boolean.parseBoolean(record[5].toString()),
-                    formatter.parse(record[6].toString()),
-                    Boolean.parseBoolean(record[7].toString()),
-                    record[8] == null ? null : formatter.parse(record[8].toString())
+                    Boolean.parseBoolean(record[4].toString()),
+                    formatter.parse(record[5].toString()),
+                    Boolean.parseBoolean(record[6].toString()),
+                    record[7] == null ? null : formatter.parse(record[7].toString())
                 );
-                System.out.println(u);
                 toReturn.add(u);
             }
             System.out.println(toReturn);
@@ -415,7 +420,7 @@ public class User implements Serializable {
             for(Object[] user : resultList){
                 User u = new User(
                     user[0].toString(),
-                    user[1].toString(),
+                    (byte[]) user[1],
                     formatter.parse(user[2].toString())
                 );
                 

@@ -59,7 +59,11 @@ public class UserService { //U.Model->U.Service->U.Controller
                 if (modelResult.getId() == null) {
                     status = "userNotFound";
                     statusCode = 417;
-                } else {
+                }else if(modelResult.getIsDeleted() == true){
+                    status = "deletedUser";
+                    statusCode = 404;
+                }
+                else {
                     JSONObject result = new JSONObject();
                     result.put("id", modelResult.getId());
                     result.put("username", modelResult.getUsername());
@@ -120,6 +124,7 @@ public class UserService { //U.Model->U.Service->U.Controller
         JSONObject toReturn = new JSONObject();
         String status = "success";
         int statusCode = 200;
+        
         if(JWT.isAdmin(jwt)) {
             if(isValidPassword(u.getPassword())){
                 if(isValidEmail(u.getEmail())){
@@ -147,7 +152,7 @@ public class UserService { //U.Model->U.Service->U.Controller
             }
         }else{
             status = "PermissionError";
-            statusCode=417;
+            statusCode=403;
         }
         toReturn.put("status", status);
         toReturn.put("statusCode", statusCode);
@@ -166,7 +171,7 @@ public class UserService { //U.Model->U.Service->U.Controller
                 statusCode = 500;
             }else if (modelResult.isEmpty()) {
                 status = "noUserFound";
-                statusCode = 417;
+                statusCode = 404;
             }else {
                 JSONArray result = new JSONArray();
 
@@ -175,6 +180,7 @@ public class UserService { //U.Model->U.Service->U.Controller
 
                     toAdd.put("id", actualUser.getId());
                     toAdd.put("username", actualUser.getUsername());
+                    toAdd.put("image", actualUser.getImage());
                     toAdd.put("email", actualUser.getEmail());
                     toAdd.put("password", actualUser.getPassword());
                     toAdd.put("isAdmin", actualUser.getIsAdmin());
@@ -188,7 +194,7 @@ public class UserService { //U.Model->U.Service->U.Controller
             }
         }else{
             status = "PermissionError";
-            statusCode=417;
+            statusCode=403;
         }
         toReturn.put("status", status);
         toReturn.put("statusCode", statusCode);

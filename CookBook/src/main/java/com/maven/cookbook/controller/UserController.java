@@ -57,38 +57,36 @@ public class UserController {
         
         User u = new User(
             body.getString("username"),
-            body.getString("image"),
+            (byte[]) body.get("image"),
             body.getString("email"),
             body.getString("password")
         );
         
         JSONObject obj = layer.registerUser(u);
-        
         return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
     }
     
     @POST
     @Path("registerAdmin")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response registerAdmin(@HeaderParam("token") String jwt, String bodyString){ //This is an admin only command
+    public Response registerAdmin(@HeaderParam("token") String jwt, String bodyString){ //This is used on the admin page
         JSONObject body = new JSONObject(bodyString);
         
         User u = new User(
             body.getString("username"),
-            body.getString("image"),
+            (byte[]) body.get("image"),
             body.getString("email"),
             body.getString("password")
         );
         
         JSONObject obj = layer.registerAdmin(u, jwt);
-        
         return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
     }
     
     @GET
     @Path("getAllUser")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllUser(@HeaderParam("token") String jwt){ //This is an admin only command
+    public Response getAllUser(@HeaderParam("token") String jwt){ //This is used on the admin page
         
         JSONObject obj = layer.getAllUser(jwt);
         return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
