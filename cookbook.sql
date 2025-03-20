@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 03, 2025 at 08:35 PM
+-- Generation Time: Mar 20, 2025 at 05:57 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -287,7 +287,15 @@ WHERE `food`.`is_deleted` = 0$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllMealType` ()   SELECT * FROM `meal_type`$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllUser` ()   SELECT * FROM `user`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllUser` ()   SELECT `id`, 
+	`username`, 
+    `image`,
+    `email`, 
+    `is_admin`, 
+    `created_at`, 
+    `is_deleted`, 
+    `deleted_at`
+FROM `user`$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getCuisine` (IN `idIN` INT(11))   SELECT * FROM `cuisine` WHERE `cuisine`.`id` = idIN$$
 
@@ -587,14 +595,23 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `isUserExists` (IN `emailIN` VARCHAR
     WHERE `user`.`email` = emailIN
 )$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `login` (IN `emailIN` VARCHAR(255) CHARSET utf8mb4, IN `passwordIN` VARCHAR(255) CHARSET utf8mb4)   SELECT * from `user` where `user`.`email` = emailIN AND `user`.`password` = SHA1(passwordIN)$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `login` (IN `emailIN` VARCHAR(255) CHARSET utf8mb4, IN `passwordIN` VARCHAR(255) CHARSET utf8mb4)   SELECT `id`, 
+	`username`, 
+    `image`,
+    `email`, 
+    `is_admin`, 
+    `created_at`, 
+    `is_deleted`, 
+    `deleted_at`
+from `user` 
+where `email` = emailIN AND `password` = SHA1(passwordIN)$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `registerAdmin` (IN `usernameIN` VARCHAR(255) CHARSET utf8mb4, IN `imageIN` TEXT, IN `emailIN` VARCHAR(255), IN `passwordIN` VARCHAR(20))   INSERT INTO `user`(
-	`user`.`username`,
-    `user`.`image`,
-    `user`.`email`,
-    `user`.`password`,
-    `user`.`is_admin`
+	`username`,
+    `image`,
+    `email`,
+    `password`,
+    `is_admin`
 )VALUES (
     userNameIN,
     imageIN,
@@ -604,11 +621,11 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `registerAdmin` (IN `usernameIN` VAR
 )$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `registerUser` (IN `usernameIN` VARCHAR(255) CHARSET utf8mb4, IN `imageIN` TEXT, IN `emailIN` VARCHAR(255) CHARSET utf8mb4, IN `passwordIN` VARCHAR(20) CHARSET utf8mb4)   INSERT INTO `user`(
-	`user`.`username`,
-    `user`.`image`,
-    `user`.`email`,
-    `user`.`password`,
-    `user`.`is_admin`
+	`username`,
+    `image`,
+    `email`,
+    `password`,
+    `is_admin`
 )VALUES (
     usernameIN,
     imageIN,
@@ -1039,7 +1056,7 @@ CREATE TABLE IF NOT EXISTS `recipe` (
 CREATE TABLE IF NOT EXISTS `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(255) DEFAULT NULL,
-  `image` text NOT NULL,
+  `image` longblob NOT NULL,
   `email` varchar(255) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
   `is_admin` tinyint(1) DEFAULT 0,
@@ -1047,20 +1064,21 @@ CREATE TABLE IF NOT EXISTS `user` (
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `user`
 --
 
 INSERT INTO `user` (`id`, `username`, `image`, `email`, `password`, `is_admin`, `created_at`, `is_deleted`, `deleted_at`) VALUES
-(1, 'John Doe', 'john.png', 'john@citromail.com', 'cbfdac6008f9cab4083784cbd1874f76618d2a97', 0, '2023-09-10 10:00:00', 1, '2025-02-17 07:49:54'),
-(2, 'Jane Smith', 'Jane.png', 'jane@hotmail.com', '79ef18bb9e529a91d8941c52b9d47aa71ab1443c', 0, '2023-09-12 06:30:00', 1, '2025-02-17 09:09:56'),
-(3, 'Balogh Gergely Daniel', 'gergo.png', 'balogh.gergely.daniel@simonyiszki.org', 'd98f69fa1f7cc99d196cbd9d2d47820c5cd317f2', 1, '2024-09-17 10:28:37', 0, NULL),
-(4, 'Kasza David', 'billy.png', 'kasza.david@simonyiszki.org', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', 1, '2024-09-20 11:29:23', 0, NULL),
-(5, 'Ron', 'Ron.png', 'RonWeasel@gmail.com', 'a1c6b74e19c25d2764d20ba7243177c605d5d2a8', 0, '2025-01-03 12:14:41', 0, NULL),
-(6, 'Bob', 'Bob.png', 'BreadBob@citromail.com', '9cec8cf728a07d718434d7e87bb43f8643f95494', 1, '2025-01-09 14:17:52', 0, NULL),
-(7, 'bobby', 'boby.png', 'boly.gobl@mole.ruf', '7e6f54ed1399fd40d227375c4dcefa01e15b103d', 0, '2025-02-17 08:13:21', 0, NULL);
+(1, 'John Doe', 0x6a6f686e2e706e67, 'john@citromail.com', 'cbfdac6008f9cab4083784cbd1874f76618d2a97', 0, '2023-09-10 10:00:00', 1, '2025-02-17 07:49:54'),
+(2, 'Jane Smith', 0x4a616e652e706e67, 'jane@hotmail.com', '79ef18bb9e529a91d8941c52b9d47aa71ab1443c', 0, '2023-09-12 06:30:00', 1, '2025-02-17 09:09:56'),
+(3, 'Balogh Gergely Daniel', 0x676572676f2e706e67, 'balogh.gergely.daniel@simonyiszki.org', 'd98f69fa1f7cc99d196cbd9d2d47820c5cd317f2', 1, '2024-09-17 10:28:37', 0, NULL),
+(4, 'Kasza David', 0x62696c6c792e706e67, 'kasza.david@simonyiszki.org', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', 1, '2024-09-20 11:29:23', 0, NULL),
+(5, 'Ron', 0x526f6e2e706e67, 'RonWeasel@gmail.com', 'a1c6b74e19c25d2764d20ba7243177c605d5d2a8', 0, '2025-01-03 12:14:41', 0, NULL),
+(6, 'Bob', 0x426f622e706e67, 'BreadBob@citromail.com', '9cec8cf728a07d718434d7e87bb43f8643f95494', 1, '2025-01-09 14:17:52', 0, NULL),
+(7, 'bobby', 0x626f62792e706e67, 'boly.gobl@mole.ruf', '7e6f54ed1399fd40d227375c4dcefa01e15b103d', 0, '2025-02-17 08:13:21', 0, NULL),
+(8, 'test', 0x74657374, 'testing@gmail.com', '0c6ba03885f3aae765fbf20f07f514a44dbda30a', 1, '2025-03-19 10:00:24', 0, NULL);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
