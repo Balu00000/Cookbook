@@ -580,7 +580,7 @@ public class Food implements Serializable {
         }
     }
     
-    public List<FoodDTO> getFoodByMealType(Integer id){
+public List<FoodDTO> getFoodByMealType(Integer id){
         EntityManager em = emf.createEntityManager();
         
         try {
@@ -758,6 +758,45 @@ public class Food implements Serializable {
             
         }catch(Exception e){
             System.err.println("Hiba: " + e.getLocalizedMessage());
+            return null;
+        }finally{
+            em.clear();
+            em.close();
+        }
+    }
+    
+    public List<FoodDTO> getFoodByAddedAt(){
+        EntityManager em = emf.createEntityManager();
+        
+        try {
+            StoredProcedureQuery spq = em.createStoredProcedureQuery("getFoodByAddedAt");
+            spq.execute();
+            
+            List<FoodDTO> toReturn = new ArrayList();
+            List<Object[]> resultList = spq.getResultList();
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            
+            for(Object[] food : resultList){
+                Food f = new Food(
+                    Integer.valueOf(food[0].toString()),
+                    food[1].toString(),
+                    food[2].toString(),
+                    food[3].toString(),
+                    food[4].toString(),
+                    Integer.valueOf(food[6].toString()), 
+                    food[7].toString(),
+                    formatter.parse(food[11].toString())
+                );
+                String username = food[5].toString();
+                String difficultyName = food[8].toString();
+                String mealTypeType = food[9].toString();
+                String cuisineType = food[10].toString();
+                
+                toReturn.add(new FoodDTO(f, username, difficultyName, mealTypeType, cuisineType));
+            }
+            return toReturn;
+        } catch (NumberFormatException | ParseException e) {
+            System.err.println("Hiba: "+ e.getLocalizedMessage());
             return null;
         }finally{
             em.clear();

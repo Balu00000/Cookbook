@@ -12,13 +12,14 @@ public class MealTypeService { //MT.Model->MT.Service->MT.Controller
         JSONObject toReturn = new JSONObject();
         String status = "success";
         int statusCode = 200;
+        
         List<MealType> modelResult = layer.getAllMealType();
         if(modelResult == null) {
             status = "modelException";
             statusCode = 500;
         }else if (modelResult.isEmpty()) {
             status = "noMealTypeFound";
-            statusCode = 417;
+            statusCode = 404;
         }else {
             JSONArray result = new JSONArray();
             

@@ -18,7 +18,7 @@ public class CuisineService { //C.Model->C.Service->C.Controller
             statusCode = 500;
         }else if (modelResult.isEmpty()) {
             status = "noCuisineFound";
-            statusCode = 417;
+            statusCode = 404;
         }else {
             JSONArray result = new JSONArray();
             
@@ -26,7 +26,7 @@ public class CuisineService { //C.Model->C.Service->C.Controller
                 JSONObject toAdd = new JSONObject();
                 
                 toAdd.put("id", cuisine.getId());
-                toAdd.put("type", cuisine.getType());
+                toAdd.put("name", cuisine.getType());
 
                 result.put(toAdd);
             }

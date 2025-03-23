@@ -6,6 +6,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
@@ -42,6 +43,7 @@ public class FoodController {
     @Path("getFoodByUser")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getFoodByUser(@QueryParam("id") Integer id){
+        
         JSONObject obj = layer.getFoodByUser(id);
         return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
     }
@@ -50,6 +52,7 @@ public class FoodController {
     @Path("getFoodByRating")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getFoodByRating(){
+        
         JSONObject obj = layer.getFoodByRating();
         return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
     }
@@ -58,6 +61,7 @@ public class FoodController {
     @Path("getFoodByRandom")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getFoodByRandom(){
+        
         JSONObject obj = layer.getFoodByRandom();
         return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
     }
@@ -107,7 +111,7 @@ public class FoodController {
         return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
     }
     
-    @POST
+    @DELETE
     @Path("deleteFoodById")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response deleteFoodById(@HeaderParam("token") String jwt, @QueryParam("id") Integer id){ //This is an admin only command -- Todo Write null value handler
@@ -145,6 +149,15 @@ public class FoodController {
         
         JSONObject obj = layer.addFood(f, body.getString("ingredients"));
         
+        return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
+    }
+    
+    @GET
+    @Path("getFoodByAddedAt")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getFoodByAddedAt(){
+        
+        JSONObject obj = layer.getFoodByAddedAt();
         return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
     }
 }

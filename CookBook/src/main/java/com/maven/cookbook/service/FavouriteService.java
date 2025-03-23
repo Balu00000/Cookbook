@@ -2,6 +2,7 @@ package com.maven.cookbook.service;
 
 import com.maven.cookbook.model.Favourite;
 import com.maven.cookbook.model.Food;
+import com.maven.cookbook.model.FoodDTO;
 import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -14,7 +15,7 @@ public class FavouriteService { //F.Model->F.Service->F.Controller
         String status = "success";
         int statusCode = 200;
         
-        List<Food> modelResult = layer.getFavouriteByUser(id);
+        List<FoodDTO> modelResult = layer.getFavouriteByUser(id);
         if(modelResult == null) {
             status = "modelException";
             statusCode = 500;
@@ -24,22 +25,21 @@ public class FavouriteService { //F.Model->F.Service->F.Controller
         }else {
             JSONArray result = new JSONArray();
             
-            for(Food food: modelResult){
+            for(FoodDTO food: modelResult){
                 JSONObject toAdd = new JSONObject();
                 
-                toAdd.put("id", food.getId());
-                toAdd.put("name", food.getName());
-                toAdd.put("image", food.getImage());
-                toAdd.put("description", food.getDescription());
-                toAdd.put("userId", food.getUserId());
-                toAdd.put("rating", food.getRating());
-                toAdd.put("instructions", food.getInstructions());
-                toAdd.put("difficultyId", food.getDifficultyId());
-                toAdd.put("mealTypeId", food.getMealTypeId());
-                toAdd.put("cuisineId", food.getCuisineId());
-                toAdd.put("addedAt", food.getAddedAt());
-                toAdd.put("isDeleted", food.getIsDeleted());
-                toAdd.put("deletedAt", food.getDeletedAt());
+                toAdd.put("id", food.getFood().getId());
+                toAdd.put("name", food.getFood().getName());
+                toAdd.put("image", food.getFood().getImage());
+                toAdd.put("description", food.getFood().getDescription());
+                toAdd.put("prepTime", food.getFood().getPrepTime());
+                toAdd.put("username", food.getUsername());
+                toAdd.put("rating", food.getFood().getRating());
+                toAdd.put("instructions", food.getFood().getInstructions());
+                toAdd.put("difficultyName", food.getDifficultyName());
+                toAdd.put("mealTypeName", food.getMealTypeType());
+                toAdd.put("cuisineName", food.getCuisineType());
+                toAdd.put("addedAt", food.getFood().getAddedAt());
             
                 result.put(toAdd);
             }

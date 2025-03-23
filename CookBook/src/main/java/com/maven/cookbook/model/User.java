@@ -1,9 +1,15 @@
 package com.maven.cookbook.model;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -83,7 +89,9 @@ public class User implements Serializable {
     @Column(name = "deleted_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date deletedAt;
-
+    
+    private String base64Image;
+    
     static EntityManagerFactory emf = Persistence.createEntityManagerFactory(
             "com.maven_CookBook_war_1.0-SNAPSHOTPU");   
     
@@ -125,8 +133,8 @@ public class User implements Serializable {
     
     public User(Integer id, String username, byte[] image, String email, boolean isAdmin, Date createdAt, boolean isDeleted, Date deletedAt) {
         this.id = id;
-        this.username = username; 
-        this.image = image;
+        this.username = username;
+        this.base64Image = image != null ? Base64.getEncoder().encodeToString(image) : null;
         this.email = email;
         this.isAdmin = isAdmin;
         this.createdAt = createdAt;
@@ -219,6 +227,16 @@ public class User implements Serializable {
         this.deletedAt = deletedAt;
     }
 
+    public String getBase64Image() {
+        return base64Image;
+    }
+
+    public void setBase64Image(String base64Image) {
+        this.base64Image = base64Image;
+    }
+    
+    
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -243,6 +261,21 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "com.maven.cookbook.model.User[ id=" + id + " ]";
+    }
+    
+    public static byte[] convertImageToBytes(String imagePath) throws IOException {
+        File file = new File(imagePath);
+        FileInputStream fis = new FileInputStream(file);
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024];
+        int bytesRead;
+
+        while ((bytesRead = fis.read(buffer)) != -1) {
+            bos.write(buffer, 0, bytesRead);
+        }
+
+        fis.close();
+        return bos.toByteArray();
     }
 
     public User login(String email, String password) {
@@ -293,7 +326,7 @@ public class User implements Serializable {
             StoredProcedureQuery spq = em.createStoredProcedureQuery("registerUser");
             
             spq.registerStoredProcedureParameter("usernameIN", String.class, ParameterMode.IN);
-            spq.registerStoredProcedureParameter("imageIN", String.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("imageIN", byte[].class, ParameterMode.IN);
             spq.registerStoredProcedureParameter("emailIN", String.class, ParameterMode.IN);
             spq.registerStoredProcedureParameter("passwordIN", String.class, ParameterMode.IN);
             
@@ -322,7 +355,7 @@ public class User implements Serializable {
             StoredProcedureQuery spq = em.createStoredProcedureQuery("registerAdmin");
             
             spq.registerStoredProcedureParameter("usernameIN", String.class, ParameterMode.IN);
-            spq.registerStoredProcedureParameter("imageIN", String.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("imageIN", byte[].class, ParameterMode.IN);
             spq.registerStoredProcedureParameter("emailIN", String.class, ParameterMode.IN);
             spq.registerStoredProcedureParameter("passwordIN", String.class, ParameterMode.IN);
             
@@ -383,7 +416,7 @@ public class User implements Serializable {
                 User u = new User(
                     Integer.valueOf(record[0].toString()),
                     record[1].toString(),
-                    (byte[]) record[2],
+                    record[2] != null ? (byte[]) record[2] : null, //image
                     record[3].toString(),
                     Boolean.parseBoolean(record[4].toString()),
                     formatter.parse(record[5].toString()),
@@ -453,6 +486,54 @@ public class User implements Serializable {
             
             return true;
         } catch (Exception e) {
+            System.err.println("Hiba: " + e.getLocalizedMessage());
+            return null;
+        } finally {
+            em.clear();
+            em.close();
+        }
+    }
+    
+    public Boolean updateUsername(Integer id, String username){
+        EntityManager em = emf.createEntityManager();
+        
+        try {
+            StoredProcedureQuery spq = em.createStoredProcedureQuery("updateUsername");
+            spq.registerStoredProcedureParameter("idIN", Integer.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("usernameIN", String.class, ParameterMode.IN);
+            
+            spq.setParameter("idIN", id);
+            spq.setParameter("usernameIN", username);
+            
+            spq.execute();
+            
+            return true;
+        } catch (Exception e) {
+            System.err.println("Hiba: " + e.getLocalizedMessage());
+            return null;
+        } finally {
+            em.clear();
+            em.close();
+        }
+    }
+    
+    public Boolean updateImage(Integer id, String image) throws IOException{
+        EntityManager em = emf.createEntityManager();
+        
+        try {
+            StoredProcedureQuery spq = em.createStoredProcedureQuery("updateImage");
+            spq.registerStoredProcedureParameter("idIN", Integer.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("imageIN", byte[].class, ParameterMode.IN);
+            
+            byte[] imageBytes = convertImageToBytes(image);
+            
+            spq.setParameter("idIN", id);
+            spq.setParameter("imageIN", imageBytes);
+            
+            spq.execute();
+            
+            return true;
+        } catch (FileNotFoundException e) {
             System.err.println("Hiba: " + e.getLocalizedMessage());
             return null;
         } finally {

@@ -38,6 +38,7 @@ public class DietaryController {
     @Path("getAllDietary")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllDietary(){
+        
         JSONObject obj = layer.getAllDietary();
         return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
     }

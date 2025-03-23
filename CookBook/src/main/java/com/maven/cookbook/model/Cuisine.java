@@ -121,7 +121,7 @@ public class Cuisine implements Serializable {
                 toReturn.add(c);
             }
             return toReturn;
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             System.err.println("Hiba: "+ e.getLocalizedMessage());
             return null;
         }finally{

@@ -3,6 +3,7 @@ package com.maven.cookbook.service; //Default Java Class
 import com.maven.cookbook.config.JWT;
 import com.maven.cookbook.model.User;
 import com.maven.cookbook.model.UserDTO;
+import java.io.IOException;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -58,7 +59,7 @@ public class UserService { //U.Model->U.Service->U.Controller
             } else {
                 if (modelResult.getId() == null) {
                     status = "userNotFound";
-                    statusCode = 417;
+                    statusCode = 404;
                 }else if(modelResult.getIsDeleted() == true){
                     status = "deletedUser";
                     statusCode = 404;
@@ -93,6 +94,7 @@ public class UserService { //U.Model->U.Service->U.Controller
         if(isValidEmail(u.getEmail())){
             if(isValidPassword(u.getPassword())){
                 boolean userIsExists = User.isUserExists(u.getEmail());
+                
                 if(User.isUserExists(u.getEmail()) == null){
                     status = "ModelException";
                     statusCode = 500;
@@ -126,9 +128,10 @@ public class UserService { //U.Model->U.Service->U.Controller
         int statusCode = 200;
         
         if(JWT.isAdmin(jwt)) {
-            if(isValidPassword(u.getPassword())){
-                if(isValidEmail(u.getEmail())){
+            if(isValidEmail(u.getEmail())){
+                if(isValidPassword(u.getPassword())){
                     boolean userIsExists = User.isUserExists(u.getEmail());
+                    
                     if(User.isUserExists(u.getEmail()) == null){
                         status = "ModelException";
                         statusCode = 500;
@@ -143,11 +146,11 @@ public class UserService { //U.Model->U.Service->U.Controller
                         }
                     }
                 }else{
-                    status = "InvalidEmail";
+                    status = "InvalidPassword";
                     statusCode = 417;
                 }
             }else{
-                status = "InvalidPassword";
+                status = "InvalidEmail";
                 statusCode = 417;
             }
         }else{
@@ -166,6 +169,7 @@ public class UserService { //U.Model->U.Service->U.Controller
         
         if(JWT.isAdmin(jwt)) {
             List<User> modelResult = layer.getAllUser();
+            
             if(modelResult == null) {
                 status = "modelException";
                 statusCode = 500;
@@ -180,9 +184,8 @@ public class UserService { //U.Model->U.Service->U.Controller
 
                     toAdd.put("id", actualUser.getId());
                     toAdd.put("username", actualUser.getUsername());
-                    toAdd.put("image", actualUser.getImage());
+                    toAdd.put("image", actualUser.getBase64Image());
                     toAdd.put("email", actualUser.getEmail());
-                    toAdd.put("password", actualUser.getPassword());
                     toAdd.put("isAdmin", actualUser.getIsAdmin());
                     toAdd.put("createdAt", actualUser.getCreatedAt());
                     toAdd.put("isDeleted", actualUser.getIsDeleted());
@@ -201,12 +204,12 @@ public class UserService { //U.Model->U.Service->U.Controller
         return toReturn;
     }
 
-    public JSONObject getUserProfileInformation(Integer Id){
+    public JSONObject getUserProfileInformation(Integer id){
         JSONObject toReturn = new JSONObject();
         String status = "success";
         int statusCode = 200;
         
-        UserDTO modelResult = layer.getUserProfileInformation(Id);
+        UserDTO modelResult = layer.getUserProfileInformation(id);
         if(modelResult == null) {
             status = "modelException";
             statusCode = 500;
@@ -228,19 +231,53 @@ public class UserService { //U.Model->U.Service->U.Controller
         toReturn.put("statusCode", statusCode);
         return toReturn;
     }
-    public JSONObject deleteUserById(Integer Id, String jwt){
+    
+    public JSONObject deleteUserById(Integer id, String jwt){
         JSONObject toReturn = new JSONObject();
         String status = "success";
         int statusCode = 200;
+        
         if(JWT.isAdmin(jwt)) {
-            boolean deleteUserById = layer.deleteUserById(Id);
+            boolean deleteUserById = layer.deleteUserById(id);
             if(deleteUserById == false){
                 status = "fail";
                 statusCode = 417;
             }
         }else{
             status = "PermissionError";
-            statusCode=417;
+            statusCode=403;
+        }
+        
+        toReturn.put("status", status);
+        toReturn.put("statusCode", statusCode);
+        return toReturn;
+    }
+    
+    public JSONObject updateUsername(Integer id, String username){
+        JSONObject toReturn = new JSONObject();
+        String status = "success";
+        int statusCode = 200;
+        
+        boolean updateUsername = layer.updateUsername(id, username);
+        if(updateUsername == false){
+            status = "fail";
+            statusCode = 417;
+        }
+        
+        toReturn.put("status", status);
+        toReturn.put("statusCode", statusCode);
+        return toReturn;
+    }
+    
+    public JSONObject updateImage(Integer id, String image) throws IOException{
+        JSONObject toReturn = new JSONObject();
+        String status = "success";
+        int statusCode = 200;
+        
+        boolean updateImage = layer.updateImage(id, image);
+        if(updateImage == false){
+            status = "fail";
+            statusCode = 417;
         }
         
         toReturn.put("status", status);

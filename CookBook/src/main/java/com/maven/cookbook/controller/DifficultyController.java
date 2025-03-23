@@ -38,6 +38,7 @@ public class DifficultyController {
     @Path("getAllDifficulty")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllDifficulty(){
+        
         JSONObject obj = layer.getAllDifficulty();
         return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
     }

@@ -1,6 +1,7 @@
 package com.maven.cookbook.model;
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -122,41 +123,41 @@ public class Favourite implements Serializable {
         return "com.maven.cookbook.Favourite[ id=" + id + " ]";
     }
     
-    public List<Food> getFavouriteByUser(Integer id){
+    public List<FoodDTO> getFavouriteByUser(Integer id){
         EntityManager em = emf.createEntityManager();
         
         try {
             StoredProcedureQuery spq = em.createStoredProcedureQuery("getFavouriteByUser");
-            
             spq.registerStoredProcedureParameter("idIN", Integer.class, ParameterMode.IN);
+            
             spq.setParameter("idIN", id);
             
             spq.execute();
             
-            List<Food> toReturn = new ArrayList();
+            List<FoodDTO> toReturn = new ArrayList();
             List<Object[]> resultList = spq.getResultList();
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            
             for(Object[] food : resultList){ //This handles food table results because that's the only thing returned by sql
                 Food f = new Food(
                     Integer.valueOf(food[0].toString()),
                     food[1].toString(),
                     food[2].toString(),
                     food[3].toString(),
-                    food[4].toString(),
-                    Integer.valueOf(food[5].toString()),
-                    Integer.valueOf(food[6].toString()),
+                    food[4].toString(),   
+                    Integer.valueOf(food[6].toString()), 
                     food[7].toString(),
-                    Integer.valueOf(food[8].toString()),
-                    Integer.valueOf(food[9].toString()),
-                    Integer.valueOf(food[10].toString()),
-                    formatter.parse(food[11].toString()),
-                    Boolean.valueOf(food[12].toString()),
-                    food[13] == null ? null : formatter.parse(food[13].toString())
+                    formatter.parse(food[11].toString())
                 );
-                toReturn.add(f);
+                String username = food[5].toString();
+                String difficultyName = food[8].toString();
+                String mealTypeType = food[9].toString();
+                String cuisineType = food[10].toString();
+                
+                toReturn.add(new FoodDTO(f, username, difficultyName, mealTypeType, cuisineType));
             }
             return toReturn;
-        }catch(Exception e){
+        }catch(NumberFormatException | ParseException e){
             System.err.println("Hiba: " + e.getLocalizedMessage());
             return null;
         }finally{

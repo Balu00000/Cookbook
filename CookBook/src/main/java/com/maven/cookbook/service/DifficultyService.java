@@ -12,22 +12,23 @@ public class DifficultyService { //D.Model->D.Service->D.Controller
         JSONObject toReturn = new JSONObject();
         String status = "success";
         int statusCode = 200;
+        
         List<Difficulty> modelResult = layer.getAllDifficulty();
         if(modelResult == null) {
             status = "modelException";
             statusCode = 500;
         }else if (modelResult.isEmpty()) {
             status = "noDifficultyFound";
-            statusCode = 417;
+            statusCode = 404;
         }else {
             JSONArray result = new JSONArray();
             
-            for(Difficulty actualUser: modelResult) {
+            for(Difficulty difficulty: modelResult) {
                 JSONObject toAdd = new JSONObject();
                 
-                toAdd.put("id", actualUser.getId());
-                toAdd.put("name", actualUser.getName());
-                toAdd.put("equipment", actualUser.getEquipment());
+                toAdd.put("id", difficulty.getId());
+                toAdd.put("name", difficulty.getName());
+                toAdd.put("equipment", difficulty.getName());
 
                 result.put(toAdd);
             }

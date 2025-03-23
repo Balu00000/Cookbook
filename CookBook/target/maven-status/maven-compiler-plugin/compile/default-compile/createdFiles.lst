@@ -5,7 +5,6 @@ com\maven\cookbook\controller\FoodController.class
 com\maven\cookbook\model\Recipe.class
 com\maven\cookbook\service\CuisineService.class
 com\maven\cookbook\controller\UserController.class
-com\maven\cookbook\model\UserFacadeREST.class
 com\maven\cookbook\filters\CORSFilter.class
 com\maven\cookbook\model\FoodDTO.class
 com\maven\cookbook\controller\CuisineController.class
@@ -24,7 +23,6 @@ com\maven\cookbook\model\MealType.class
 com\maven\cookbook\service\DifficultyService.class
 com\maven\cookbook\model\FoodXAllergen.class
 com\maven\cookbook\model\Ingredient.class
-com\maven\cookbook\model\AbstractFacade.class
 com\maven\cookbook\config\JWT.class
 com\maven\cookbook\model\FoodXDietary.class
 com\maven\cookbook\service\MealTypeService.class

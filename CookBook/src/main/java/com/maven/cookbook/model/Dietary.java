@@ -121,7 +121,7 @@ public class Dietary implements Serializable {
                 toReturn.add(d);
             }
             return toReturn;
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             System.err.println("Hiba: "+ e.getLocalizedMessage());
             return null;
         }finally{

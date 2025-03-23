@@ -38,7 +38,7 @@ public class FavouriteController {
     @GET
     @Path("getFavouriteByUser")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response getFavouriteByUser(@QueryParam("id") Integer id){ // @QueryParam("Id") Integer id
+    public Response getFavouriteByUser(@QueryParam("id") Integer id){
         
         JSONObject obj = layer.getFavouriteByUser(id);
         return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();

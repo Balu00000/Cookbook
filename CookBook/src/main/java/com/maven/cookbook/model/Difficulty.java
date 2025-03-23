@@ -62,9 +62,10 @@ public class Difficulty implements Serializable {
         }
     }
     
-    public Difficulty(Integer id, String name){
+    public Difficulty(Integer id, String name, String equipment){
         this.id = id;
         this.name = name;
+        this.equipment = equipment;
     }
 
     public Integer getId() {
@@ -129,12 +130,13 @@ public class Difficulty implements Serializable {
             for(Object[] diff : resultList){
                 Difficulty d = new Difficulty(
                     Integer.valueOf(diff[0].toString()),
-                    diff[1].toString()
+                    diff[1].toString(),
+                    diff[2].toString()
                 );
                 toReturn.add(d);
             }
             return toReturn;
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             System.err.println("Hiba: "+ e.getLocalizedMessage());
             return null;
         }finally{

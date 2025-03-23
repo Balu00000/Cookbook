@@ -38,6 +38,7 @@ public class MealTypeController {
     @Path("getAllMealType")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllMealType(){
+        
         JSONObject obj = layer.getAllMealType();
         return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
     }

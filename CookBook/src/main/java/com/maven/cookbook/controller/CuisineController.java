@@ -38,6 +38,7 @@ public class CuisineController {
     @Path("getAllCuisine")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllCuisine(){
+        
         JSONObject obj = layer.getAllCuisine();
         return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
     }

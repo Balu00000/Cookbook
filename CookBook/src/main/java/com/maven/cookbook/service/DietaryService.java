@@ -18,7 +18,7 @@ public class DietaryService { //D.Model->D.Service->D.Controller
             statusCode = 500;
         }else if (modelResult.isEmpty()) {
             status = "noDietFound";
-            statusCode = 417;
+            statusCode = 404;
         }else {
             JSONArray result = new JSONArray();
             
