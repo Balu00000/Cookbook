@@ -131,6 +131,18 @@ public class User implements Serializable {
         }
     }
     
+    public User(Integer id, String username, byte[] image, String email, String password, boolean isAdmin, Date createdAt, boolean isDeleted, Date deletedAt) {
+        this.id = id;
+        this.username = username;
+        this.base64Image = image != null ? Base64.getEncoder().encodeToString(image) : null;
+        this.email = email;
+        this.password = password;
+        this.isAdmin = isAdmin;
+        this.createdAt = createdAt;
+        this.isDeleted = isDeleted;
+        this.deletedAt = deletedAt;
+    }
+    
     public User(Integer id, String username, byte[] image, String email, boolean isAdmin, Date createdAt, boolean isDeleted, Date deletedAt) {
         this.id = id;
         this.username = username;
@@ -299,7 +311,7 @@ public class User implements Serializable {
                 User u = new User(
                     Integer.valueOf(o[0].toString()),
                     o[1].toString(),
-                    (byte[]) o[2],
+                    o[2] != null ? (byte[]) o[2] : null,
                     o[3].toString(),
                     Boolean.parseBoolean(o[4].toString()),
                     formatter.parse(o[5].toString()),
@@ -418,10 +430,11 @@ public class User implements Serializable {
                     record[1].toString(),
                     record[2] != null ? (byte[]) record[2] : null, //image
                     record[3].toString(),
-                    Boolean.parseBoolean(record[4].toString()),
-                    formatter.parse(record[5].toString()),
-                    Boolean.parseBoolean(record[6].toString()),
-                    record[7] == null ? null : formatter.parse(record[7].toString())
+                    record[4].toString(),
+                    Boolean.parseBoolean(record[5].toString()),
+                    formatter.parse(record[6].toString()),
+                    Boolean.parseBoolean(record[7].toString()),
+                    record[8] == null ? null : formatter.parse(record[8].toString())
                 );
                 toReturn.add(u);
             }

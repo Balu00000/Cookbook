@@ -94,7 +94,6 @@ public class UserService { //U.Model->U.Service->U.Controller
         if(isValidEmail(u.getEmail())){
             if(isValidPassword(u.getPassword())){
                 boolean userIsExists = User.isUserExists(u.getEmail());
-                
                 if(User.isUserExists(u.getEmail()) == null){
                     status = "ModelException";
                     statusCode = 500;
@@ -186,6 +185,7 @@ public class UserService { //U.Model->U.Service->U.Controller
                     toAdd.put("username", actualUser.getUsername());
                     toAdd.put("image", actualUser.getBase64Image());
                     toAdd.put("email", actualUser.getEmail());
+                    toAdd.put("password", actualUser.getEmail());
                     toAdd.put("isAdmin", actualUser.getIsAdmin());
                     toAdd.put("createdAt", actualUser.getCreatedAt());
                     toAdd.put("isDeleted", actualUser.getIsDeleted());
