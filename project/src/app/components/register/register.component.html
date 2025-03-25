@@ -1,60 +1,235 @@
-  <app-navbar></app-navbar>
-  <div class="container mt-5">
-    <div class="row justify-content-center">
-      <div class="col-md-6">
-        <div class="auth-container shadow">
-          <!-- Header with Toggle Buttons -->
-          <div class="auth-header">
-            <div class="slider" [ngClass]="{'right': showLogin}"></div>
-            <span class="auth-option" id="register" [ngClass]="{'active': !showLogin}" (click)="toggleAuth('register') ">Register</span>
-            /
-            <span class="auth-option" id="login" [ngClass]="{'active': showLogin}" (click)="toggleAuth('login')">Login</span>
-          </div>
-          <!-- Forms -->
-          <div class="auth-body">
-            <!-- Register Form -->
-            <form *ngIf="!showLogin" class="form-content">
-              <div class="mb-3">
-                <label for="registerEmail" class="form-label">Email</label>
-                <input type="text" class="form-control" id="registerEmail" placeholder="random@email.com" [(ngModel)]="registerEmail" name="registerEmail">
+<app-navbar></app-navbar>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="auth-container">
+        <div class="auth-header">
+          <div class="slider" [ngClass]="{ right: showLogin }"></div>
+          <span
+            class="auth-option"
+            id="register"
+            [ngClass]="{ active: !showLogin }"
+            (click)="toggleAuth('register')"
+            >Register</span
+          >
+          /
+          <span
+            class="auth-option"
+            id="login"
+            [ngClass]="{ active: showLogin }"
+            (click)="toggleAuth('login')"
+            >Login</span
+          >
+        </div>
+
+        <div class="auth-body">
+          @if(!showLogin){
+
+          <form
+            [formGroup]="registerForm"
+            (ngSubmit)="onRegister()"
+            autocomplete="off"
+            novalidate
+            class="form-content"
+          >
+            @if (errorMessage) {
+            <div class="error-message">
+              <i class="fas fa-exclamation-circle"></i>
+              {{ errorMessage }}
+            </div>
+            }
+            <div class="form-group">
+              <label for="username1" class="form-label">
+                <i class="fas fa-user"></i>
+                Username1
+              </label>
+              <input
+                type="text"
+                id="username1"
+                formControlName="username1"
+                placeholder="Enter your username1"
+                [class.invalid]="
+                  registerForm.get('username1')?.invalid &&
+                  registerForm.get('username1')?.touched
+                "
+                autocomplete="new-username1"
+              />
+              @if (registerForm.get('username1')?.invalid &&
+              registerForm.get('username1')?.touched) {
+              <span class="error-hint">Username is required</span>
+              }
+            </div>
+
+            <div class="form-group">
+              <label for="email" class="form-label">
+                <i class="fas fa-envelope"></i>
+                Email
+              </label>
+              <input
+                type="text"
+                id="email"
+                formControlName="email"
+                placeholder="Enter your email"
+                [class.invalid]="
+                  registerForm.get('email')?.invalid &&
+                  registerForm.get('email')?.touched
+                "
+                autocomplete="new-email"
+              />
+              @if (registerForm.get('email')?.invalid &&
+              registerForm.get('email')?.touched) {
+              <span class="error-hint">Email is required</span>
+              }
+            </div>
+
+            <div class="form-group">
+              <label for="password" class="form-label">
+                <i class="fas fa-lock"></i>
+                Password
+              </label>
+              <div class="password-input">
+                <input
+                  [type]="showPassword ? 'text' : 'password'"
+                  id="password"
+                  formControlName="password"
+                  placeholder="Enter your password"
+                  [class.invalid]="
+                    loginForm.get('password')?.invalid &&
+                    loginForm.get('password')?.touched
+                  "
+                  autocomplete="new-password"
+                  
+                >
+                <button
+                  type="button"
+                  class="toggle-password"
+                  (click)="togglePassword()"
+                >
+                  <i
+                    [class]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"
+                  ></i>
+              </button>
+                
               </div>
-              <div class="mb-3">
-                <label for="registerUsername" class="form-label">Username</label>
-                <input type="text" class="form-control" placeholder="Username1..."  [(ngModel)]="registerUsername" name="registerUsername">
+              @if (registerForm.get('password')?.invalid &&
+              registerForm.get('password')?.touched) {
+              <span class="error-hint">Password is required</span>
+              }
+            </div>
+
+            <div class="form-group">
+              <label for="image" class="form-label">
+                <i class="fas fa-user"></i>
+                Image
+              </label>
+              <input
+                type="file"
+                accept="image/png, image/jpeg, image/jpg, image/jfif"
+                id="image"
+                formControlName="image"
+                placeholder="Enter your image"
+                [class.invalid]="
+                  registerForm.get('image')?.invalid &&
+                  registerForm.get('image')?.touched
+                "
+                autocomplete="new-image"
+              />
+              @if (registerForm.get('image')?.invalid &&
+              registerForm.get('image')?.touched) {
+              <span class="error-hint">Image is required</span>
+              }
+            </div>
+
+            <button
+              type="submit"
+              class="login-button btn-gradient"
+              [disabled]="registerForm.invalid"
+            >
+              Register In
+            </button>
+          </form>
+          }
+
+          @if(showLogin){
+
+          <form
+            [formGroup]="loginForm"
+            (ngSubmit)="onSubmit()"
+            autocomplete="off"
+            novalidate
+            class="form-content"
+          >
+            @if (errorMessage) {
+            <div class="error-message">
+              <i class="fas fa-exclamation-circle"></i>
+              {{ errorMessage }}
+            </div>
+            }
+            <div class="form-group">
+              <label for="username" class="form-label">
+                <i class="fas fa-user"></i>
+                Username
+              </label>
+              <input
+                type="text"
+                id="username"
+                formControlName="username"
+                placeholder="Enter your username"
+                [class.invalid]="
+                  loginForm.get('username')?.invalid &&
+                  loginForm.get('username')?.touched
+                "
+                autocomplete="new-username"
+              />
+              @if (loginForm.get('username')?.invalid &&
+              loginForm.get('username')?.touched) {
+              <span class="error-hint">Username is required</span>
+              }
+            </div>
+
+            <div class="form-group">
+              <label for="password" class="form-label">
+                <i class="fas fa-lock"></i>
+                Password
+              </label>
+              <div class="password-input">
+                <input
+                  [type]="showPassword ? 'text' : 'password'"
+                  id="password"
+                  formControlName="password"
+                  placeholder="Enter your password"
+                  [class.invalid]="
+                    loginForm.get('password')?.invalid &&
+                    loginForm.get('password')?.touched
+                  "
+                  autocomplete="new-password"
+                />
+                <button
+                  type="button"
+                  class="toggle-password"
+                  (click)="togglePassword()"
+                >
+                  <i
+                    [class]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"
+                  ></i>
+                </button>
               </div>
-              <div class="mb-3">
-                <label for="registerPassword" class="form-label">Password</label>
-                <input type="password" class="form-control" id="registerPassword" placeholder="something..." [(ngModel)]="registerPassword" name="registerPassword">
-              </div>
-              <div class="form-check mb-3">
-                <input class="form-check-input" type="checkbox" id="acceptEULA" [(ngModel)]="acceptEULA" name="eula">
-                <label class="form-check-label" for="acceptEULA">
-                  I accept the <a href="#">EULA</a>
-                </label>
-              </div>
-              <button type="submit" class="btn btn-gradient w-100" (click)="onRegister()" href="home">Register</button>
-            </form>
-            
-            <!-- Login Form -->
-            <form *ngIf="showLogin" class="form-content">
-              <div class="mb-3">
-                <label for="loginEmail" class="form-label">Email/Username</label>
-                <input type="email" class="form-control" id="loginEmail" placeholder="random@gmail.com" [(ngModel)]="loginEmailName" name="loginEmailName">
-              </div>
-              <div class="mb-3">
-                <label for="loginPassword" class="form-label">Password</label>
-                <input type="password" class="form-control" id="loginPassword" placeholder="Password..." [(ngModel)]="loginPassword" name="loginPassword">
-              </div>
-              <div class="form-check mb-3">
-                <input class="form-check-input" type="checkbox" id="rememberMe" [(ngModel)]="remember" name="checkbox">
-                <label class="form-check-label" for="rememberMe" >
-                  Remember me
-                </label>
-              </div>
-              <button type="submit" class="btn btn-gradient w-100" (click)="onLogin()" href="user">Login</button>
-            </form>
-          </div>
+              @if (loginForm.get('password')?.invalid &&
+              loginForm.get('password')?.touched) {
+              <span class="error-hint">Password is required</span>
+              }
+            </div>
+            <button
+              type="submit"
+              class="login-button btn-gradient"
+              [disabled]="loginForm.invalid"
+            >
+              Sign In
+            </button>
+          </form>
+          }
         </div>
       </div>
     </div>
   </div>
+</div>

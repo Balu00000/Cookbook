@@ -21,8 +21,9 @@
             [id]="difficulty.name"
             [name]="difficulty.name"
             [(ngModel)]="selectedDifficulties[difficulty.name]"
-            (click)="toggleSelection('difficulty', difficulty.name)"
+            (ngModelChange)="applyFilters()"
           />
+
           <label [for]="difficulty.name">{{ difficulty.name }}</label>
         </div>
       </div>
@@ -43,11 +44,12 @@
         <div *ngFor="let mealtype of mealTypes">
           <input
             type="checkbox"
-            [id]="'mealtype-' + mealtype.type"
-            [value]="mealtype.type"
+            [id]="mealtype.type"
+            [name]="mealtype.type"
             [(ngModel)]="selectedMealTypes[mealtype.type]"
-            (click)="toggleSelection('mealType', mealtype.type)"
+            (ngModelChange)="applyFilters()"
           />
+
           <label [for]="'mealtype-' + mealtype.type">{{ mealtype.type }}</label>
         </div>
       </div>
@@ -68,12 +70,13 @@
         <div *ngFor="let cuisine of cuisines">
           <input
             type="checkbox"
-            [id]="'cuisine-' + cuisine.type"
-            [value]="cuisine.type"
-            [(ngModel)]="selectedCuisines[cuisine.type]"
-            (click)="toggleSelection('cuisine', cuisine.type)"
+            [id]="cuisine.name"
+            [name]="cuisine.name"
+            [(ngModel)]="selectedCuisines[cuisine.name]"
+            (ngModelChange)="applyFilters()"
           />
-          <label [for]="'cuisine-' + cuisine.type">{{ cuisine.type }}</label>
+
+          <label [for]="'cuisine-' + cuisine.name">{{ cuisine.name }}</label>
         </div>
       </div>
       <hr />
@@ -93,11 +96,12 @@
         <div *ngFor="let diet of dietarys">
           <input
             type="checkbox"
-            [id]="'diet-' + diet.type"
-            [value]="diet.type"
+            [id]="diet.type"
+            [name]="diet.type"
             [(ngModel)]="selectedDietarys[diet.type]"
-            (click)="toggleSelection('dietary', diet.type)"
+            (ngModelChange)="applyFilters()"
           />
+
           <label [for]="'diet-' + diet.type">{{ diet.type }}</label>
         </div>
       </div>

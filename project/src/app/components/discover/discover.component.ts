@@ -20,7 +20,7 @@ export class DiscoverComponent {
 
   difficulties: { name: string }[] = []
   mealTypes: { type: string }[] = []
-  cuisines: { type: string }[] = []
+  cuisines: { name: string }[] = []
   dietarys: { type: string }[] = []
   
   allFood:any[] = []
@@ -55,18 +55,37 @@ export class DiscoverComponent {
       case 'dietary':
         this.selectedDietarys[value] = !this.selectedDietarys[value];
         break;
+      default:
+        this.applyFilters()
+        break;
     }
     this.applyFilters();
   }
 
   applyFilters() {
-    this.filteredFood = this.allFood.filter(item =>
-      (Object.keys(this.selectedDifficulties).length === 0 || this.selectedDifficulties[item.difficultyName] === true) &&
-      (Object.keys(this.selectedMealTypes).length === 0 || this.selectedMealTypes[item.mealTypeName] === true) &&
-      (Object.keys(this.selectedCuisines).length === 0 || this.selectedCuisines[item.cuisineName] === true) &&
-      (Object.keys(this.selectedDietarys).length === 0 || this.selectedDietarys[item.dietaryType] === true)
-    );
+    this.filteredFood = this.allFood.filter(item => {
+      const difficultyMatch = Object.values(this.selectedDifficulties).some(v => v) 
+        ? !!this.selectedDifficulties[item.difficultyName] 
+        : true;
+  
+      const mealTypeMatch = Object.values(this.selectedMealTypes).some(v => v) 
+        ? !!this.selectedMealTypes[item.mealTypeName] 
+        : true;
+  
+      const cuisineMatch = Object.values(this.selectedCuisines).some(v => v) 
+        ? !!this.selectedCuisines[item.cuisineName] 
+        : true;
+  
+      const dietaryMatch = Object.values(this.selectedDietarys).some(v => v) 
+        ? !!this.selectedDietarys[item.dietaryType] 
+        : true;
+  
+      return difficultyMatch && mealTypeMatch && cuisineMatch && dietaryMatch;
+    });
   }
+  
+  
+  
 
   clearFilters() {
     // Reset the selected filters
