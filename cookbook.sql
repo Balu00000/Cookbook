@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 23, 2025 at 07:38 PM
+-- Generation Time: Mar 25, 2025 at 07:03 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -291,6 +291,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllUser` ()   SELECT `id`,
 	`username`, 
     `image`,
     `email`, 
+    `password`,
     `is_admin`, 
     `created_at`, 
     `is_deleted`, 
