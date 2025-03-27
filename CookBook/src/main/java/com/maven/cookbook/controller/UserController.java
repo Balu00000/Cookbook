@@ -55,14 +55,14 @@ public class UserController {
     @POST
     @Path("registerUser")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response registerUser(String bodyString) throws IOException{
+    public Response registerUser(String bodyString){
         JSONObject body = new JSONObject(bodyString);
         
-        byte[] imageBytes = convertImageToBytes(body.getString("image"));
+        //byte[] imageBytes = convertImageToBytes(body.getString("image"));
         
         User u = new User(
             body.getString("username"),
-            imageBytes,
+            body.getString("image"),
             body.getString("email"),
             body.getString("password")
         );
@@ -77,11 +77,11 @@ public class UserController {
     public Response registerAdmin(@HeaderParam("token") String jwt, String bodyString) throws IOException{ //This is used on the admin page
         JSONObject body = new JSONObject(bodyString);
         
-        byte[] imageBytes = convertImageToBytes(body.getString("image"));
+        //byte[] imageBytes = convertImageToBytes(body.getString("image"));
         
         User u = new User(
             body.getString("username"),
-            imageBytes,
+            body.getString("image"),
             body.getString("email"),
             body.getString("password")
         );

@@ -99,15 +99,6 @@ public class User implements Serializable {
     }
 
     public User(Integer id) {
-        /* Id
-        Username
-        Image
-        Email
-        Password
-        IsAdmin
-        CreatedAt
-        IsDeleted
-        DeletedAt */
         
         EntityManager em = emf.createEntityManager();
 
@@ -154,9 +145,20 @@ public class User implements Serializable {
         this.deletedAt = deletedAt;
     }
     
-    public User(String username, byte[] image, String email, String password) {
+    public User(Integer id, String username, String image, String email, boolean isAdmin, Date createdAt, boolean isDeleted, Date deletedAt) {
+        this.id = id;
         this.username = username;
-        this.image = image;
+        this.base64Image = image;
+        this.email = email;
+        this.isAdmin = isAdmin;
+        this.createdAt = createdAt;
+        this.isDeleted = isDeleted;
+        this.deletedAt = deletedAt;
+    }
+    
+    public User(String username, String image, String email, String password) {
+        this.username = username;
+        this.base64Image = image;
         this.email = email;
         this.password = password;
     }
@@ -342,8 +344,10 @@ public class User implements Serializable {
             spq.registerStoredProcedureParameter("emailIN", String.class, ParameterMode.IN);
             spq.registerStoredProcedureParameter("passwordIN", String.class, ParameterMode.IN);
             
+            byte[] imageBytes = Base64.getDecoder().decode(u.getBase64Image());
+            
             spq.setParameter("usernameIN", u.getUsername());
-            spq.setParameter("imageIN", u.getImage());
+            spq.setParameter("imageIN", imageBytes);
             spq.setParameter("emailIN", u.getEmail());
             spq.setParameter("passwordIN", u.getPassword());
             
@@ -371,8 +375,10 @@ public class User implements Serializable {
             spq.registerStoredProcedureParameter("emailIN", String.class, ParameterMode.IN);
             spq.registerStoredProcedureParameter("passwordIN", String.class, ParameterMode.IN);
             
+            byte[] imageBytes = Base64.getDecoder().decode(u.getBase64Image());
+            
             spq.setParameter("usernameIN", u.getUsername());
-            spq.setParameter("imageIN", u.getImage());
+            spq.setParameter("imageIN", imageBytes);
             spq.setParameter("emailIN", u.getEmail());
             spq.setParameter("passwordIN", u.getPassword());
             
@@ -466,7 +472,7 @@ public class User implements Serializable {
             for(Object[] user : resultList){
                 User u = new User(
                     user[0].toString(),
-                    (byte[]) user[1],
+                    user[1] != null ? (byte[]) user[1] : null,
                     formatter.parse(user[2].toString())
                 );
                 

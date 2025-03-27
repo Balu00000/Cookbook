@@ -68,9 +68,12 @@ public class UserService { //U.Model->U.Service->U.Controller
                     JSONObject result = new JSONObject();
                     result.put("id", modelResult.getId());
                     result.put("username", modelResult.getUsername());
+                    result.put("image", modelResult.getBase64Image());
                     result.put("email", modelResult.getEmail());
                     result.put("isAdmin", modelResult.getIsAdmin());
+                    result.put("createdAt", modelResult.getCreatedAt());
                     result.put("isDeleted", modelResult.getIsDeleted());
+                    result.put("deletedAt", modelResult.getDeletedAt());
                     result.put("jwt", JWT.createJWT(modelResult));
 
                     toReturn.put("result", result);
@@ -185,7 +188,7 @@ public class UserService { //U.Model->U.Service->U.Controller
                     toAdd.put("username", actualUser.getUsername());
                     toAdd.put("image", actualUser.getBase64Image());
                     toAdd.put("email", actualUser.getEmail());
-                    toAdd.put("password", actualUser.getEmail());
+                    toAdd.put("password", actualUser.getPassword());
                     toAdd.put("isAdmin", actualUser.getIsAdmin());
                     toAdd.put("createdAt", actualUser.getCreatedAt());
                     toAdd.put("isDeleted", actualUser.getIsDeleted());
@@ -214,13 +217,14 @@ public class UserService { //U.Model->U.Service->U.Controller
             status = "modelException";
             statusCode = 500;
         }else if (modelResult.getUser().getImage() == null) {
-            status = "noFoodFound";
-            statusCode = 417;
+            status = "noUserFound";
+            statusCode = 404;
         }else {
             JSONObject result = new JSONObject();
-
+            
+            System.out.println(modelResult.getUser().getBase64Image());
             result.put("username", modelResult.getUser().getUsername());
-            result.put("image", modelResult.getUser().getImage());
+            result.put("image", modelResult.getUser().getBase64Image());
             result.put("createdAt", modelResult.getUser().getCreatedAt());
             result.put("postedFood", modelResult.getPostedFood());
             result.put("favouritedFood", modelResult.getFavouriteFood());

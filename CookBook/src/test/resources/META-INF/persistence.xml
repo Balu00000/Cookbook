@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="com.maven_CookBook_war_1.0-SNAPSHOTPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <jta-data-source>MySqlDS</jta-data-source>
+    <class>com.maven.cookbook.model.Allergen</class>
+    <class>com.maven.cookbook.model.Cuisine</class>
+    <class>com.maven.cookbook.model.Dietary</class>
+    <class>com.maven.cookbook.model.Difficulty</class>
+    <class>com.maven.cookbook.model.Favourite</class>
+    <class>com.maven.cookbook.model.Food</class>
+    <class>com.maven.cookbook.model.FoodXAllergen</class>
+    <class>com.maven.cookbook.model.FoodXDietary</class>
+    <class>com.maven.cookbook.model.Ingredient</class>
+    <class>com.maven.cookbook.model.MealType</class>
+    <class>com.maven.cookbook.model.Recipe</class>
+    <class>com.maven.cookbook.model.User</class>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/cookbook?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
+      <property name="javax.persistence.jdbc.user" value="root"/>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.password" value=""/>
+      <property name="hibernate.cache.provider_class" value="org.hibernate.cache.NoCacheProvider"/>
+      <property name="hibernate.hbm2ddl.auto" value="none"/>
+      <property name="hibernate.show_sql" value="true"/>
+      <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle12cDialect"/>
+    </properties>
+  </persistence-unit>
+</persistence>
