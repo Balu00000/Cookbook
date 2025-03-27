@@ -163,9 +163,15 @@ public class User implements Serializable {
         this.password = password;
     }
     
+    public User(String username, String image, Date createdAt){
+        this.username = username;
+        this.base64Image = image;
+        this.createdAt = createdAt;
+    }
+    
     public User(String username, byte[] image, Date createdAt){
         this.username = username;
-        this.image = image;
+        this.base64Image = image != null ? Base64.getEncoder().encodeToString(image) : null;
         this.createdAt = createdAt;
     }
 

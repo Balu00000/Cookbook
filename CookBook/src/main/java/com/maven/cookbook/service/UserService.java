@@ -52,7 +52,6 @@ public class UserService { //U.Model->U.Service->U.Controller
 
         if (isValidEmail(email)) {
             User modelResult = layer.login(email, password);
-
             if (modelResult == null) {
                 status = "modelException";
                 statusCode = 500;
@@ -169,7 +168,7 @@ public class UserService { //U.Model->U.Service->U.Controller
         String status = "success";
         int statusCode = 200;
         
-        if(JWT.isAdmin(jwt)) {
+        //if(JWT.isAdmin(jwt)) {
             List<User> modelResult = layer.getAllUser();
             
             if(modelResult == null) {
@@ -198,10 +197,10 @@ public class UserService { //U.Model->U.Service->U.Controller
                 }
                 toReturn.put("result", result);
             }
-        }else{
+        /*}else{
             status = "PermissionError";
             statusCode=403;
-        }
+        }*/
         toReturn.put("status", status);
         toReturn.put("statusCode", statusCode);
         return toReturn;
@@ -216,7 +215,7 @@ public class UserService { //U.Model->U.Service->U.Controller
         if(modelResult == null) {
             status = "modelException";
             statusCode = 500;
-        }else if (modelResult.getUser().getImage() == null) {
+        }else if (modelResult.getUser().getUsername() == null) {
             status = "noUserFound";
             statusCode = 404;
         }else {
