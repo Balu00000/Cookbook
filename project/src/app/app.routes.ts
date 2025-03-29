@@ -5,6 +5,7 @@ import { RandomComponent } from './components/random/random.component';
 import { HomeComponent } from './components/home/home.component';
 import { UserComponent } from './components/user/user.component';
 import { AdminComponent } from './components/admin/admin.component'
+import { AuthGuard } from './_guards/guard.guard';
 
 export const routes: Routes = [
     {path: "", redirectTo:"/home", pathMatch: 'full'},
@@ -14,5 +15,7 @@ export const routes: Routes = [
     {path: "random", component:RandomComponent},
     {path: "user", component:UserComponent},
     {path: "user#favorites", component:UserComponent},
-    {path: "admin", component:AdminComponent}
+    { path: 'admin', component: AdminComponent, canActivate: [AuthGuard] },
+
+    {path: "**", component: HomeComponent} //Make 404 page
 ];

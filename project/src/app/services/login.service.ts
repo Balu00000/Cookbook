@@ -67,17 +67,16 @@ export class LoginService {
     username: string;
     email: string;
     password: string;
-    image: Blob;
+    image: string;
   }): Promise<any> {
     const url =
       'http://127.0.0.1:8080/CookBook-1.0-SNAPSHOT/webresources/user/registerUser';
 
-    console.log('Sending POST request to:', url, 'with data:', data);
 
     return fetch(url, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(data),
     })
@@ -107,10 +106,10 @@ export class LoginService {
   }
 
   isAdmin(): boolean {
-    if(localStorage.getItem('isAdmin') === 'true'){
+    if (localStorage.getItem('isAdmin') === 'true') {
       return true;
     }
-    return false
+    return false;
   }
 
   isLoggedIn(): boolean {
@@ -119,11 +118,11 @@ export class LoginService {
 
   logout(): void {
     localStorage.removeItem('auth_token');
-    localStorage.removeItem('user_id')
-    localStorage.removeItem('isAdmin')
-    sessionStorage.removeItem('auth_token')
-    sessionStorage.removeItem('user_id')
-    sessionStorage.removeItem('isAdmin')
+    localStorage.removeItem('user_id');
+    localStorage.removeItem('isAdmin');
+    sessionStorage.removeItem('auth_token');
+    sessionStorage.removeItem('user_id');
+    sessionStorage.removeItem('isAdmin');
     localStorage.removeItem('isLoggedIn');
     this.router.navigate(['/login']);
   }

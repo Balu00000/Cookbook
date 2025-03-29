@@ -2,7 +2,7 @@
 
 <div class="row">
   <div class="col-sm-12 col-md-2 col-xl-2">
-    <p>{{ user.image || "img" }}</p>
+    <img src="{{'data:image/jpg;base64,' + user.image}}" alt="">
   </div>
   <div class="col-sm-12 col-md-10 col-xl-10">
     <p>{{ user.username || "User" }}</p>

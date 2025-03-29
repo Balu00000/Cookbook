@@ -49,13 +49,11 @@ export class LoggedInServiceService {
     return localStorage.getItem(this.TOKEN_KEY);
   }
 
-  isUserAdmin():string | null{
-    if(!localStorage.getItem(this.IS_ADMIN)){
-      return sessionStorage.getItem(this.IS_ADMIN)
-    }else{
-      return localStorage.getItem(this.IS_ADMIN)
-    }
+  isUserAdmin(): boolean {
+    const adminStatus = localStorage.getItem(this.IS_ADMIN) || sessionStorage.getItem(this.IS_ADMIN);
+    return adminStatus === 'true'; // Convert stored string to a boolean
   }
+  
 
   whatUser():string |null{
     if(!localStorage.getItem(this.ID)){

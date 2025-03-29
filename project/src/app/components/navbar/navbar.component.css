@@ -28,3 +28,7 @@ nav{
 .nav-link{
     color: white !important;
 }
+
+.bi-shuffle{
+    margin-top: 3px;
+}

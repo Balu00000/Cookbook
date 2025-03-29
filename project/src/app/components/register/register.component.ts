@@ -80,10 +80,10 @@ export class RegisterComponent {
       password: ['', [Validators.required]],
     });
     this.registerForm = this.fb.group({
-      username: ['', [Validators.required]],
-      email: ['', [Validators.required]],
-      password: ['', [Validators.required]],
-      image: [''],
+      username1: ['', [Validators.required]],
+      email1: ['', [Validators.required]],
+      password1: ['', [Validators.required]],
+      image: [null, [Validators.required]],
     });
   }
 
@@ -161,30 +161,57 @@ export class RegisterComponent {
     }
   }
 
-  async onRegister() {
-    try {
-      const { username, email, password, image } = this.registerForm.value;
-      const registerData = {
-        username: username,
-        email: email,
-        password: password,
-        image: image,
+  imagePreview: string | ArrayBuffer | null = '';
+
+  onFileSelected(event: Event) {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (file) {
+      this.registerForm.patchValue({ image: file });
+      this.registerForm.get('image')?.updateValueAndValidity();
+
+      // Image preview (if you want to show the user a preview)
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagePreview = reader.result;
       };
-      console.log(image);
-      await this.loginServices
-        .registerUser(registerData)
+      reader.readAsDataURL(file);
+    }
+  }
+
+  // Register User Method
+  async onRegister() {
+    if (this.registerForm.valid) {
+      
+      const { username1, email1, password1, image } = this.registerForm.value;
+      const imageBase64 = await this.toBase64(image);
+      const registerData = {
+        username: username1,
+        email: email1,
+        password: password1,
+        image: imageBase64 // send file as 'image'
+      };
+
+      // Send registration data to the service
+      await this.loginServices.registerUser(registerData)
         .then((response) => {
-          console.log('Response:', response);
+          console.log('Registration successful:', response);
         })
         .catch((error) => {
-          console.error('Error:', error);
+          console.error('Registration failed:', error);
         });
-    } catch (error) {
-      console.error('evry big error');
     }
   }
 
   togglePassword(): void {
     this.showPassword = !this.showPassword;
+  }
+
+  toBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      let reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result!.toString().split(",")[1]); // Extract Base64
+      reader.onerror = (error) => reject(error);
+    });
   }
 }

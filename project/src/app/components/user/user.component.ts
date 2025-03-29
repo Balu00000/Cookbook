@@ -5,84 +5,91 @@ import { ResourceLoader } from '@angular/compiler';
 import { Router } from '@angular/router';
 
 @Component({
-    selector: 'app-user',
-    imports: [NavbarComponent],
-    templateUrl: './user.component.html',
-    styleUrl: './user.component.css'
+  selector: 'app-user',
+  imports: [NavbarComponent],
+  templateUrl: './user.component.html',
+  styleUrl: './user.component.css',
 })
 export class UserComponent {
+  constructor(
+    private whatUser: LoggedInServiceService,
+    private authService: LoggedInServiceService,
+    private router: Router
+  ) {}
 
-	constructor(private whatUser: LoggedInServiceService, private authService: LoggedInServiceService, private router: Router){}
+  ngOnInit() {
+    this.fetchingUser();
+    this.fetchingUserAdded();
+    this.fetchingUserFavorites();
+  }
 
-	ngOnInit(){
-		this.fetchingUser()
-		this.fetchingUserAdded()
-		this.fetchingUserFavorites()
-	}
+  user: any = {};
+  userAdded: any = [];
+  userFavorites: any = [];
 
-	user: any = {}
-	userAdded: any = []
-	userFavorites: any = []
+  counter: number = 0;
 
-	counter: number = 0
+  userURL: string =
+    'http://127.0.0.1:8080/CookBook-1.0-SNAPSHOT/webresources/user/getUserProfileInformation?';
+  addedURL: string =
+    'http://127.0.0.1:8080/CookBook-1.0-SNAPSHOT/webresources/food/getFoodByUser?';
+  favoritesURL: string =
+    'http://127.0.0.1:8080/CookBook-1.0-SNAPSHOT/webresources/favourite/getFavouriteByUser?';
 
-	userURL: string = "http://127.0.0.1:8080/CookBook-1.0-SNAPSHOT/webresources/user/getUserProfileInformation?"
-	addedURL: string = "http://127.0.0.1:8080/CookBook-1.0-SNAPSHOT/webresources/food/getFoodByUser?"
-	favoritesURL: string = "http://127.0.0.1:8080/CookBook-1.0-SNAPSHOT/webresources/favourite/getFavouriteByUser?"
-	
-	async fetchingUser(){
-		try {
-			const userResult = await fetch(this.userURL + "id=" + this.whatUser.whatUser());
-			const userData = await userResult.json();
-			
-			if (userData.result) {
-			  this.user = userData.result; // Assign fetched data
-			  console.log(this.user);
-			  
-			}
-			
-		  } catch (ex) {
-			console.error("Fetch failed", ex);
-		}
-	}
+  async fetchingUser() {
+    try {
+      const userResult = await fetch(
+        this.userURL + 'id=' + this.whatUser.whatUser()
+      );
+      const userData = await userResult.json();
 
-	async fetchingUserAdded(){
-		try{
-			const addedResult = await fetch(this.addedURL + "id=" + this.whatUser.whatUser())
-			const addedData = await addedResult.json()
+      if (userData.result) {
+        this.user = userData.result; // Assign fetched data
+        console.log(this.user);
+      }
+    } catch (ex) {
+      console.error('Fetch failed', ex);
+    }
+  }
 
-			if(addedData.statusCode == 417){
-				console.log("There are no Recipes added by this user");
-			}
+  async fetchingUserAdded() {
+    try {
+      const addedResult = await fetch(
+        this.addedURL + 'id=' + this.whatUser.whatUser()
+      );
+      const addedData = await addedResult.json();
 
-			if(addedData.result){
-				this.userAdded = addedData.result
-				console.log(this.userAdded);
-			}
-		}catch(ex){
-			console.error("Fetch failed: ", ex);
-			
-		}
-	}
+      if (addedData.statusCode == 417) {
+        console.log('There are no Recipes added by this user');
+      }
 
-	async fetchingUserFavorites(){
-		try{
-			const favoriteResult = await fetch(this.favoritesURL + "id=" + this.whatUser.whatUser())
-			const favortieData = await favoriteResult.json()
+      if (addedData.result) {
+        this.userAdded = addedData.result;
+        console.log(this.userAdded);
+      }
+    } catch (ex) {
+      console.error('Fetch failed: ', ex);
+    }
+  }
 
-			if(favortieData.result){
-				this.userFavorites = favortieData.result
-				console.log(this.userFavorites);
-				
-			}
-		}catch(ex) 
-		{
-			console.error("failed to fetch" + ex);
-		}
-	}
+  async fetchingUserFavorites() {
+    try {
+      const favoriteResult = await fetch(
+        this.favoritesURL + 'id=' + this.whatUser.whatUser()
+      );
+      const favortieData = await favoriteResult.json();
 
-	logout(){
-		this.authService.logout()
-		this.router.navigate(['/home'])
-	}
+      if (favortieData.result) {
+        this.userFavorites = favortieData.result;
+        console.log(this.userFavorites);
+      }
+    } catch (ex) {
+      console.error('failed to fetch' + ex);
+    }
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/home']);
+  }
 }

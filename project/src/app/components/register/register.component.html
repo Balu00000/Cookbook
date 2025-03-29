@@ -61,45 +61,44 @@
             </div>
 
             <div class="form-group">
-              <label for="email" class="form-label">
+              <label for="email1" class="form-label">
                 <i class="fas fa-envelope"></i>
-                Email
+                Email1
               </label>
               <input
                 type="text"
-                id="email"
-                formControlName="email"
+                id="email1"
+                formControlName="email1"
                 placeholder="Enter your email"
                 [class.invalid]="
-                  registerForm.get('email')?.invalid &&
-                  registerForm.get('email')?.touched
+                  registerForm.get('email1')?.invalid &&
+                  registerForm.get('email1')?.touched
                 "
                 autocomplete="new-email"
               />
-              @if (registerForm.get('email')?.invalid &&
-              registerForm.get('email')?.touched) {
+              @if (registerForm.get('email1')?.invalid &&
+              registerForm.get('email1')?.touched) {
               <span class="error-hint">Email is required</span>
               }
             </div>
 
             <div class="form-group">
-              <label for="password" class="form-label">
+              <label for="password1" class="form-label">
                 <i class="fas fa-lock"></i>
-                Password
+                Password1
               </label>
               <div class="password-input">
                 <input
                   [type]="showPassword ? 'text' : 'password'"
-                  id="password"
-                  formControlName="password"
+                  id="password1"
+                  formControlName="password1"
                   placeholder="Enter your password"
                   [class.invalid]="
-                    loginForm.get('password')?.invalid &&
-                    loginForm.get('password')?.touched
+                    registerForm.get('password1')?.invalid &&
+                    registerForm.get('password1')?.touched
                   "
                   autocomplete="new-password"
-                  
-                >
+                />
                 <button
                   type="button"
                   class="toggle-password"
@@ -108,49 +107,42 @@
                   <i
                     [class]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"
                   ></i>
-              </button>
-                
+                </button>
               </div>
-              @if (registerForm.get('password')?.invalid &&
-              registerForm.get('password')?.touched) {
+              @if (registerForm.get('password1')?.invalid &&
+              registerForm.get('password1')?.touched) {
               <span class="error-hint">Password is required</span>
               }
             </div>
 
             <div class="form-group">
               <label for="image" class="form-label">
-                <i class="fas fa-user"></i>
+                 <i class="fas fa-user"></i>
                 Image
               </label>
               <input
                 type="file"
-                accept="image/png, image/jpeg, image/jpg, image/jfif"
+                accept="image/png, image/jpeg, image/jpg, image/jfif, image/webp"
                 id="image"
-                formControlName="image"
-                placeholder="Enter your image"
-                [class.invalid]="
-                  registerForm.get('image')?.invalid &&
-                  registerForm.get('image')?.touched
-                "
-                autocomplete="new-image"
+                (change)="onFileSelected($event)"
               />
-              @if (registerForm.get('image')?.invalid &&
-              registerForm.get('image')?.touched) {
-              <span class="error-hint">Image is required</span>
-              }
+              <img
+                *ngIf="imagePreview"
+                [src]="imagePreview"
+                alt="Image Preview"
+                style="max-width: 200px; margin-top: 10px"
+              />
             </div>
 
             <button
               type="submit"
-              class="login-button btn-gradient"
+              class="login-button btn-gradient mt-4"
               [disabled]="registerForm.invalid"
             >
               Register In
             </button>
           </form>
-          }
-
-          @if(showLogin){
+          } @if(showLogin){
 
           <form
             [formGroup]="loginForm"
