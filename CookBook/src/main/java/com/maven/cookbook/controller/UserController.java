@@ -74,7 +74,7 @@ public class UserController {
     @POST
     @Path("registerAdmin")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response registerAdmin(@HeaderParam("token") String jwt, String bodyString) throws IOException{ //This is used on the admin page
+    public Response registerAdmin(@HeaderParam("token") String jwt, String bodyString){ //This is used on the admin page
         JSONObject body = new JSONObject(bodyString);
         
         //byte[] imageBytes = convertImageToBytes(body.getString("image"));

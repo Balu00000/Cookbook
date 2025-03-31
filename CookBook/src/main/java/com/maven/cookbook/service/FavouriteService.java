@@ -1,7 +1,6 @@
 package com.maven.cookbook.service;
 
 import com.maven.cookbook.model.Favourite;
-import com.maven.cookbook.model.Food;
 import com.maven.cookbook.model.FoodDTO;
 import java.util.List;
 import org.json.JSONArray;
@@ -45,6 +44,38 @@ public class FavouriteService { //F.Model->F.Service->F.Controller
             }
             toReturn.put("result", result);
         }
+        toReturn.put("status", status);
+        toReturn.put("statusCode", statusCode);
+        return toReturn;
+    }
+    
+    public JSONObject addFavourite(Integer userId, Integer foodId) {
+        JSONObject toReturn = new JSONObject();
+        String status = "success";
+        int statusCode = 200;
+        
+        boolean registerUser = layer.addFavourite(userId, foodId);
+        if(registerUser == false){
+            status = "fail";
+            statusCode = 417;  
+        }
+        
+        toReturn.put("status", status);
+        toReturn.put("statusCode", statusCode);
+        return toReturn;
+    }
+    
+    public JSONObject removeFavourite(Integer userId, Integer foodId) {
+        JSONObject toReturn = new JSONObject();
+        String status = "success";
+        int statusCode = 200;
+        
+        boolean registerUser = layer.removeFavourite(userId, foodId);
+        if(registerUser == false){
+            status = "fail";
+            statusCode = 417;  
+        }
+        
         toReturn.put("status", status);
         toReturn.put("statusCode", statusCode);
         return toReturn;

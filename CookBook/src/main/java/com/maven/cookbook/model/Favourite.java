@@ -165,4 +165,56 @@ public class Favourite implements Serializable {
             em.close();
         }
     }
+    
+    public Boolean addFavourite(Integer userId, Integer foodId){
+        EntityManager em = emf.createEntityManager();
+        
+        try {
+            StoredProcedureQuery spq = em.createStoredProcedureQuery("addFavourite");
+            
+            spq.registerStoredProcedureParameter("userIdIN", Integer.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("foodIdIN", Integer.class, ParameterMode.IN);
+            
+            
+            spq.setParameter("userIdIN", userId);
+            spq.setParameter("foodIdIN", foodId);
+            
+            spq.execute();
+            
+            return true;
+            
+        }catch(Exception e){
+            System.err.println("Hiba: " + e.getLocalizedMessage());
+            return null;
+        }finally{
+            em.clear();
+            em.close();
+        }
+    }
+    
+    public Boolean removeFavourite(Integer userId, Integer foodId){
+        EntityManager em = emf.createEntityManager();
+        
+        try {
+            StoredProcedureQuery spq = em.createStoredProcedureQuery("removeFavourite");
+            
+            spq.registerStoredProcedureParameter("userIdIN", Integer.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("foodIdIN", Integer.class, ParameterMode.IN);
+            
+            
+            spq.setParameter("userIdIN", userId);
+            spq.setParameter("foodIdIN", foodId);
+            
+            spq.execute();
+            
+            return true;
+            
+        }catch(Exception e){
+            System.err.println("Hiba: " + e.getLocalizedMessage());
+            return null;
+        }finally{
+            em.clear();
+            em.close();
+        }
+    }
 }
