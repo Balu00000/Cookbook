@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -101,6 +102,8 @@ public class Food implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date deletedAt;
     
+    private String base64Image;
+    
     static EntityManagerFactory emf = Persistence.createEntityManagerFactory(
             "com.maven_CookBook_war_1.0-SNAPSHOTPU");
     
@@ -171,13 +174,25 @@ public class Food implements Serializable {
     public Food(Integer id, String name, String image, String description, String preptime, Integer rating, String instructions, Date addedAt) {
         this.id = id;
         this.name = name;
-        this.image = image;
+        this.base64Image = image;
         this.description = description;
         this.prepTime = preptime;
         this.rating = rating;
         this.instructions = instructions;
         this.addedAt = addedAt;
     }
+    
+    public Food(Integer id, String name, byte [] image, String description, String preptime, Integer rating, String instructions, Date addedAt) {
+        this.id = id;
+        this.name = name;
+        this.base64Image = image != null ? Base64.getEncoder().encodeToString(image) : null;
+        this.description = description;
+        this.prepTime = preptime;
+        this.rating = rating;
+        this.instructions = instructions;
+        this.addedAt = addedAt;
+    }
+    
     public Food(String name, String image, String description, String preptime,Integer userid, String instructions, Integer difficultyid, Integer mealtypeid, Integer cuisineid) {
         this.name = name;
         this.image = image;
@@ -303,6 +318,14 @@ public class Food implements Serializable {
         this.deletedAt = deletedAt;
     }
 
+    public String getBase64Image() {
+        return base64Image;
+    }
+
+    public void setBase64Image(String base64Image) {
+        this.base64Image = base64Image;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -348,7 +371,7 @@ public class Food implements Serializable {
                 Food f = new Food(
                     Integer.valueOf(food[0].toString()),
                     food[1].toString(),
-                    food[2].toString(),
+                    food[2] != null ? (byte[]) food[2] : null,
                     food[3].toString(),
                     food[4].toString(),   
                     Integer.valueOf(food[6].toString()), 
@@ -387,7 +410,7 @@ public class Food implements Serializable {
                 Food f = new Food(
                     Integer.valueOf(food[0].toString()),
                     food[1].toString(),
-                    food[2].toString(),
+                    food[2] != null ? (byte[]) food[2] : null,
                     food[3].toString(),
                     food[4].toString(),
                     Integer.valueOf(food[6].toString()), 
@@ -425,7 +448,7 @@ public class Food implements Serializable {
                 Food f = new Food(
                     Integer.valueOf(food[0].toString()),
                     food[1].toString(),
-                    food[2].toString(),
+                    food[2] != null ? (byte[]) food[2] : null,
                     food[3].toString(),
                     food[4].toString(),
                     Integer.valueOf(food[6].toString()), 
@@ -470,7 +493,7 @@ public class Food implements Serializable {
                 Food f = new Food(
                     Integer.valueOf(food[0].toString()),
                     food[1].toString(),
-                    food[2].toString(),
+                    food[2] != null ? (byte[]) food[2] : null,
                     food[3].toString(),
                     food[4].toString(),
                     Integer.valueOf(food[6].toString()), 
@@ -513,7 +536,7 @@ public class Food implements Serializable {
                 Food f = new Food(
                     Integer.valueOf(food[0].toString()),
                     food[1].toString(),
-                    food[2].toString(),
+                    food[2] != null ? (byte[]) food[2] : null,
                     food[3].toString(),
                     food[4].toString(),
                     Integer.valueOf(food[6].toString()), 
@@ -556,7 +579,7 @@ public class Food implements Serializable {
                 Food f = new Food(
                     Integer.valueOf(food[0].toString()),
                     food[1].toString(),
-                    food[2].toString(),
+                    food[2] != null ? (byte[]) food[2] : null,
                     food[3].toString(),
                     food[4].toString(),
                     Integer.valueOf(food[6].toString()), 
@@ -599,7 +622,7 @@ public List<FoodDTO> getFoodByMealType(Integer id){
                 Food f = new Food(
                     Integer.valueOf(food[0].toString()),
                     food[1].toString(),
-                    food[2].toString(),
+                    food[2] != null ? (byte[]) food[2] : null,
                     food[3].toString(),
                     food[4].toString(),
                     Integer.valueOf(food[6].toString()), 
@@ -638,7 +661,7 @@ public List<FoodDTO> getFoodByMealType(Integer id){
                 Food f = new Food(
                     Integer.valueOf(food[0].toString()),
                     food[1].toString(),
-                    food[2].toString(),
+                    food[2] != null ? (byte[]) food[2] : null,
                     food[3].toString(),
                     food[4].toString(),
                     Integer.valueOf(food[6].toString()), 
@@ -701,7 +724,7 @@ public List<FoodDTO> getFoodByMealType(Integer id){
                 Food f = new Food(
                     Integer.valueOf(food[0].toString()),
                     food[1].toString(),
-                    food[2].toString(),
+                    food[2] != null ? (byte[]) food[2] : null,
                     food[3].toString(),
                     food[4].toString(),
                     Integer.valueOf(food[6].toString()), 
@@ -741,8 +764,10 @@ public List<FoodDTO> getFoodByMealType(Integer id){
             spq.registerStoredProcedureParameter("cuisineIdIN", Integer.class, ParameterMode.IN);
             spq.registerStoredProcedureParameter("ingredientsIN", String.class, ParameterMode.IN);
             
+            byte[] imageBytes = Base64.getDecoder().decode(f.getBase64Image());
+            
             spq.setParameter("nameIN", f.getName());
-            spq.setParameter("imageIN", f.getImage());
+            spq.setParameter("imageIN", imageBytes);
             spq.setParameter("descriptionIN", f.getDescription());
             spq.setParameter("preptimeIN", f.getPrepTime());
             spq.setParameter("userIdIN", f.getUserId());
@@ -780,7 +805,7 @@ public List<FoodDTO> getFoodByMealType(Integer id){
                 Food f = new Food(
                     Integer.valueOf(food[0].toString()),
                     food[1].toString(),
-                    food[2].toString(),
+                    food[2] != null ? (byte[]) food[2] : null,
                     food[3].toString(),
                     food[4].toString(),
                     Integer.valueOf(food[6].toString()), 

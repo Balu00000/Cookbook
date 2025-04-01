@@ -136,7 +136,7 @@ public class FoodController {
         JSONObject body = new JSONObject(bodyString);
         
         Food f = new Food(
-            body.getString("username"),
+            body.getString("name"),
             body.getString("image"),
             body.getString("description"),
             body.getString("preptime"),

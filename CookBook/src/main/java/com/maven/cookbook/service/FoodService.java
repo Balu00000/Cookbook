@@ -46,7 +46,7 @@ public class FoodService { //F.Model->F.Service->F.Controller
                 
                 toAdd.put("id", food.getFood().getId());
                 toAdd.put("name", food.getFood().getName());
-                toAdd.put("image", food.getFood().getImage());
+                toAdd.put("image", food.getFood().getBase64Image());
                 toAdd.put("description", food.getFood().getDescription());
                 toAdd.put("prepTime", food.getFood().getPrepTime());
                 toAdd.put("username", food.getUsername());
@@ -86,7 +86,7 @@ public class FoodService { //F.Model->F.Service->F.Controller
                 
                 toAdd.put("id", food.getFood().getId());
                 toAdd.put("name", food.getFood().getName());
-                toAdd.put("image", food.getFood().getImage());
+                toAdd.put("image", food.getFood().getBase64Image());
                 toAdd.put("description", food.getFood().getDescription());
                 toAdd.put("prepTime", food.getFood().getPrepTime());
                 toAdd.put("username", food.getUsername());
@@ -123,7 +123,7 @@ public class FoodService { //F.Model->F.Service->F.Controller
 
             result.put("id", modelResult.getFood().getId());
             result.put("name", modelResult.getFood().getName());
-            result.put("image", modelResult.getFood().getImage());
+            result.put("image", modelResult.getFood().getBase64Image());
             result.put("description", modelResult.getFood().getDescription());
             result.put("prepTime", modelResult.getFood().getPrepTime());
             result.put("username", modelResult.getUsername());
@@ -161,7 +161,7 @@ public class FoodService { //F.Model->F.Service->F.Controller
                 
                 toAdd.put("id", food.getFood().getId());
                 toAdd.put("name", food.getFood().getName());
-                toAdd.put("image", food.getFood().getImage());
+                toAdd.put("image", food.getFood().getBase64Image());
                 toAdd.put("description", food.getFood().getDescription());
                 toAdd.put("prepTime", food.getFood().getPrepTime());
                 toAdd.put("username", food.getUsername());
@@ -201,7 +201,7 @@ public class FoodService { //F.Model->F.Service->F.Controller
                 
                 toAdd.put("id", food.getFood().getId());
                 toAdd.put("name", food.getFood().getName());
-                toAdd.put("image", food.getFood().getImage());
+                toAdd.put("image", food.getFood().getBase64Image());
                 toAdd.put("description", food.getFood().getDescription());
                 toAdd.put("prepTime", food.getFood().getPrepTime());
                 toAdd.put("username", food.getUsername());
@@ -241,7 +241,7 @@ public class FoodService { //F.Model->F.Service->F.Controller
                 
                 toAdd.put("id", food.getFood().getId());
                 toAdd.put("name", food.getFood().getName());
-                toAdd.put("image", food.getFood().getImage());
+                toAdd.put("image", food.getFood().getBase64Image());
                 toAdd.put("description", food.getFood().getDescription());
                 toAdd.put("prepTime", food.getFood().getPrepTime());
                 toAdd.put("username", food.getUsername());
@@ -281,7 +281,7 @@ public class FoodService { //F.Model->F.Service->F.Controller
                 
                 toAdd.put("id", food.getFood().getId());
                 toAdd.put("name", food.getFood().getName());
-                toAdd.put("image", food.getFood().getImage());
+                toAdd.put("image", food.getFood().getBase64Image());
                 toAdd.put("description", food.getFood().getDescription());
                 toAdd.put("prepTime", food.getFood().getPrepTime());
                 toAdd.put("username", food.getUsername());
@@ -320,7 +320,7 @@ public class FoodService { //F.Model->F.Service->F.Controller
                 
                 toAdd.put("id", food.getFood().getId());
                 toAdd.put("name", food.getFood().getName());
-                toAdd.put("image", food.getFood().getImage());
+                toAdd.put("image", food.getFood().getBase64Image());
                 toAdd.put("description", food.getFood().getDescription());
                 toAdd.put("prepTime", food.getFood().getPrepTime());
                 toAdd.put("username", food.getUsername());
@@ -381,7 +381,7 @@ public class FoodService { //F.Model->F.Service->F.Controller
                 
                 toAdd.put("id", food.getFood().getId());
                 toAdd.put("name", food.getFood().getName());
-                toAdd.put("image", food.getFood().getImage());
+                toAdd.put("image", food.getFood().getBase64Image());
                 toAdd.put("description", food.getFood().getDescription());
                 toAdd.put("prepTime", food.getFood().getPrepTime());
                 toAdd.put("username", food.getUsername());
@@ -406,8 +406,8 @@ public class FoodService { //F.Model->F.Service->F.Controller
         String status = "success";
         int statusCode = 200;
         
-        boolean registerUser = layer.addFood(f, ingredients);
-            if(registerUser == false){
+        boolean addFood = layer.addFood(f, ingredients);
+            if(addFood == false){
                 status = "fail";
                 statusCode = 417;
             }
@@ -436,7 +436,7 @@ public class FoodService { //F.Model->F.Service->F.Controller
                 
                 toAdd.put("id", food.getFood().getId());
                 toAdd.put("name", food.getFood().getName());
-                toAdd.put("image", food.getFood().getImage());
+                toAdd.put("image", food.getFood().getBase64Image());
                 toAdd.put("description", food.getFood().getDescription());
                 toAdd.put("prepTime", food.getFood().getPrepTime());
                 toAdd.put("username", food.getUsername());
