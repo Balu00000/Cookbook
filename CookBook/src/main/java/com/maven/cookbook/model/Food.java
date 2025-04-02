@@ -182,7 +182,7 @@ public class Food implements Serializable {
         this.addedAt = addedAt;
     }
     
-    public Food(Integer id, String name, byte [] image, String description, String preptime, Integer rating, String instructions, Date addedAt) {
+    public Food(Integer id, String name, byte[] image, String description, String preptime, Integer rating, String instructions, Date addedAt) {
         this.id = id;
         this.name = name;
         this.base64Image = image != null ? Base64.getEncoder().encodeToString(image) : null;
@@ -193,9 +193,21 @@ public class Food implements Serializable {
         this.addedAt = addedAt;
     }
     
+    public Food(String name, byte[] image, String description, String preptime,Integer userid, String instructions, Integer difficultyid, Integer mealtypeid, Integer cuisineid) {
+        this.name = name;
+        this.base64Image = image != null ? Base64.getEncoder().encodeToString(image) : null;
+        this.description = description;
+        this.prepTime = preptime;
+        this.userId = userid;
+        this.instructions = instructions;
+        this.difficultyId = difficultyid;
+        this.mealTypeId = mealtypeid;   
+        this.cuisineId = cuisineid; 
+    }
+    
     public Food(String name, String image, String description, String preptime,Integer userid, String instructions, Integer difficultyid, Integer mealtypeid, Integer cuisineid) {
         this.name = name;
-        this.image = image;
+        this.base64Image = image;
         this.description = description;
         this.prepTime = preptime;
         this.userId = userid;
@@ -754,7 +766,7 @@ public List<FoodDTO> getFoodByMealType(Integer id){
             StoredProcedureQuery spq = em.createStoredProcedureQuery("addFood");
             
             spq.registerStoredProcedureParameter("nameIN", String.class, ParameterMode.IN);
-            spq.registerStoredProcedureParameter("imageIN", String.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("imageIN", byte[].class, ParameterMode.IN);
             spq.registerStoredProcedureParameter("descriptionIN", String.class, ParameterMode.IN);
             spq.registerStoredProcedureParameter("preptimeIN", String.class, ParameterMode.IN);
             spq.registerStoredProcedureParameter("userIdIN", Integer.class, ParameterMode.IN);
