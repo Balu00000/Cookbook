@@ -1,9 +1,9 @@
 import { Component, ElementRef, ViewChild, Renderer2, ChangeDetectorRef } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { CommonModule } from '@angular/common';
-import { GetAllFoodService } from '../../services/get-all-food.service';
 import { FormsModule } from '@angular/forms';
 import { TruncatePipe } from '../../_pipes/truncate.pipe';
+import { GetAllFoodService } from '../../services/get-all-food.service';
 
 @Component({
     selector: 'app-discover',
@@ -31,14 +31,19 @@ export class DiscoverComponent {
   selectedCuisines: { [key: string]: boolean } = {};
   selectedDietarys: { [key: string]: boolean } = {};
 
+  constructor(private gettedfood:GetAllFoodService) {}
 
   baseURL: string = "http://127.0.0.1:8080/CookBook-1.0-SNAPSHOT/webresources/"
 
-  constructor(private foodFetch:GetAllFoodService){}
-
-  async ngOnInit(){
-    this.allFood = await this.foodFetch.LALALALALALAL();
-    this.filteredFood = this.allFood;
+  ngOnInit(){
+    this.gettedfood.LALALALALALAL().subscribe(data => {
+      console.log("Food API Response: ", data);  // Debugging
+      this.allFood = data.result || data; // Ensure you extract the array properly
+      this.filteredFood = [...this.allFood]; // Copy the array properly
+   }, error => {
+      console.error("Error fetching food data:", error);
+   });
+   
   }
 
   toggleSelection(category: string, value: string) {

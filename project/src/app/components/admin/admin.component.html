@@ -1,4 +1,12 @@
 <app-navbar></app-navbar>
+<div class="button-container">
+  <button [className]="button1 == true ? 'changeActive' : 'change'" (click)="buttonActive('user')">User</button>
+  <button [className]="button3 == true ? 'changeActive' : 'change'" (click)="buttonActive('recipeMod')">Recipe Modification</button>
+  <button [className]="button4 == true ? 'changeActive' : 'change'" (click)="buttonActive('recipeAdd')">Recipe Add</button>
+</div>
+
+@if (button1 == true) {
+
 <c-smart-table
   #smartTable="cSmartTable"
   [columnFilter]="true"
@@ -8,67 +16,419 @@
   [itemsPerPage]="10"
   [items]="usersData"
   [sorterValue]="{ column: 'name', state: 'asc' }"
-  [tableBodyProps]="{align: 'middle'}"
+  [tableBodyProps]="{ align: 'middle' }"
   [tableFilter]="true"
-  [tableFootProps]="{color: 'warning'}"
-  [tableHeadProps]="{color: 'warning'}"
+  [tableFootProps]="{ color: 'warning' }"
+  [tableHeadProps]="{ color: 'warning' }"
   [tableProps]="{ hover: true, striped: true, responsive: true }"
   activePage="1"
   cleaner
-  clickableRows
   footer
   header
   pagination
-  selectable
 >
   <ng-template cTemplateId="tableCustomHeader">
     <div [cCol]="'auto'" class="p-0 ms-auto">
-      <button (click)="smartTable.footer = !smartTable.footer" cButton color="success">
-        Footer is {{ smartTable.footer ? 'ON' : 'OFF' }}
+      <button
+        (click)="smartTable.footer = !smartTable.footer"
+        cButton
+        color="success"
+      >
+        Footer is {{ smartTable.footer ? "ON" : "OFF" }}
       </button>
     </div>
   </ng-template>
 
   <ng-template cTemplateId="tableDetails" let-item="item">
-    <div [visible]="this.details_visible[item.id]===true" cCollapse>
+    <div [visible]="this.details_visible[item.id] === true" cCollapse>
       <c-card class="rounded-0">
         <c-card-body>
-          <h5>{{ item['username'] }}</h5>
-          <p class="text-muted">User since: {{ item['createdAt'] }}</p>
-          <p class="text-muted">User Deleted since: {{ item['deletedAt'] }}</p>
+          <h5>{{ item["username"] }}</h5>
+          <p class="text-muted">User since: {{ item["createdAt"] }}</p>
+          <p class="text-muted">
+            User Deleted since:
+            {{ item["deletedAt"] || "The user is not deleted 👍🏻" }}
+          </p>
         </c-card-body>
         <c-card-footer>
-          <button cButton color="info" size="sm">
-            User Settings
+          <button cButton color="info" size="sm">User Settings</button>
+          <button
+            cButton
+            class="ms-1"
+            color="danger"
+            size="sm"
+            (click)="deleteUser(item.id, item['deletedAt'])"
+          >
+            Delete
           </button>
-          <button cButton class="ms-1" color="danger" size="sm">
+          <button
+            cButton
+            class="ms-1"
+            color="warning"
+            size="sm"
+            (click)="adminify()"
+          >
+            Make Admin
+          </button>
+        </c-card-footer>
+      </c-card>
+    </div>
+  </ng-template>
+  <ng-template
+    cTemplateId="tableData"
+    let-columnName="columnName"
+    let-item="item"
+    let-tdContent="tdContent"
+  >
+    <td
+      [cAlign]="smartTable.getTableDataCellProps(item, columnName)['align']"
+      [cTableActive]="
+        smartTable.getTableDataCellProps(item, columnName)['active']
+      "
+      [cTableColor]="
+        smartTable.getTableDataCellProps(item, columnName)['color']
+      "
+      [ngClass]="smartTable.getTableDataCellClass(item, columnName)"
+    >
+      @switch (columnName) { @case ('status') {
+      <c-badge [color]="getBadge(tdContent)">
+        {{ item[columnName] }}
+      </c-badge>
+      } @case ('show') {
+      <button
+        (click)="toggleDetails(item.id)"
+        cButton
+        color="primary"
+        size="sm"
+        variant="outline"
+      >
+        Show
+      </button>
+      } @default {
+      {{ tdContent }}
+      } }
+    </td>
+  </ng-template>
+</c-smart-table>
+}
+
+@if(button3 == true){
+<c-smart-table
+  #smartTable="cSmartTable"
+  [columnFilter]="true"
+  [columnSorter]="true"
+  [columns]="columns1"
+  [itemsPerPageSelect]="true"
+  [itemsPerPage]="10"
+  [items]="recipeData"
+  [sorterValue]="{ column: 'id', state: 'asc' }"
+  [tableBodyProps]="{ align: 'middle' }"
+  [tableFilter]="true"
+  [tableFootProps]="{ color: 'warning' }"
+  [tableHeadProps]="{ color: 'warning' }"
+  [tableProps]="{ hover: true, striped: true, responsive: true }"
+  activePage="1"
+  cleaner
+  footer
+  header
+  pagination
+>
+  <ng-template cTemplateId="tableCustomHeader">
+    <div [cCol]="'auto'" class="p-0 ms-auto">
+      <button
+        (click)="smartTable.footer = !smartTable.footer"
+        cButton
+        color="success"
+      >
+        Footer is {{ smartTable.footer ? "ON" : "OFF" }}
+      </button>
+    </div>
+  </ng-template>
+
+  <ng-template cTemplateId="tableDetails" let-item="item">
+    <div [visible]="this.details_visible[item.id] === true" cCollapse>
+      <c-card class="rounded-0">
+        <c-card-body>
+          <h5>{{ item["name"] }}</h5>
+          <p class="text-muted">Recipe Added At: {{ item["addedAt"] }}</p>
+          <p class="text-muted">
+            Recipe Deleted since:
+            {{ item["deletedAt"] || "The recipe is not deleted 👍🏻" }}
+          </p>
+        </c-card-body>
+        <c-card-footer>
+          <button cButton color="info" size="sm">Recipe Settings</button>
+          <button
+            cButton
+            class="ms-1"
+            color="danger"
+            size="sm"
+            (click)="deleteRecipe(item.id, item['deletedAt'])"
+          >
             Delete
           </button>
         </c-card-footer>
       </c-card>
     </div>
   </ng-template>
-  <ng-template cTemplateId="tableData" let-columnName="columnName" let-item="item" let-tdContent="tdContent">
-    <td [cAlign]="smartTable.getTableDataCellProps(item, columnName)['align']"
-        [cTableActive]="smartTable.getTableDataCellProps(item, columnName)['active']"
-        [cTableColor]="smartTable.getTableDataCellProps(item, columnName)['color']"
-        [ngClass]="smartTable.getTableDataCellClass(item, columnName)"
+  <ng-template
+    cTemplateId="tableData"
+    let-columnName="columnName"
+    let-item="item"
+    let-tdContent="tdContent"
+  >
+    <td
+      [cAlign]="smartTable.getTableDataCellProps(item, columnName)['align']"
+      [cTableActive]="
+        smartTable.getTableDataCellProps(item, columnName)['active']
+      "
+      [cTableColor]="
+        smartTable.getTableDataCellProps(item, columnName)['color']
+      "
+      [ngClass]="smartTable.getTableDataCellClass(item, columnName)"
     >
-      @switch (columnName) {
-        @case ('status') {
-          <c-badge [color]="getBadge(tdContent)">
-            {{ (item[columnName]) }}
-          </c-badge>
-        }
-        @case ('show') {
-          <button (click)="toggleDetails(item.id)" cButton color="primary" size="sm" variant="outline">
-            Show
-          </button>
-        }
-        @default {
-          {{ tdContent }}
-        }
-      }
+      @switch (columnName) { @case ('status') {
+      <c-badge [color]="getBadge(tdContent)">
+        {{ item[columnName] }}
+      </c-badge>
+      } @case ('show') {
+      <button
+        (click)="toggleDetails(item.id)"
+        cButton
+        color="primary"
+        size="sm"
+        variant="outline"
+      >
+        Show
+      </button>
+      } @default {
+      {{ tdContent }}
+      } }
     </td>
   </ng-template>
 </c-smart-table>
+} @if(button4 == true){
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="auth-container">
+        <div class="auth-body">
+          <form
+            [formGroup]="recipeAdd"
+            (ngSubmit)="onRecipeAdd()"
+            autocomplete="off"
+            novalidate
+            class="form-content"
+          >
+            @if (errorMessage) {
+            <div class="error-message">
+              <i class="fas fa-exclamation-circle"></i>
+              {{ errorMessage }}
+            </div>
+            }
+
+            <div class="form-group">
+              <label for="name" class="form-label">
+                <i class="fas fa-utensils"></i>
+                Recipe Name
+              </label>
+              <input
+                type="text"
+                id="name"
+                formControlName="name"
+                placeholder="Enter recipe name"
+                [class.invalid]="
+                  recipeAdd.get('name')?.invalid &&
+                  recipeAdd.get('name')?.touched
+                "
+              />
+              @if (recipeAdd.get('name')?.invalid &&
+              recipeAdd.get('name')?.touched) {
+              <span class="error-hint">Recipe name is required</span>
+              }
+            </div>
+
+            <div class="form-group">
+              <label for="image" class="form-label">
+                <i class="fas fa-image"></i>
+                Upload Image
+              </label>
+              <input
+                type="file"
+                id="image"
+                accept="image/png, image/jpeg, image/jpg, image/jfif, image/webp"
+                [class.invalid]="
+                  recipeAdd.get('image')?.invalid &&
+                  recipeAdd.get('image')?.touched
+                "
+                (change)="onFileSelected($event)"
+              />
+
+              @if (recipeAdd.get('image')?.invalid &&
+              recipeAdd.get('image')?.touched) {
+              <span class="error-hint">Image is required</span>
+              }
+              <img
+                *ngIf="imagePreview"
+                [src]="imagePreview"
+                alt="Image Preview"
+                style="max-width: 200px; margin-top: 10px"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="description" class="form-label">
+                <i class="fas fa-align-left"></i>
+                Description
+              </label>
+              <textarea
+                id="description"
+                formControlName="description"
+                placeholder="Enter recipe description"
+                style="resize: vertical"
+                [class.invalid]="
+                  recipeAdd.get('description')?.invalid &&
+                  recipeAdd.get('description')?.touched
+                "
+              ></textarea>
+              @if (recipeAdd.get('description')?.invalid &&
+              recipeAdd.get('description')?.touched) {
+              <span class="error-hint">Description is required</span>
+              }
+            </div>
+
+            <div class="form-group">
+              <label for="preptime" class="form-label">
+                <i class="fas fa-clock"></i>
+                Preparation Time (minutes)
+              </label>
+              <input
+                type="number"
+                id="preptime"
+                formControlName="preptime"
+                placeholder="Enter preparation time"
+                [class.invalid]="
+                  recipeAdd.get('preptime')?.invalid &&
+                  recipeAdd.get('preptime')?.touched
+                "
+              />
+              @if (recipeAdd.get('preptime')?.invalid &&
+              recipeAdd.get('preptime')?.touched) {
+              <span class="error-hint">Preparation time is required</span>
+              }
+            </div>
+
+            <div class="form-group">
+              <label for="instructions" class="form-label">
+                <i class="fas fa-list"></i>
+                Instructions
+                <i
+                  class="fa-solid fa-circle-info"
+                  [cPopover]="popoverHtml"
+                  cPopoverPlacement="right"
+                >
+                  <ng-template #popoverHtml>
+                    <h3 class="popover-header">Help</h3>
+                    <div class="popover-body">
+                      Seperate the instruction steps with enters and don't number them.
+                    </div>
+                  </ng-template>
+                  </i>
+              </label>
+              <textarea
+                id="instructions"
+                formControlName="instructions"
+                placeholder="Enter cooking instructions"
+                style="resize: both"
+                [class.invalid]="
+                  recipeAdd.get('instructions')?.invalid &&
+                  recipeAdd.get('instructions')?.touched
+                "
+              ></textarea>
+              @if (recipeAdd.get('instructions')?.invalid &&
+              recipeAdd.get('instructions')?.touched) {
+              <span class="error-hint">Instructions are required</span>
+              }
+            </div>
+
+            <div class="form-group">
+              <label for="difficultyid" class="form-label">
+                <i class="fas fa-signal"></i>
+                Difficulty Level
+              </label>
+              <select id="difficultyid" formControlName="difficultyid">
+                <option value="null">Select a Difficulty</option>
+                @for (item of difficulties; track item.id) {
+                  <option value="{{item.id}}">{{ item.name }}</option>
+                }
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="mealTypeid" class="form-label">
+                <i class="fas fa-utensils"></i>
+                Meal Type
+              </label>
+              <select id="mealtypeid" formControlName="mealtypeid">
+                <option value="null">Select a Meal Type</option>
+                @for (item of mealTypes; track item.id) {
+                  <option value="{{item.id}}">{{ item.type }}</option>
+                }
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="cuisineid" class="form-label">
+                <i class="fas fa-globe"></i>
+                Cuisine Type
+              </label>
+              <select id="cuisineid" formControlName="cuisineid">
+                <option value="null">Select a Cuisine</option>
+                @for (item of cuisines; track item.id) {
+                  <option value="{{item.id}}">{{ item.name }}</option>
+                }
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="dietaryid" class="form-label">
+                <i class="fas fa-leaf"></i>
+                Dietary Preference
+              </label>
+              <select id="dietaryid"  formControlName="dietaryid">
+                <option value="null">Select a Dietary</option>
+                @for (item of dietarys; track item.id) {
+                  <option value="{{item.id}}">{{ item.type }}</option>
+                }
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="ingredients" class="form-label">
+                <i class="fas fa-lemon"></i>
+                Ingredients (Flour, 20, grams; Milk, 1, cups;)
+              </label>
+              <textarea
+                id="ingredients"
+                formControlName="ingredients"
+                placeholder="Enter ingredients"
+                style="resize: both"
+                [class.invalid]="
+                  recipeAdd.get('ingredients')?.invalid &&
+                  recipeAdd.get('ingredients')?.touched
+                "
+              ></textarea>
+              @if (recipeAdd.get('ingredients')?.invalid &&
+              recipeAdd.get('ingredients')?.touched) {
+              <span class="error-hint">Ingredients are required</span>
+              }
+            </div>
+
+            <button type="submit" class="btn btn-primary">Add Recipe</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+}

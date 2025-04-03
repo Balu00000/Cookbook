@@ -18,6 +18,33 @@ input.invalid {
   border-color: #fc8181;
 }
 
+input[type="checkbox"] {
+  padding: 0.4rem;
+  position: relative;
+  top: 0.2rem;
+  width: 5px !important;  /* Adjust as needed */
+  height: 5px !important;
+  appearance: none; /* Removes default styling */
+  border-radius: 3px;
+  background-color: white;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+input[type="checkbox"]:checked {
+  background-color: #f72585;
+}
+
+.rememberCheck{
+  margin-top: 5px;
+  margin-left: 3px;
+}
+
+.form-check-input {
+  width: auto;
+  height: auto;
+}
+
 .password-input {
   position: relative;
 }

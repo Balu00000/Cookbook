@@ -8,6 +8,5 @@ export class HashService {
 
   hashString(input: string): string {
     return new SHA1('sha1').update(input).digest('hex');
-
   }
 }

@@ -117,7 +117,7 @@
 
             <div class="form-group">
               <label for="image" class="form-label">
-                 <i class="fas fa-user"></i>
+                <i class="fas fa-user"></i>
                 Image
               </label>
               <input
@@ -211,9 +211,16 @@
               <span class="error-hint">Password is required</span>
               }
             </div>
+            <div class="mb-3 rememberCheck">
+              <input type="checkbox" id="rememberMe" (click)="changeRemember()" name="checkbox">
+              <label for="rememberMe" >
+                Remember me
+              </label>
+            </div>
+
             <button
               type="submit"
-              class="login-button btn-gradient"
+              class="login-button btn-gradient mt-4"
               [disabled]="loginForm.invalid"
             >
               Sign In

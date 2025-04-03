@@ -17,10 +17,12 @@ export class LoggedInServiceService {
       localStorage.setItem(this.TOKEN_KEY, token);
       localStorage.setItem(this.ID, id)
       localStorage.setItem(this.IS_ADMIN, isAdmin)
+      localStorage.setItem('isLoggedIn', 'true');
     }else{
       sessionStorage.setItem(this.TOKEN_KEY, token)
       sessionStorage.setItem(this.ID, id)
       sessionStorage.setItem(this.IS_ADMIN, isAdmin)
+      sessionStorage.setItem('isLoggedIn', 'true');
     }
   }
 
@@ -29,9 +31,11 @@ export class LoggedInServiceService {
     localStorage.removeItem(this.TOKEN_KEY);
     localStorage.removeItem(this.ID)
     localStorage.removeItem(this.IS_ADMIN)
+    localStorage.removeItem('isLoggedIn');
     sessionStorage.removeItem(this.TOKEN_KEY)
     sessionStorage.removeItem(this.ID)
     sessionStorage.removeItem(this.IS_ADMIN)
+    sessionStorage.removeItem('isLoggedIn');
   }
 
   // Method to check if the user is authenticated

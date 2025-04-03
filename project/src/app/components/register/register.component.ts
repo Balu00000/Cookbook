@@ -5,18 +5,19 @@ import {
   EmailValidator,
   FormBuilder,
   FormGroup,
+  FormsModule,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoggedInServiceService } from '../../services/logged-in-service.service';
-import { ɵASYNC_ANIMATION_LOADING_SCHEDULER_FN } from '@angular/platform-browser/animations/async';
 import { LoginService } from '../../services/login.service';
 import { HashService } from '../../services/hash.service';
+import { HttpBackend } from '@angular/common/http';
 
 @Component({
   selector: 'app-register',
-  imports: [NavbarComponent, CommonModule, ReactiveFormsModule],
+  imports: [NavbarComponent, CommonModule, ReactiveFormsModule, FormsModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css',
 })
@@ -135,6 +136,7 @@ export class RegisterComponent {
           console.log('Response:', response);
           if (response.result.isAdmin === true) {
             this.admin = true;
+            console.log(this.remember)
             this.loggedIn.login(
               response.result.jwt,
               response.result.id,
@@ -159,6 +161,11 @@ export class RegisterComponent {
     } catch (error) {
       console.error('Error in onLogin:', error);
     }
+  }
+
+  changeRemember(): void{
+    this.remember = !this.remember
+    console.log(this.remember)
   }
 
   imagePreview: string | ArrayBuffer | null = '';
@@ -195,6 +202,7 @@ export class RegisterComponent {
       await this.loginServices.registerUser(registerData)
         .then((response) => {
           console.log('Registration successful:', response);
+          this.router.navigate(['/home'])
         })
         .catch((error) => {
           console.error('Registration failed:', error);

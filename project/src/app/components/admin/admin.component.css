@@ -1,3 +1,78 @@
-*{
-    max-width: 100vw; overflow-x: hidden;
+* {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+label{
+  margin-top: 10px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  height: 5vh; /* Adjust height if needed */
+  gap: 10px; /* Spacing between buttons */
+}
+
+
+.change{
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  background: white;
+}
+
+.changeActive{
+  border: 2px solid white;
+  border-radius: 10px;
+  border-bottom-color: #f72585;
+}
+
+input,
+textarea, select {
+  height: 60px;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  background: white;
+}
+
+textarea {
+  min-height: 60px;
+  padding-top: 15px;
+}
+
+input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+input.invalid,
+textarea.invalid {
+  border-color: #fc8181;
+}
+
+
+.error-hint {
+  display: block;
+  color: #fc8181;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  font-weight: bolder;
+  margin-bottom: 1rem;
+}
+
+.error-message {
+  background: #fff5f5;
+  color: #c53030;
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }

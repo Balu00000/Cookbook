@@ -98,7 +98,6 @@ export class LoginService {
       this.VALID_EMAIL.includes(username) &&
       this.VALID_PASSWORD.includes(this.sha1.hashString(password))
     ) {
-      localStorage.setItem('isLoggedIn', 'true');
       this.router.navigate(['/home']);
       return of(true);
     }
@@ -106,7 +105,7 @@ export class LoginService {
   }
 
   isAdmin(): boolean {
-    if (localStorage.getItem('isAdmin') === 'true') {
+    if (localStorage.getItem('isAdmin') || sessionStorage.getItem('isAdmin') === 'true') {
       return true;
     }
     return false;

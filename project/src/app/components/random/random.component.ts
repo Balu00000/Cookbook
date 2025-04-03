@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
 })
 export class RandomComponent {
 
-  recipeName:string = ""
+  recipe: any = {}
   recipeImage: string= ""
   recipeDescription: string= ""
   recipeDifficulty: string = ""
@@ -27,19 +27,17 @@ export class RandomComponent {
     const URL = "http://127.0.0.1:8080/CookBook-1.0-SNAPSHOT/webresources/food/getFoodByRandom"
 
     try {
-      let randomResponse = await fetch(URL)
-      if (!randomResponse.ok) console.error("Response not good" + randomResponse.status + " " + randomResponse.statusText);
+      let randomResult = await fetch(URL)
+      if (!randomResult.ok) console.error("Response not good" + randomResult.status + " " + randomResult.statusText);
 
-      let randomData = await randomResponse.json()
-
-      this.recipeName =                 randomData.result.name
-      this.recipeDescription =          randomData.result.description
-      this.recipeImage =                randomData.result.image
-      this.recipeDifficulty =           randomData.result.difficulty
-      this.recipeFavoritedByPeople =    randomData.result.rating
-      this.recipeInstructions =         randomData.result.instructions
-      this.recipeInstructionsSegments = this.recipeInstructions.split('§')
-
+      let randomData = await randomResult.json()
+      
+      this.recipe = randomData.result
+      if(this.recipe.instructions){
+        this.recipe.instructions = this.recipe.instructions.split('§')  
+      }else{
+        this.recipe.instructions
+      }
     } catch (error) {
       console.error(error);
     }

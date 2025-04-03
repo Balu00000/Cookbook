@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -5,17 +6,10 @@ import { Injectable } from '@angular/core';
 })
 export class GetAllFoodService {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
-  async LALALALALALAL(){
-    const url = "http://127.0.0.1:8080/CookBook-1.0-SNAPSHOT/webresources/food/getAllFood"
-    try{
-      const response = await fetch(url)
-      const data = await response.json()
-      console.log(data.result);
-      return data.result
-    }catch(ex){
-      console.error("very no good" + ex); 
-    }
+  apiUrl = "http://127.0.0.1:8080/CookBook-1.0-SNAPSHOT/webresources/food/getAllFood"
+  LALALALALALAL(){
+    return this.http.get<any>(`${this.apiUrl}`);
   }
 }

@@ -9,12 +9,11 @@
     <hr />
     <p>Joined: {{ user.createdAt || "You never joined" }}</p>
     <p>
-      Added: {{ user.postedFood + " amount of Recipes" || "You never posted" }}
+      Added: {{ user.postedFood + " Recipes" || "You never posted" }}
     </p>
 
     <div id="logout-delete">
       <input type="button" (click)="logout()" value="Log Out!" />
-      <input type="button" value="Delete Account" />
     </div>
   </div>
 </div>
@@ -35,7 +34,7 @@
 </div>
 
 <div class="row" id="favorites">
-    <p>Favorite ({{ user.favoriteFood || "we do not know" }})</p>
+    <p>Favorite ({{ user.favouritedFood || "we do not know" }})</p>
     <hr />
     @for (item of userFavorites; track item) {
   

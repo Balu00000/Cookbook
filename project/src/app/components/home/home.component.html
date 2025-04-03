@@ -15,7 +15,7 @@
         alt="{{ slide.name }}"
         class="d-block w-100"
         loading="lazy"
-        src="{{ slide.image }}"
+        src="{{ 'data:image/jpg;base64,' + slide.image }}"
       />
       <c-carousel-caption class="d-none d-md-block">
         <h3>{{ slide.name }}</h3>

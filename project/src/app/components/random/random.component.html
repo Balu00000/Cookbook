@@ -1,13 +1,14 @@
 <app-navbar></app-navbar>
-<h1>{{recipeName}}</h1>
-<h2>Short Description: <br>{{recipeDescription}}</h2>
-<p><img src="{{recipeImage}}" id="image" alt={{recipeImage}}></p>
-<p>Difficutly: {{recipeDifficulty}}</p>
-<p>Favorited: {{recipeFavoritedByPeople}}</p>
+<h1>{{recipe.name}}</h1>
+<h2>Short Description:</h2>
+<p>{{recipe.description}}</p>
+<p><img src="{{recipe.image}}" id="image" alt={{recipe.image}}></p>
+<p>Difficutly: {{recipe.difficulty}}</p>
+<p>Favorited: {{recipe.rating}}</p>
 <div>
   <h2>Recipe Instructions</h2>
   <ol>
-    <li *ngFor="let step of recipeInstructionsSegments">
+    <li *ngFor="let step of recipe.instructions">
       {{ step }}
     </li>
   </ol>

@@ -36,9 +36,13 @@
 						</svg></a>
 				</li>
 			</ul>
-			<form class="d-flex" role="search">
-				<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-			</form>
+			<div class="search-container">
+				<mat-form-field appearance="outline" class="search-field">
+				  <mat-label>Keresés</mat-label>
+				  <mat-icon matPrefix>search</mat-icon>
+				  <input matInput placeholder="Keressen orvosok neveire vagy információira..." [(ngModel)]="searchTerm">
+				</mat-form-field>
+			  </div>
 			<ul class="navbar-nav">
 				<li class="nav-item">
 					<!-- The profile button logic -->

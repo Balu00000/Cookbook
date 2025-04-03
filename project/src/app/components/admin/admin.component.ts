@@ -17,11 +17,25 @@ import {
   TemplateIdDirective,
 } from '@coreui/angular-pro';
 import { NavbarComponent } from '../navbar/navbar.component';
-import { InterpolationConfig } from '@angular/compiler';
+import { AdminService } from '../../services/admin.service';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { GetAllFoodService } from '../../services/get-all-food.service';
+import { HashService } from '../../services/hash.service';
+import { CommonModule } from '@angular/common';
+import { PopoverModule } from '@coreui/angular-pro';
+import { LoggedInServiceService } from '../../services/logged-in-service.service';
+import { DiscoverService } from '../../services/discover.service';
 
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
+  styleUrl: './admin.component.css',
+
   standalone: true,
   imports: [
     AlignDirective,
@@ -38,33 +52,258 @@ import { InterpolationConfig } from '@angular/compiler';
     TableColorDirective,
     TemplateIdDirective,
     NavbarComponent,
+    ReactiveFormsModule,
+    CommonModule,
+    PopoverModule,
   ],
+  providers: [AdminService],
 })
 export class AdminComponent {
   ngOnInit() {
-    this.fetch();
+    this.fetchUsers();
+    this.fetchRecipes();
+    this.getAllDifficulties();
+    this.getAllMealType();
+    this.getAllCuisine();
+    this.getAllDietary();
   }
 
-  yuh: IItem[] = [];
+  errorMessage: string = '';
+  recipeAdd: FormGroup;
 
-  token = sessionStorage.getItem('auth_token');
+  constructor(
+    private adminService: AdminService,
+    private allFood: GetAllFoodService,
+    private fb: FormBuilder,
+    private loggedIn: LoggedInServiceService,
+    private discover: DiscoverService
+  ) {
+    this.recipeAdd = this.fb.group({
+      name: ['', [Validators.required]],
+      image: [null, [Validators.required]],
+      description: ['', [Validators.required]],
+      preptime: ['', [Validators.required]],
+      instructions: ['', [Validators.required]],
+      difficultyid: [null, [Validators.required]],
+      mealtypeid: [null, [Validators.required]],
+      cuisineid: [null, [Validators.required]],
+      dietaryid: [null, [Validators.required]],
+      ingredients: ['', [Validators.required]],
+    });
+  }
 
-  decodedToken: any;
+  button1: boolean = false;
+  button2: boolean = false;
+  button3: boolean = true;
+  button4: boolean = false;
 
-  async fetch() {
-    try {
-      const response = await fetch(
-        'http://127.0.0.1:8080/CookBook-1.0-SNAPSHOT/webresources/user/getAllUser'
-      );
-      const data = await response.json();
-      console.log(data.result);
-      return (this.usersData = data.result);
-    } catch (exc) {
-      console.error('fetch erro: ' + exc);
+  buttonActive(button: 'user' | 'admin' | 'recipeMod' | 'recipeAdd') {
+    const buttonState = {
+      user: [true, false, false, false],
+      admin: [false, true, false, false],
+      recipeMod: [false, false, true, false],
+      recipeAdd: [false, false, false, true],
+    };
+
+    [this.button1, this.button2, this.button3, this.button4] = buttonState[
+      button
+    ] || [false, false, true, false];
+    console.log(button);
+  }
+
+  onRecipeAdd() {
+    this.addRecipe();
+  }
+
+  url: string = 'http://127.0.0.1:8080/CookBook-1.0-SNAPSHOT/webresources/';
+
+  fetchUsers(): void {
+    this.adminService.getAllUsers().subscribe({
+      next: (response) => {
+        this.usersData = response.result;
+      },
+      error: (error) => console.error('Fetch error:', error),
+    });
+  }
+
+  fetchRecipes(): void {
+    this.allFood.LALALALALALAL().subscribe({
+      next: (response) => {
+        console.log('Recipes Data:', response.result); // Debugging
+        this.recipeData = response.result;
+      },
+      error: (error) => console.error('Fetch error:', error),
+    });
+  }
+
+  // Delete user and refresh list
+  deleteUser(id: number, isDeleted: boolean): void {
+    if (isDeleted == undefined) {
+      if (confirm('Are you sure you want to delete this user?')) {
+        this.adminService.deleteUser(id).subscribe({
+          next: () => {
+            alert('User deleted successfully!');
+            this.fetchUsers(); // Refresh the user list
+          },
+          error: (error) => console.error('Error deleting user:', error),
+        });
+      }
     }
   }
 
+  deleteRecipe(id: number, isDeleted: boolean): void {
+    if (isDeleted == undefined) {
+      if (confirm('Are you sure you want to delete this Recipe?')) {
+        this.adminService.deleteRecipe(id).subscribe({
+          next: () => {
+            alert('Recipe deleted successfully!');
+            this.fetchRecipes(); // Refresh the user list
+          },
+          error: (error) => console.error('Error recipe:', error),
+        });
+      }
+    }
+  }
+
+  // username: string;
+  //   image: string;
+  //   description: string;
+  //   preptime: number;
+  //   userId: number;
+  //   instructions: string;
+  //   difficultyId: number;
+  //   mealTypeId: number;
+  //   cuisineId: number;
+  //   ingredients: string;
+
+  addRecipe(): void {
+    let {
+      name,
+      image,
+      userid,
+      description,
+      preptime,
+      instructions,
+      difficultyid,
+      mealtypeid,
+      cuisineid,
+      dietaryid,
+      ingredients,
+    } = this.recipeAdd.value;
+
+    console.log(this.recipeAdd.value);
+
+    userid = this.loggedIn.whatUser();
+
+    // Proceed to convert the image to Base64 if it is valid
+    this.toBase64(image)
+      .then((imageBase64) => {
+        const data = {
+          name: name, // The recipe's name
+          image: imageBase64, // Image of the food
+          description: description, // Recipe description
+          preptime: preptime.toString(), // Recipe prep time
+          userid: userid, // The user's id
+          instructions: instructions?.replace(/\n/g, '§') || '', // Recipe instructions
+          difficultyid: difficultyid, // Recipe difficulty ID
+          mealtypeid: mealtypeid, // Recipe meal type ID
+          cuisineid: cuisineid, // Recipe cuisine ID
+          dietaryid: dietaryid,
+          ingredients: ingredients, // Recipe ingredients
+        };
+
+        this.adminService.addRecipe(data).subscribe({
+          next: () => {
+            alert('Recipe successfully added!');
+          },
+          error: (error) => console.error('Recipe Adding Error: ', error),
+        });
+      })
+      .catch((error) => {
+        console.error('Base64 conversion error:', error);
+      });
+  }
+
+  imagePreview: string | ArrayBuffer | null = '';
+
+  onFileSelected(event: Event) {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (file) {
+      this.recipeAdd.patchValue({ image: file });
+      this.recipeAdd.get('image')?.updateValueAndValidity();
+
+      // Image preview (if you want to show the user a preview)
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagePreview = reader.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  difficulties: { name: string, id: number }[] = [];
+  mealTypes: { type: string, id:number }[] = [];
+  cuisines: { name: string, id:number }[] = [];
+  dietarys: { type: string, id:number }[] = [];
+
+  getAllDifficulties(): void {
+    this.discover.difficulty().subscribe({
+      next: (response) => {
+        for(let i=0; i<response.result.length; i++) {
+          console.log(response.result)
+          this.difficulties = response.result;
+        }
+      },
+      error: (error) => console.error('Fetch error: ', error),
+    });
+  }
+
+  getAllMealType(): void {
+    this.discover.mealType().subscribe({
+      next: (response) => {
+        this.mealTypes = response.result
+      },
+      error: (error) => console.error('Fetch error: ', error)
+    })
+  }
+
+  getAllCuisine():void {
+    this.discover.cuisine().subscribe({
+      next: (response) => {
+        this.cuisines = response.result
+      },
+      error: (error) => console.error('Fetch error: ', error)
+    })
+  }
+
+  getAllDietary(): void{
+    this.discover.dietary().subscribe({
+      next: (response) => {
+        this.dietarys = response.result
+      },
+      error: (error) => console.error('Fetch error: ', error)
+    })
+  }
+
+  toBase64(file: File | null): Promise<string> {
+    return new Promise((resolve, reject) => {
+      if (!file || !(file instanceof Blob)) {
+        reject(new Error('Invalid file type'));
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result!.toString().split(',')[1]); // Extract Base64
+      reader.onerror = (error) => reject(error);
+
+      reader.readAsDataURL(file);
+    });
+  }
+
+  adminify() {}
+
   usersData: IItem[] = [];
+  recipeData: IItem[] = [];
 
   columns: (IColumn | string)[] = [
     {
@@ -89,10 +328,67 @@ export class AdminComponent {
       label: 'Admin',
       _style: { width: '15%' },
     },
-    { 
+    {
       key: 'isDeleted',
-      label: 'Deleted', 
-      _style: { width: '7%' } 
+      label: 'Deleted',
+      _style: { width: '7%' },
+    },
+    {
+      key: 'show',
+      label: '',
+      _style: { width: '5%' },
+      filter: false,
+      sorter: false,
+    },
+  ];
+
+  columns1: (IColumn | string)[] = [
+    {
+      key: 'id',
+      label: 'id',
+      _style: { width: '2%' },
+    },
+    {
+      key: 'name',
+      label: 'Recipe Name',
+      _style: { width: '5%' },
+      _props: { color: 'danger', class: 'fw-bold' },
+    },
+    {
+      key: 'description',
+      label: 'Description',
+      _style: { width: '30%' },
+      _props: { color: 'pimary', class: 'fw-bold' },
+    },
+    {
+      key: 'cuisineName',
+      label: 'Cuisine',
+      _style: { width: '5%' },
+    },
+    {
+      key: 'rating',
+      label: 'Rating',
+      _style: { width: '2%' },
+    },
+    {
+      key: 'difficultyName',
+      label: 'Difficulty',
+      _style: { width: '5%' },
+    },
+    {
+      key: 'mealTypeName',
+      label: 'Meal Type',
+      _style: { width: '7%' },
+    },
+    {
+      key: 'prepTime',
+      label: 'Time (Minutes)',
+      _style: { width: '3%' },
+    },
+    {
+      key: 'username',
+      label: 'username',
+      _style: { width: '10%' },
     },
     {
       key: 'show',
