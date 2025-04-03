@@ -160,4 +160,13 @@ public class FoodController {
         JSONObject obj = layer.getFoodByAddedAt();
         return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
     }
+    
+    @GET
+    @Path("getFoodById")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getFoodById(@QueryParam("id") Integer id){
+        
+        JSONObject obj = layer.getFoodById(id);
+        return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
+    }
 }

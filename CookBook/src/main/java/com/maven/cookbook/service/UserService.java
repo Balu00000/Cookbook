@@ -12,7 +12,7 @@ import org.json.JSONObject;
 
 
 public class UserService { //U.Model->U.Service->U.Controller
-    private User layer = new User();
+    private final User layer = new User();
     private static final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
     
     public static boolean isValidEmail(String email) {

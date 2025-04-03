@@ -330,6 +330,8 @@ public class FoodService { //F.Model->F.Service->F.Controller
                 toAdd.put("mealTypeName", food.getMealTypeType());
                 toAdd.put("cuisineName", food.getCuisineType());
                 toAdd.put("addedAt", food.getFood().getAddedAt());
+                toAdd.put("isDeleted", food.getFood().getIsDeleted());
+                toAdd.put("deletedAt", food.getFood().getDeletedAt());
 
                 result.put(toAdd);
             }
@@ -446,6 +448,47 @@ public class FoodService { //F.Model->F.Service->F.Controller
                 toAdd.put("mealTypeName", food.getMealTypeType());
                 toAdd.put("cuisineName", food.getCuisineType());
                 toAdd.put("addedAt", food.getFood().getAddedAt());
+
+                result.put(toAdd);
+            }
+            toReturn.put("result", result);
+        }
+        toReturn.put("status", status);
+        toReturn.put("statusCode", statusCode);
+        return toReturn;
+    }
+    
+    public JSONObject getFoodById(Integer id) {
+        JSONObject toReturn = new JSONObject();
+        String status = "success";
+        int statusCode = 200;
+        List<FoodDTO> modelResult = layer.getFoodById(id);
+        if(modelResult == null) {
+            status = "modelException";
+            statusCode = 500;
+        }else if (modelResult.isEmpty()) {
+            status = "noFoodFound";
+            statusCode = 404;
+        }else {
+            JSONArray result = new JSONArray();
+
+            for(FoodDTO food: modelResult) {
+                JSONObject toAdd = new JSONObject();
+                
+                toAdd.put("id", food.getFood().getId());
+                toAdd.put("name", food.getFood().getName());
+                toAdd.put("image", food.getFood().getBase64Image());
+                toAdd.put("description", food.getFood().getDescription());
+                toAdd.put("prepTime", food.getFood().getPrepTime());
+                toAdd.put("username", food.getUsername());
+                toAdd.put("rating", food.getFood().getRating());
+                toAdd.put("instructions", food.getFood().getInstructions());
+                toAdd.put("difficultyName", food.getDifficultyName());
+                toAdd.put("mealTypeName", food.getMealTypeType());
+                toAdd.put("cuisineName", food.getCuisineType());
+                toAdd.put("addedAt", food.getFood().getAddedAt());
+                toAdd.put("isDeleted", food.getFood().getIsDeleted());
+                toAdd.put("deletedAt", food.getFood().getDeletedAt());
 
                 result.put(toAdd);
             }

@@ -2,7 +2,6 @@
 package com.maven.cookbook.controller; 
 
 import com.maven.cookbook.model.User;
-import static com.maven.cookbook.model.User.convertImageToBytes;
 import com.maven.cookbook.service.UserService;
 import java.io.IOException;
 import javax.ws.rs.core.Context;

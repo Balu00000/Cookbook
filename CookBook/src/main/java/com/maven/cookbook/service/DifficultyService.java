@@ -28,12 +28,13 @@ public class DifficultyService { //D.Model->D.Service->D.Controller
                 
                 toAdd.put("id", difficulty.getId());
                 toAdd.put("name", difficulty.getName());
-                toAdd.put("equipment", difficulty.getName());
+                toAdd.put("equipment", difficulty.getEquipment());
 
                 result.put(toAdd);
             }
             toReturn.put("result", result);
         }
+        
         toReturn.put("status", status);
         toReturn.put("statusCode", statusCode);
         return toReturn;

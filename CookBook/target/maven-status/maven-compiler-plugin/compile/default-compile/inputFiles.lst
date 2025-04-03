@@ -1,5 +1,7 @@
 D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\service\FavouriteService.java
+D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\controller\IngredientController.java
 D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\config\JWT.java
+D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\service\IngredientService.java
 D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\model\Favourite.java
 D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\model\Difficulty.java
 D:\Projects\Java Projects\CookBook\src\main\java\com\maven\cookbook\model\UserDTO.java

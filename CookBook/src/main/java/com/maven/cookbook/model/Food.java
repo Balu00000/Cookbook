@@ -154,23 +154,6 @@ public class Food implements Serializable {
         }
     }
 
-    public Food(Integer id, String name, String image, String description, String preptime, Integer userId, Integer rating,String instructions, Integer difficultyId, Integer mealTypeId, Integer cuisineId, Date addedAt, Boolean isDeleted, Date deletedAt){
-        this.id = id;
-        this.name = name;
-        this.image = image;
-        this.description = description;
-        this.prepTime = preptime;
-        this.userId = userId;
-        this.rating = rating;
-        this.instructions = instructions;
-        this.difficultyId = difficultyId;
-        this.mealTypeId = mealTypeId;
-        this.cuisineId = cuisineId;
-        this.addedAt = addedAt;
-        this.isDeleted = isDeleted;
-        this.deletedAt = deletedAt;
-    }
-
     public Food(Integer id, String name, String image, String description, String preptime, Integer rating, String instructions, Date addedAt) {
         this.id = id;
         this.name = name;
@@ -191,6 +174,19 @@ public class Food implements Serializable {
         this.rating = rating;
         this.instructions = instructions;
         this.addedAt = addedAt;
+    }
+    
+    public Food(Integer id, String name, byte[] image, String description, String preptime, Integer rating, String instructions, Date addedAt, boolean isDeleted, Date deletedAt) {
+        this.id = id;
+        this.name = name;
+        this.base64Image = image != null ? Base64.getEncoder().encodeToString(image) : null;
+        this.description = description;
+        this.prepTime = preptime;
+        this.rating = rating;
+        this.instructions = instructions;
+        this.addedAt = addedAt;
+        this.isDeleted = isDeleted;
+        this.deletedAt = deletedAt;
     }
     
     public Food(String name, byte[] image, String description, String preptime,Integer userid, String instructions, Integer difficultyid, Integer mealtypeid, Integer cuisineid) {
@@ -615,7 +611,7 @@ public class Food implements Serializable {
         }
     }
     
-public List<FoodDTO> getFoodByMealType(Integer id){
+    public List<FoodDTO> getFoodByMealType(Integer id){
         EntityManager em = emf.createEntityManager();
         
         try {
@@ -678,7 +674,9 @@ public List<FoodDTO> getFoodByMealType(Integer id){
                     food[4].toString(),
                     Integer.valueOf(food[6].toString()), 
                     food[7].toString(),
-                    formatter.parse(food[11].toString())
+                    formatter.parse(food[11].toString()),
+                    Boolean.parseBoolean(food[12].toString()),
+                    food[13] == null ? null : formatter.parse(food[13].toString())
                 );
                 String username = food[5].toString();
                 String difficultyName = food[8].toString();
@@ -705,7 +703,6 @@ public List<FoodDTO> getFoodByMealType(Integer id){
             spq.registerStoredProcedureParameter("idIN", Integer.class, ParameterMode.IN);
             
             spq.setParameter("idIN", id);
-            
             spq.execute();
             
             return true;
@@ -759,6 +756,7 @@ public List<FoodDTO> getFoodByMealType(Integer id){
             em.close();
         }
     }
+    
     public Boolean addFood(Food f, String ingredients){
         EntityManager em = emf.createEntityManager();
         
@@ -807,6 +805,48 @@ public List<FoodDTO> getFoodByMealType(Integer id){
         
         try {
             StoredProcedureQuery spq = em.createStoredProcedureQuery("getFoodByAddedAt");
+            spq.execute();
+            
+            List<FoodDTO> toReturn = new ArrayList();
+            List<Object[]> resultList = spq.getResultList();
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            
+            for(Object[] food : resultList){
+                Food f = new Food(
+                    Integer.valueOf(food[0].toString()),
+                    food[1].toString(),
+                    food[2] != null ? (byte[]) food[2] : null,
+                    food[3].toString(),
+                    food[4].toString(),
+                    Integer.valueOf(food[6].toString()), 
+                    food[7].toString(),
+                    formatter.parse(food[11].toString())
+                );
+                String username = food[5].toString();
+                String difficultyName = food[8].toString();
+                String mealTypeType = food[9].toString();
+                String cuisineType = food[10].toString();
+                
+                toReturn.add(new FoodDTO(f, username, difficultyName, mealTypeType, cuisineType));
+            }
+            return toReturn;
+        } catch (NumberFormatException | ParseException e) {
+            System.err.println("Hiba: "+ e.getLocalizedMessage());
+            return null;
+        }finally{
+            em.clear();
+            em.close();
+        }
+    }
+    
+    public List<FoodDTO> getFoodById(Integer id){
+        EntityManager em = emf.createEntityManager();
+        
+        try {
+            StoredProcedureQuery spq = em.createStoredProcedureQuery("getFoodById");
+            spq.registerStoredProcedureParameter("idIN", Integer.class, ParameterMode.IN);
+            
+            spq.setParameter("idIN", id);
             spq.execute();
             
             List<FoodDTO> toReturn = new ArrayList();

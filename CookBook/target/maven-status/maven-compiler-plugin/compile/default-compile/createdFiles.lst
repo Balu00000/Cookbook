@@ -23,10 +23,12 @@ com\maven\cookbook\model\MealType.class
 com\maven\cookbook\service\DifficultyService.class
 com\maven\cookbook\model\FoodXAllergen.class
 com\maven\cookbook\model\Ingredient.class
+com\maven\cookbook\service\IngredientService.class
 com\maven\cookbook\config\JWT.class
 com\maven\cookbook\model\FoodXDietary.class
 com\maven\cookbook\service\MealTypeService.class
 com\maven\cookbook\controller\ApplicationConfig.class
+com\maven\cookbook\controller\IngredientController.class
 com\maven\cookbook\controller\DietaryController.class
 com\maven\cookbook\model\Allergen.class
 com\maven\cookbook\controller\FavouriteController.class

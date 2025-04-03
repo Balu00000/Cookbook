@@ -92,8 +92,7 @@ public class User implements Serializable {
     
     private String base64Image;
     
-    static EntityManagerFactory emf = Persistence.createEntityManagerFactory(
-            "com.maven_CookBook_war_1.0-SNAPSHOTPU");   
+    static EntityManagerFactory emf = Persistence.createEntityManagerFactory("com.maven_CookBook_war_1.0-SNAPSHOTPU");   
     
     public User() { //U.Model->U.Service->U.Controller
     }
