@@ -138,11 +138,11 @@ public class Favourite implements Serializable {
             List<Object[]> resultList = spq.getResultList();
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             
-            for(Object[] food : resultList){ //This handles food table results because that's the only thing returned by sql
+            for(Object[] food : resultList){
                 Food f = new Food(
                     Integer.valueOf(food[0].toString()),
                     food[1].toString(),
-                    food[2].toString(),
+                    food[2] != null ? (byte[]) food[2] : null,
                     food[3].toString(),
                     food[4].toString(),   
                     Integer.valueOf(food[6].toString()), 

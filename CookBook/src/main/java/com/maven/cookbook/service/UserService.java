@@ -221,7 +221,6 @@ public class UserService { //U.Model->U.Service->U.Controller
         }else {
             JSONObject result = new JSONObject();
             
-            System.out.println(modelResult.getUser().getBase64Image());
             result.put("username", modelResult.getUser().getUsername());
             result.put("image", modelResult.getUser().getBase64Image());
             result.put("createdAt", modelResult.getUser().getCreatedAt());

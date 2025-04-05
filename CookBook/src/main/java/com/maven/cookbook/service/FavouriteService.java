@@ -29,7 +29,7 @@ public class FavouriteService { //F.Model->F.Service->F.Controller
                 
                 toAdd.put("id", food.getFood().getId());
                 toAdd.put("name", food.getFood().getName());
-                toAdd.put("image", food.getFood().getImage());
+                toAdd.put("image", food.getFood().getBase64Image());
                 toAdd.put("description", food.getFood().getDescription());
                 toAdd.put("prepTime", food.getFood().getPrepTime());
                 toAdd.put("username", food.getUsername());

@@ -6,7 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class CuisineService { //C.Model->C.Service->C.Controller
-    private Cuisine layer = new Cuisine();
+    private final Cuisine layer = new Cuisine();
     
     public JSONObject getAllCuisine(){
         JSONObject toReturn = new JSONObject();
