@@ -3,6 +3,7 @@ package com.maven.cookbook.service; //Default Java Class
 import com.maven.cookbook.config.JWT;
 import com.maven.cookbook.model.User;
 import com.maven.cookbook.model.UserDTO;
+import com.maven.cookbook.repository.UserRepository;
 import java.io.IOException;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -11,8 +12,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 
-public class UserService { //U.Model->U.Service->U.Controller
-    private final User layer = new User();
+public class UserService { //U.Model->U.Repository->U.Service->U.Controller
+    protected UserRepository layer = new UserRepository();
     private static final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
     
     public static boolean isValidEmail(String email) {
@@ -21,7 +22,7 @@ public class UserService { //U.Model->U.Service->U.Controller
         return matcher.matches();
     }
     
-    public static boolean isValidPassword(String password){
+    public boolean isValidPassword(String password){
         if(password.length() < 8){
             return false;
         }
@@ -51,35 +52,41 @@ public class UserService { //U.Model->U.Service->U.Controller
         int statusCode = 200;
 
         if (isValidEmail(email)) {
-            User modelResult = layer.login(email, password);
-            if (modelResult == null) {
-                status = "modelException";
-                statusCode = 500;
-            } else {
-                if (modelResult.getId() == null) {
-                    status = "userNotFound";
-                    statusCode = 404;
-                }else if(modelResult.getIsDeleted() == true){
-                    status = "deletedUser";
-                    statusCode = 404;
-                }
-                else {
-                    JSONObject result = new JSONObject();
-                    result.put("id", modelResult.getId());
-                    result.put("username", modelResult.getUsername());
-                    result.put("image", modelResult.getBase64Image());
-                    result.put("email", modelResult.getEmail());
-                    result.put("isAdmin", modelResult.getIsAdmin());
-                    result.put("createdAt", modelResult.getCreatedAt());
-                    result.put("isDeleted", modelResult.getIsDeleted());
-                    result.put("deletedAt", modelResult.getDeletedAt());
-                    result.put("jwt", JWT.createJWT(modelResult));
+            if(isValidPassword(password)){
+                User modelResult = layer.login(email, password);
+                if (modelResult == null) {
+                    status = "modelException";
+                    statusCode = 500;
+                } else {
+                    if (modelResult.getId() == null) {
+                        status = "userNotFound";
+                        statusCode = 404;
+                    }else if(modelResult.getIsDeleted() == true){
+                        status = "deletedUser";
+                        statusCode = 404;
+                    }
+                    else {
+                        JSONObject result = new JSONObject();
+                        result.put("id", modelResult.getId());
+                        result.put("username", modelResult.getUsername());
+                        result.put("image", modelResult.getBase64Image());
+                        result.put("email", modelResult.getEmail());
+                        result.put("isAdmin", modelResult.getIsAdmin());
+                        result.put("createdAt", modelResult.getCreatedAt());
+                        result.put("isDeleted", modelResult.getIsDeleted());
+                        result.put("deletedAt", modelResult.getDeletedAt());
+                        result.put("jwt", JWT.createJWT(modelResult));
 
-                    toReturn.put("result", result);
+                        toReturn.put("result", result);
+                    }
                 }
             }
+            else {
+                status = "InvalidPassword";
+                statusCode = 417;
+            }
         } else {
-            status = "invalidEmail";
+            status = "InvalidEmail";
             statusCode = 417;
         }
 
@@ -95,8 +102,10 @@ public class UserService { //U.Model->U.Service->U.Controller
         
         if(isValidEmail(u.getEmail())){
             if(isValidPassword(u.getPassword())){
-                boolean userIsExists = User.isUserExists(u.getEmail());
-                if(User.isUserExists(u.getEmail()) == null){
+                
+                Boolean userIsExists = UserRepository.isUserExists(u.getEmail());
+                
+                if(userIsExists == null){
                     status = "ModelException";
                     statusCode = 500;
                 }else if (userIsExists == true){
@@ -131,9 +140,9 @@ public class UserService { //U.Model->U.Service->U.Controller
         if(JWT.isAdmin(jwt)) {
             if(isValidEmail(u.getEmail())){
                 if(isValidPassword(u.getPassword())){
-                    boolean userIsExists = User.isUserExists(u.getEmail());
+                    boolean userIsExists = UserRepository.isUserExists(u.getEmail());
                     
-                    if(User.isUserExists(u.getEmail()) == null){
+                    if(UserRepository.isUserExists(u.getEmail()) == null){
                         status = "ModelException";
                         statusCode = 500;
                     }else if (userIsExists == true){

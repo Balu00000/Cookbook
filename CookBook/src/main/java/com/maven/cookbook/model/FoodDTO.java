@@ -6,7 +6,14 @@ public class FoodDTO{
     private String difficultyName;
     private String mealTypeType;
     private String cuisineType;
-
+    
+    public FoodDTO(){
+    }
+    
+    public FoodDTO(Food food){
+        this.food = food;
+    }
+    
     public FoodDTO(Food food, String username, String difficultyName,
             String mealTypeType, String cuisineType) {
         this.food = food;

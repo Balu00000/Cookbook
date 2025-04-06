@@ -36,26 +36,9 @@ public class MealType implements Serializable {
     @Column(name = "type")
     private String type;
     
-    static EntityManagerFactory emf = Persistence.createEntityManagerFactory(
-            "com.maven_CookBook_war_1.0-SNAPSHOTPU");
-    
     public MealType() { //MT.Model->MT.Service->MT.Controller
     }
-
-    public MealType(Integer id) {
-        EntityManager em = emf.createEntityManager();
-        try{
-            MealType mt = em.find(MealType.class, id);
-            
-            this.id = mt.getId();
-            this.type = mt.getType();
-        } catch(Exception ex){
-            System.err.println("Hiba: " + ex.getLocalizedMessage());
-        } finally {
-            em.clear();
-            em.close();
-        }
-    }
+    
     public MealType(Integer id, String type){
         this.id = id;
         this.type = type;
@@ -100,32 +83,5 @@ public class MealType implements Serializable {
     @Override
     public String toString() {
         return "com.maven.cookbook.MealType[ id=" + id + " ]";
-    }
-    
-    public List<MealType> getAllMealType(){
-        EntityManager em = emf.createEntityManager();
-        
-        try {
-            StoredProcedureQuery spq = em.createStoredProcedureQuery("getAllMealType");
-            spq.execute();
-            
-            List<MealType> toReturn = new ArrayList();
-            List<Object[]> resultList = spq.getResultList();
-            
-            for(Object[] type : resultList){
-                MealType mt = new MealType(
-                    Integer.valueOf(type[0].toString()),
-                    type[1].toString()
-                );
-                toReturn.add(mt);
-            }
-            return toReturn;
-        } catch (Exception e) {
-            System.err.println("Hiba: "+ e.getLocalizedMessage());
-            return null;
-        }finally{
-            em.clear();
-            em.close();
-        }
     }
 }

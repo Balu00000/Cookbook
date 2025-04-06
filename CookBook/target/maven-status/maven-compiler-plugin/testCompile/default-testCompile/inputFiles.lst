@@ -1,2 +1,7 @@
-D:\Projects\Java Projects\CookBook\src\test\java\com\maven\cookbook\model\UserTest.java
-D:\Projects\Java Projects\CookBook\src\test\java\com\maven\cookbook\model\FoodTest.java
+D:\Projects\Java Projects\CookBook\src\test\java\com\maven\cookbook\service\UserServiceTest.java
+D:\Projects\Java Projects\CookBook\src\test\java\com\maven\cookbook\service\CuisineServiceTest.java
+D:\Projects\Java Projects\CookBook\src\test\java\com\maven\cookbook\service\MealTypeServiceTest.java
+D:\Projects\Java Projects\CookBook\src\test\java\com\maven\cookbook\service\DietaryServiceTest.java
+D:\Projects\Java Projects\CookBook\src\test\java\com\maven\cookbook\service\IngredientServiceTest.java
+D:\Projects\Java Projects\CookBook\src\test\java\com\maven\cookbook\service\DifficultyServiceTest.java
+D:\Projects\Java Projects\CookBook\src\test\java\com\maven\cookbook\service\FoodServiceTest.java

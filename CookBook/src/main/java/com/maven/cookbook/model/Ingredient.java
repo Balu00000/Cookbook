@@ -1,7 +1,6 @@
 package com.maven.cookbook.model;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Basic;
@@ -20,10 +19,6 @@ import javax.persistence.StoredProcedureQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
-/**
- *
- * @author Gama
- */
 @Entity
 @Table(name = "ingredient")
 @NamedQueries({
@@ -60,35 +55,10 @@ public class Ingredient implements Serializable {
     
     private Integer amount;
     private String measurment;
-    
-    static EntityManagerFactory emf = Persistence.createEntityManagerFactory("com.maven_CookBook_war_1.0-SNAPSHOTPU");  
-    
+        
     public Ingredient() {
     }
-    
-    public Ingredient(Integer id) {
         
-        EntityManager em = emf.createEntityManager();
-
-        try {
-            Ingredient i = em.find(Ingredient.class, id);
-
-            this.id = i.getId();
-            this.name = i.getName();
-            this.protein = i.getProtein();
-            this.carb = i.getCarb();
-            this.fat = i.getFat();
-            this.cholesterol = i.getCholesterol();
-            this.fiber = i.getFiber();
-            
-        } catch (Exception ex) {
-            System.err.println("Hiba: " + ex.getLocalizedMessage());
-        } finally {
-            em.clear();
-            em.close();
-        }
-    }
-    
     public Ingredient(Integer id, String name, Integer amount, String measurment){
         this.id = id;
         this.name = name;
@@ -191,39 +161,5 @@ public class Ingredient implements Serializable {
     @Override
     public String toString() {
         return "com.maven.cookbook.Ingredient[ id=" + id + " ]";
-    }
-    
-    public List<Ingredient> getIngredientByFoodId(Integer id){
-        EntityManager em = emf.createEntityManager();
-        
-        try {
-            StoredProcedureQuery spq = em.createStoredProcedureQuery("getIngredientByFoodId");
-            spq.registerStoredProcedureParameter("idIN", Integer.class, ParameterMode.IN);
-            
-            spq.setParameter("idIN", id);
-            
-            spq.execute();
-            
-            List<Ingredient> toReturn = new ArrayList();
-            List<Object[]> resultList = spq.getResultList();
-            for(Object[] ingredient : resultList){
-                Ingredient i = new Ingredient(
-                    Integer.valueOf(ingredient[0].toString()),
-                    ingredient[1].toString(),
-                    Integer.valueOf(ingredient[2].toString()),
-                    ingredient[3].toString()
-                );
-                toReturn.add(i);
-            }
-            System.out.println(toReturn);
-            return toReturn;
-            
-        } catch (NumberFormatException e) {
-            System.err.println("Hiba: "+ e.getLocalizedMessage());
-            return null;
-        }finally{
-            em.clear();
-            em.close();
-        }
     }
 }

@@ -1,12 +1,13 @@
 package com.maven.cookbook.service;
 
 import com.maven.cookbook.model.Cuisine;
+import com.maven.cookbook.repository.CuisineRepository;
 import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class CuisineService { //C.Model->C.Service->C.Controller
-    private final Cuisine layer = new Cuisine();
+    protected CuisineRepository layer = new CuisineRepository();
     
     public JSONObject getAllCuisine(){
         JSONObject toReturn = new JSONObject();

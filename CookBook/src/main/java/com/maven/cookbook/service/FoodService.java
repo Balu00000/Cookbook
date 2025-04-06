@@ -3,12 +3,13 @@ package com.maven.cookbook.service;
 import com.maven.cookbook.config.JWT;
 import com.maven.cookbook.model.Food;
 import com.maven.cookbook.model.FoodDTO;
+import com.maven.cookbook.repository.FoodRepository;
 import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class FoodService { //F.Model->F.Service->F.Controller
-    private Food layer = new Food();
+public class FoodService { //F.Model->F.Repository->F.Service->F.Controller
+    protected FoodRepository layer = new FoodRepository();
     
     /* id
         name

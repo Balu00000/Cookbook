@@ -1,2 +1,14 @@
-com\maven\cookbook\model\FoodTest.class
-com\maven\cookbook\model\UserTest.class
+com\maven\cookbook\service\FoodServiceTest.class
+com\maven\cookbook\service\IngredientServiceTest.class
+com\maven\cookbook\service\DifficultyServiceTest.class
+com\maven\cookbook\service\UserServiceTest$1.class
+com\maven\cookbook\service\MealTypeServiceTest$1.class
+com\maven\cookbook\service\CuisineServiceTest$1.class
+com\maven\cookbook\service\FoodServiceTest$1.class
+com\maven\cookbook\service\IngredientServiceTest$1.class
+com\maven\cookbook\service\DietaryServiceTest.class
+com\maven\cookbook\service\DifficultyServiceTest$1.class
+com\maven\cookbook\service\CuisineServiceTest.class
+com\maven\cookbook\service\MealTypeServiceTest.class
+com\maven\cookbook\service\DietaryServiceTest$1.class
+com\maven\cookbook\service\UserServiceTest.class

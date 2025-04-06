@@ -1,12 +1,13 @@
 package com.maven.cookbook.service;
 
 import com.maven.cookbook.model.Dietary;
+import com.maven.cookbook.repository.DietaryRepository;
 import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class DietaryService { //D.Model->D.Service->D.Controller
-    private Dietary layer = new Dietary();
+    protected DietaryRepository layer = new DietaryRepository();
     
     public JSONObject getAllDietary(){
         JSONObject toReturn = new JSONObject();

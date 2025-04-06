@@ -1,12 +1,13 @@
 package com.maven.cookbook.service;
 
 import com.maven.cookbook.model.MealType;
+import com.maven.cookbook.repository.MealTypeRepository;
 import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class MealTypeService { //MT.Model->MT.Service->MT.Controller
-    private MealType layer = new MealType();
+    protected MealTypeRepository layer = new MealTypeRepository();
     
     public JSONObject getAllMealType(){
         JSONObject toReturn = new JSONObject();

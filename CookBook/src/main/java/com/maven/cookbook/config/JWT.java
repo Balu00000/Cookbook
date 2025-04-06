@@ -2,6 +2,7 @@ package com.maven.cookbook.config;
 
 import com.maven.cookbook.exception.ExceptionLogger;
 import com.maven.cookbook.model.User;
+import com.maven.cookbook.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
@@ -26,7 +27,9 @@ public class JWT {
     private static final String SIGN = "09ce78e64c7d6667e04798aa897e2bbc194d0ce5d19aef677b4477ba0932d972";
     private static final byte[] SECRET = Base64.getDecoder().decode(SIGN);
     private static final ExceptionLogger exceptionLogger = new ExceptionLogger(JWT.class);
-
+    private static final UserRepository layer = new UserRepository();
+    
+    
     public static String createJWT(User u) {
         Instant now = Instant.now();
 
@@ -51,7 +54,7 @@ public class JWT {
             Jws<Claims> result;
             result = Jwts.parser().setSigningKey(Keys.hmacShaKeyFor(SECRET)).parseClaimsJws(jwt);
             int id = result.getBody().get("id", Integer.class);
-            User u = new User(id);
+            User u = layer.findUserById(id);
 
             if (u.getId() == id) {
                 return 1;
@@ -63,6 +66,7 @@ public class JWT {
             return 3; //Akkor történik ha lejárt a JWT-k
         }
     }
+    
     public static boolean isAdmin(String jwt) {
         Jws<Claims> result; //main függvényböl
         System.out.println(jwt);

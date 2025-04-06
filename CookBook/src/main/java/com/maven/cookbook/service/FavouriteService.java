@@ -1,13 +1,13 @@
 package com.maven.cookbook.service;
 
-import com.maven.cookbook.model.Favourite;
 import com.maven.cookbook.model.FoodDTO;
+import com.maven.cookbook.repository.FavouriteRepository;
 import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class FavouriteService { //F.Model->F.Service->F.Controller
-    private Favourite layer = new Favourite();
+    protected FavouriteRepository layer = new FavouriteRepository();
     
     public JSONObject getFavouriteByUser(Integer id) {
         JSONObject toReturn = new JSONObject();

@@ -1,20 +1,14 @@
 package com.maven.cookbook.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.Persistence;
-import javax.persistence.StoredProcedureQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
@@ -36,25 +30,7 @@ public class Dietary implements Serializable {
     @Column(name = "type")
     private String type;
     
-    static EntityManagerFactory emf = Persistence.createEntityManagerFactory(
-            "com.maven_CookBook_war_1.0-SNAPSHOTPU");
-    
-    public Dietary() { //D.Model->D.Service->D.Controller
-    }
-
-    public Dietary(Integer id) {
-        EntityManager em = emf.createEntityManager();
-        try{
-            Dietary d = em.find(Dietary.class, id);
-            
-            this.id = d.getId();
-            this.type = d.getType();
-        } catch(Exception ex){
-            System.err.println("Hiba: " + ex.getLocalizedMessage());
-        } finally {
-            em.clear();
-            em.close();
-        }
+    public Dietary() { //D.Model->D.Repository->D.Service->D.Controller
     }
     
     public Dietary(Integer id, String type){
@@ -101,32 +77,5 @@ public class Dietary implements Serializable {
     @Override
     public String toString() {
         return "com.maven.cookbook.Dietary[ id=" + id + " ]";
-    }
-    
-    public List<Dietary> getAllDietary(){
-        EntityManager em = emf.createEntityManager();
-        
-        try {
-            StoredProcedureQuery spq = em.createStoredProcedureQuery("getAllDietary");
-            spq.execute();
-            
-            List<Dietary> toReturn = new ArrayList();
-            List<Object[]> resultList = spq.getResultList();
-            
-            for(Object[] diet : resultList){
-                Dietary d = new Dietary(
-                    Integer.valueOf(diet[0].toString()),
-                    diet[1].toString()
-                );
-                toReturn.add(d);
-            }
-            return toReturn;
-        } catch (NumberFormatException e) {
-            System.err.println("Hiba: "+ e.getLocalizedMessage());
-            return null;
-        }finally{
-            em.clear();
-            em.close();
-        }
     }
 }

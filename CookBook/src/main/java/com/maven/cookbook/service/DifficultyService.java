@@ -1,12 +1,13 @@
 package com.maven.cookbook.service;
 
 import com.maven.cookbook.model.Difficulty;
+import com.maven.cookbook.repository.DifficultyRepository;
 import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class DifficultyService { //D.Model->D.Service->D.Controller
-    private Difficulty layer = new Difficulty();
+    protected DifficultyRepository layer = new DifficultyRepository();
     
     public JSONObject getAllDifficulty(){
         JSONObject toReturn = new JSONObject();

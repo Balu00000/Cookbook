@@ -1,12 +1,13 @@
 package com.maven.cookbook.service;
 
 import com.maven.cookbook.model.Ingredient;
+import com.maven.cookbook.repository.IngredientRepository;
 import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class IngredientService {
-    private final Ingredient layer = new Ingredient();
+    protected IngredientRepository layer = new IngredientRepository();
     
     public JSONObject getIngredientByFoodId(Integer id) {
         JSONObject toReturn = new JSONObject();
