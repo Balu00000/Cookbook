@@ -1,22 +1,72 @@
-c-carousel{
-    color: aqua;
-    z-index: 100000;
-    max-width: 480px;
+img {
+    max-width: 30rem !important;
+    max-height: 20rem !important;
+    object-fit: contain;
 }
 
-c-carousel-caption{
-    background-color: rgba(255, 255, 255, 0.7);
-    border-radius: 6px;
-    color: black;
+h3{
+    text-align: center;
 }
 
-c-carousel img{
-    max-width: 30rem;
-    max-height: 20rem;
-    position: relative;
+h1{
+  padding-top: 10px;
+  text-align: center;
 }
 
-c-carousel{
-    border-radius: 6px;
+c-carousel-control[direction="next"]{
+  right: 20px;
+}
 
+c-carousel-indicators{
+    gap: 3px;
+}
+
+a[cButton]{
+    background-color: #fd0dc5;
+    border: none;
+}
+
+.slide-content{
+  display:flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 95%;
+  height: 100%;
+  padding: 2rem;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+
+.slide-image {
+  width: 50%;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-left: 100px;
+}
+
+.slide-caption{
+  width: 45%;
+  background-color: rgba(255, 255, 255, 0.85);
+  border-radius: 8px;
+  padding: 2rem;
+  color: black;
+  z-index: 10;
+  box-shadow: 0 4px 10px #b5179e !important;
+  }
+
+@media (max-width: 768px) {
+  .slide-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .slide-image,
+  .slide-caption {
+    width: 100%;
+  }
+
+  .slide-caption {
+    margin-top: 1rem;
+  }
 }

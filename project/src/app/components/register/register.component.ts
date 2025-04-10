@@ -14,10 +14,11 @@ import { LoggedInServiceService } from '../../services/logged-in-service.service
 import { LoginService } from '../../services/login.service';
 import { HashService } from '../../services/hash.service';
 import { HttpBackend } from '@angular/common/http';
+import { PopoverModule } from '@coreui/angular-pro';
 
 @Component({
   selector: 'app-register',
-  imports: [NavbarComponent, CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [NavbarComponent, CommonModule, ReactiveFormsModule, FormsModule, PopoverModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css',
 })

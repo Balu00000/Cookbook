@@ -28,13 +28,13 @@
     <p>{{item.name || "No Food Name Found"}}</p>
   </div>
   <div class="col-sm-12 col-md-7 col-xl-7">
-    <img src="{{item.image}}" alt="No Food Image Found">
+    <img src="{{ 'data:image/jpg;base64,' + item.image}}" alt="No Food Image Found">
   </div>
   }
 </div>
 
 <div class="row" id="favorites">
-    <p>Favorite ({{ user.favouritedFood || "we do not know" }})</p>
+    <p>Favorite ({{ user.favouritedFood  }})</p>
     <hr />
     @for (item of userFavorites; track item) {
   
@@ -42,7 +42,7 @@
       <p>{{item.name || "No Food Name Found"}}</p>
     </div>
     <div class="col-sm-12 col-md-7 col-xl-7">
-      <img src="{{item.image}}" alt="No Food Image Found">
+      <img src="{{'data:image/jpg;base64,' + item.image}}" alt="No Food Image Found">
     </div>
     }
 </div>

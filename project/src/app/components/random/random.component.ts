@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { FoodService } from '../../services/food.service';
 
 @Component({
     selector: 'app-random',
@@ -11,35 +12,17 @@ import { CommonModule } from '@angular/common';
 })
 export class RandomComponent {
 
+  constructor(private foodService: FoodService) {}
+
   recipe: any = {}
-  recipeImage: string= ""
-  recipeDescription: string= ""
-  recipeDifficulty: string = ""
-  recipeFavoritedByPeople: string = ""
-  recipeInstructions: string = ""
-  recipeInstructionsSegments: string[] = []
-
+  
   ngOnInit(){
-    this.randomRecipe()
-  }
-
-  async randomRecipe() {
-    const URL = "http://127.0.0.1:8080/CookBook-1.0-SNAPSHOT/webresources/food/getFoodByRandom"
-
-    try {
-      let randomResult = await fetch(URL)
-      if (!randomResult.ok) console.error("Response not good" + randomResult.status + " " + randomResult.statusText);
-
-      let randomData = await randomResult.json()
-      
-      this.recipe = randomData.result
-      if(this.recipe.instructions){
-        this.recipe.instructions = this.recipe.instructions.split('§')  
-      }else{
-        this.recipe.instructions
-      }
-    } catch (error) {
-      console.error(error);
-    }
+    this.foodService.randomRecipe().subscribe({
+      next: (response) => {
+        this.recipe = response.result
+        this.recipe.instructions ? this.recipe.instructions = this.recipe.instructions.split('§') : this.recipe.instructions
+      },
+      error: (error) => console.error("Error Fetching: ", error)
+    })
   }
 }

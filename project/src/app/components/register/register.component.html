@@ -41,7 +41,7 @@
             <div class="form-group">
               <label for="username1" class="form-label">
                 <i class="fas fa-user"></i>
-                Username1
+                Username
               </label>
               <input
                 type="text"
@@ -63,7 +63,7 @@
             <div class="form-group">
               <label for="email1" class="form-label">
                 <i class="fas fa-envelope"></i>
-                Email1
+                Email
               </label>
               <input
                 type="text"
@@ -85,7 +85,20 @@
             <div class="form-group">
               <label for="password1" class="form-label">
                 <i class="fas fa-lock"></i>
-                Password1
+                Password
+                <i
+                    class="fa-solid fa-circle-info"
+                    [cPopover]="popoverHtml"
+                    cPopoverPlacement="right"
+                  >
+                    <ng-template #popoverHtml>
+                      <h3 class="popover-header">Help</h3>
+                      <div class="popover-body">
+                        Your password must at least have: <br>
+                        1 number, a special character and an uppercase letter
+                      </div>
+                    </ng-template>
+                    </i>
               </label>
               <div class="password-input">
                 <input
@@ -159,8 +172,8 @@
             }
             <div class="form-group">
               <label for="username" class="form-label">
-                <i class="fas fa-user"></i>
-                Username
+                <i class="fas fa-envelope"></i>
+                Email
               </label>
               <input
                 type="text"
@@ -212,10 +225,13 @@
               }
             </div>
             <div class="mb-3 rememberCheck">
-              <input type="checkbox" id="rememberMe" (click)="changeRemember()" name="checkbox">
-              <label for="rememberMe" >
-                Remember me
-              </label>
+              <input
+                type="checkbox"
+                id="rememberMe"
+                (click)="changeRemember()"
+                name="checkbox"
+              />
+              <label for="rememberMe"> Remember me </label>
             </div>
 
             <button

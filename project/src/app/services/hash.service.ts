@@ -10,3 +10,5 @@ export class HashService {
     return new SHA1('sha1').update(input).digest('hex');
   }
 }
+
+

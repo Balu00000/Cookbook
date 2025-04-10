@@ -1,143 +1,160 @@
 <app-navbar></app-navbar>
 <!-- Difficulty Filter -->
 
-<div class="row">
-  <div class="col-md-2 pb-0">
-    <h4 class="mt-1">Filters </h4> 
-    <hr />
-    <div id="difficulty" class="mt-4">
-      <label
-        (click)="(isDropdownOpen)"
-        (click)="difficulty()"
-        class="dropdown-header"
-      >
-        Difficulty Level
-        <span [ngClass]="isDropdownOpen ? 'arrow-up' : 'arrow-down'"></span>
-      </label>
-      <div *ngIf="isDropdownOpen" class="dropdown-menu">
-        <div *ngFor="let difficulty of difficulties">
-          <input
-            type="checkbox"
-            [id]="difficulty.name"
-            [name]="difficulty.name"
-            [(ngModel)]="selectedDifficulties[difficulty.name]"
-            (ngModelChange)="applyFilters()"
-          />
-
-          <label [for]="difficulty.name">{{ difficulty.name }}</label>
+<div class="container">
+  <div class="row">
+    <div class="col-md-2 filter-container">
+      <div class="filter-scroll">
+        <h4 class="mt-1">Filters</h4>
+        <div class="filter-footer">
+          <button
+            (click)="clearFilters()"
+            class="btn btn-secondary clear-btn mt-2"
+          >
+            Clear Filters
+          </button>
         </div>
-      </div>
-      <hr />
-    </div>
+        <hr />
+        <div id="difficulty" class="mt-4">
+          <label
+            (click)="(isDropdownOpen)"
+            (click)="difficulty()"
+            class="dropdown-header"
+          >
+            Difficulty Level
+            <span [ngClass]="isDropdownOpen ? 'arrow-up' : 'arrow-down'"></span>
+          </label>
+          <div *ngIf="isDropdownOpen" class="dropdown-menu">
+            <div *ngFor="let difficulty of difficulties">
+              <input
+                type="checkbox"
+                [id]="difficulty.name"
+                [name]="difficulty.name"
+                [(ngModel)]="selectedDifficulties[difficulty.name]"
+                (ngModelChange)="applyFilters()"
+              />
 
-    <!-- Meal Type Filter -->
-    <div id="mealType">
-      <label
-        (click)="(isDropdownOpen2)"
-        (click)="mealType()"
-        class="dropdown-header"
-      >
-        All Meal Type
-        <span [ngClass]="isDropdownOpen2 ? 'arrow-up' : 'arrow-down'"></span>
-      </label>
-      <div *ngIf="isDropdownOpen2" class="dropdown-menu">
-        <div *ngFor="let mealtype of mealTypes">
-          <input
-            type="checkbox"
-            [id]="mealtype.type"
-            [name]="mealtype.type"
-            [(ngModel)]="selectedMealTypes[mealtype.type]"
-            (ngModelChange)="applyFilters()"
-          />
-
-          <label [for]="mealtype.type">{{ mealtype.type }}</label>
+              <label [for]="difficulty.name">{{ difficulty.name }}</label>
+            </div>
+          </div>
+          <hr />
         </div>
-      </div>
-      <hr />
-    </div>
 
-    <!-- Cuisine Filter -->
-    <div id="cuisines">
-      <label
-        (click)="(isDropdownOpen3)"
-        (click)="cuisine()"
-        class="dropdown-header"
-      >
-        Cuisines
-        <span [ngClass]="isDropdownOpen3 ? 'arrow-up' : 'arrow-down'"></span>
-      </label>
-      <div *ngIf="isDropdownOpen3" class="dropdown-menu">
-        <div *ngFor="let cuisine of cuisines">
-          <input
-            type="checkbox"
-            [id]="cuisine.name"
-            [name]="cuisine.name"
-            [(ngModel)]="selectedCuisines[cuisine.name]"
-            (ngModelChange)="applyFilters()"
-          />
+        <!-- Meal Type Filter -->
+        <div id="mealType">
+          <label
+            (click)="(isDropdownOpen2)"
+            (click)="mealType()"
+            class="dropdown-header"
+          >
+            All Meal Type
+            <span
+              [ngClass]="isDropdownOpen2 ? 'arrow-up' : 'arrow-down'"
+            ></span>
+          </label>
+          <div *ngIf="isDropdownOpen2" class="dropdown-menu">
+            <div *ngFor="let mealtype of mealTypes">
+              <input
+                type="checkbox"
+                [id]="mealtype.type"
+                [name]="mealtype.type"
+                [(ngModel)]="selectedMealTypes[mealtype.type]"
+                (ngModelChange)="applyFilters()"
+              />
 
-          <label [for]="cuisine.name">{{ cuisine.name }}</label>
+              <label [for]="mealtype.type">{{ mealtype.type }}</label>
+            </div>
+          </div>
+          <hr />
         </div>
-      </div>
-      <hr />
-    </div>
 
-    <!-- Dietary Filter -->
-    <div id="dietary">
-      <label
-        (click)="(isDropdownOpen4)"
-        (click)="dietary()"
-        class="dropdown-header"
-      >
-        Dietary
-        <span [ngClass]="isDropdownOpen4 ? 'arrow-up' : 'arrow-down'"></span>
-      </label>
-      <div *ngIf="isDropdownOpen4" class="dropdown-menu">
-        <div *ngFor="let diet of dietarys">
-          <input
-            type="checkbox"
-            [id]="diet.type"
-            [name]="diet.type"
-            [(ngModel)]="selectedDietarys[diet.type]"
-            (ngModelChange)="applyFilters()"
-          />
+        <!-- Cuisine Filter -->
+        <div id="cuisines">
+          <label
+            (click)="(isDropdownOpen3)"
+            (click)="cuisine()"
+            class="dropdown-header"
+          >
+            Cuisines
+            <span
+              [ngClass]="isDropdownOpen3 ? 'arrow-up' : 'arrow-down'"
+            ></span>
+          </label>
+          <div *ngIf="isDropdownOpen3" class="dropdown-menu">
+            <div *ngFor="let cuisine of cuisines">
+              <input
+                type="checkbox"
+                [id]="cuisine.name"
+                [name]="cuisine.name"
+                [(ngModel)]="selectedCuisines[cuisine.name]"
+                (ngModelChange)="applyFilters()"
+              />
 
-          <label [for]="diet.type">{{ diet.type }}</label>
+              <label [for]="cuisine.name">{{ cuisine.name }}</label>
+            </div>
+          </div>
+          <hr />
         </div>
-      </div>
-      <hr />
-      <button
-      *ngIf="isFilterActive"
-      (click)="clearFilters()"
-      class="btn btn-secondary"
-    >
-      Clear Filters
-    </button>
-    </div>
-    <!-- Clear Filters Button (Only shows when filters are active) -->
-    
-  </div>
 
-  <div class="col-md-10">
-    <div class="row">
-      @for(item of filteredFood; track item.id) {
-      <div class="col-sm-12 col-md-3 col-xl-2 me-2 mb-2 pt-2 pb-2">
-        <div class="card h-100 d-flex flex-column" style="width: 18rem">
-          <img
-            src="{{ item.image }}"
-            class="card-img-top"
-            alt="{{ item.name }}"
-          />
-          <div class="card-body d-flex flex-column">
-            <h5 class="card-title">{{ item.name }}</h5>
-            <p class="card-text">{{ item.description | truncate : 70 }}</p>
-            <a href="#" #button class="btn btn-primary mt-auto"
-              >Go to item page</a
-            >
+        <!-- Dietary Filter -->
+        <div id="dietary">
+          <label
+            (click)="(isDropdownOpen4)"
+            (click)="dietary()"
+            class="dropdown-header"
+          >
+            Dietary
+            <span
+              [ngClass]="isDropdownOpen4 ? 'arrow-up' : 'arrow-down'"
+            ></span>
+          </label>
+          <div *ngIf="isDropdownOpen4" class="dropdown-menu">
+            <div *ngFor="let diet of dietarys">
+              <input
+                type="checkbox"
+                [id]="diet.type"
+                [name]="diet.type"
+                [(ngModel)]="selectedDietarys[diet.type]"
+                (ngModelChange)="applyFilters()"
+              />
+
+              <label [for]="diet.type">{{ diet.type }}</label>
+            </div>
           </div>
         </div>
+
+        
       </div>
-      }
+    </div>
+
+    <div class="col-md-10">
+      <div class="row">
+        @for(item of filteredFood; track item.id) {
+        <div class="col-xs-12 col-sm-6 col-md-4 col-xl-3 mb-2 pt-2 pb-2">
+          <div class="card h-100 d-flex flex-column">
+            <img
+              src="{{ 'data:image/jpg;base64,' + item.image }}"
+              class="card-img-top"
+              alt="{{ item.name }}"
+            />
+            <div class="card-body d-flex flex-column flex-grow-1">
+              <h5 class="card-title">{{ item.name }}</h5>
+              <p class="card-text">{{ item.description | truncate : 70 }}</p>
+              <div class="mt-auto w-100">
+                <a
+                  cButton
+                  [routerLink]="item.name"
+                  class="btn explore-btn"
+                  (click)="viewRecipe(item.name)"
+                >
+                  Explore!
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
     </div>
   </div>
 </div>

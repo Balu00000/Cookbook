@@ -24,7 +24,7 @@ import {
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { GetAllFoodService } from '../../services/get-all-food.service';
+import { FoodService } from '../../services/food.service';
 import { HashService } from '../../services/hash.service';
 import { CommonModule } from '@angular/common';
 import { PopoverModule } from '@coreui/angular-pro';
@@ -73,7 +73,7 @@ export class AdminComponent {
 
   constructor(
     private adminService: AdminService,
-    private allFood: GetAllFoodService,
+    private foodService: FoodService,
     private fb: FormBuilder,
     private loggedIn: LoggedInServiceService,
     private discover: DiscoverService
@@ -97,25 +97,21 @@ export class AdminComponent {
   button3: boolean = true;
   button4: boolean = false;
 
-  buttonActive(button: 'user' | 'admin' | 'recipeMod' | 'recipeAdd') {
+  buttonActive(button: 'user' | 'recipeMod') {
     const buttonState = {
       user: [true, false, false, false],
-      admin: [false, true, false, false],
       recipeMod: [false, false, true, false],
-      recipeAdd: [false, false, false, true],
     };
 
-    [this.button1, this.button2, this.button3, this.button4] = buttonState[
+    [this.button1, this.button3] = buttonState[
       button
-    ] || [false, false, true, false];
+    ] || [false, true];
     console.log(button);
   }
 
   onRecipeAdd() {
     this.addRecipe();
   }
-
-  url: string = 'http://127.0.0.1:8080/CookBook-1.0-SNAPSHOT/webresources/';
 
   fetchUsers(): void {
     this.adminService.getAllUsers().subscribe({
@@ -127,7 +123,7 @@ export class AdminComponent {
   }
 
   fetchRecipes(): void {
-    this.allFood.LALALALALALAL().subscribe({
+    this.foodService.getAllRecipes().subscribe({
       next: (response) => {
         console.log('Recipes Data:', response.result); // Debugging
         this.recipeData = response.result;

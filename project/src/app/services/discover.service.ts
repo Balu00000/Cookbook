@@ -26,4 +26,8 @@ export class DiscoverService {
   dietary(): Observable<any> {
     return this.http.get(`${this.baseURL}dietary/getAllDietary`)
   }
+
+  getIngredientById(id: number): Observable<any> {
+    return this.http.get(`${this.baseURL}ingredient/getIngredientByFoodId?id=${id}`)
+  }
 }

@@ -1,18 +1,18 @@
-#logout-delete input[type="button"]{
-    border: 1px solid red; /* Green color */
-    color: red;
-    padding: 5px 60px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-#logout-delete input[type="button"]:hover{
-    background-color: red;
-    color: white;
-    
+#logout-delete input[type="button"] {
+  border: 1px solid red; /* Green color */
+  color: red;
+  padding: 5px 60px !important;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
-img{
-    max-width: 10rem;
-    height: auto;
-    position: relative;
+#logout-delete input[type="button"]:hover {
+  background-color: red;
+  color: white;
+}
+
+img {
+  max-width: 10rem;
+  height: auto;
+  position: relative;
 }

@@ -1,0 +1,16 @@
+<app-navbar></app-navbar>
+<div *ngIf="recipeDetails">
+  <h1>{{ recipeDetails.name }}</h1>
+  <img [src]=" 'data:image/jpg;base64,' + recipeDetails.image" alt="{{ recipeDetails.name }}" />
+  <p>{{ recipeDetails.description }}</p>
+  
+  <h3>Ingredients</h3>
+  <ul>
+    <li *ngFor="let ingredient of ingredients">{{ingredient.amount}} {{ingredient.measurment}} → {{ ingredient.name }}</li>
+  </ul>
+  
+  <h3>Steps</h3>
+  <ol>
+    <li *ngFor="let step of recipeDetails.instructions">{{ step }}</li>
+  </ol>
+</div>

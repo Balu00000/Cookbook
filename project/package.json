@@ -27,11 +27,12 @@
     "@popperjs/core": "~2.11.8",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
-    "coreui": "^0.4.2-alpha2",
+    "coreui": "^0.1.0",
     "jwt-decode": "^4.0.0",
     "primeng": "^19.0.6",
     "rxjs": "~7.8.0",
-    "tslib": "^2.3.0",
+    "sha.js": "^2.4.11",
+    "tslib": "^2.8.1",
     "zone.js": "~0.15.0"
   },
   "devDependencies": {

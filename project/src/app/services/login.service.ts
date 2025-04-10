@@ -101,7 +101,7 @@ export class LoginService {
       this.router.navigate(['/home']);
       return of(true);
     }
-    return throwError(() => new Error('Balfasz felhasználó/password'));
+    return throwError(() => new Error('Wrong Email or Password'));
   }
 
   isAdmin(): boolean {
