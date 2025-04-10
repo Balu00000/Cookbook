@@ -1,18 +1,102 @@
-#logout-delete input[type="button"] {
-  border: 1px solid red; /* Green color */
-  color: red;
-  padding: 5px 60px !important;
-  border-radius: 5px;
-  cursor: pointer;
+h1{
+  text-align: center;
 }
 
-#logout-delete input[type="button"]:hover {
+.container{
+  margin-top: 15px;
+}
+
+#imageContainer{
+  margin-bottom: 10px;
+}
+
+#userImage {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-right: 10px;
+  box-shadow: 0px 3px 20px #f72585;
+}
+
+.clear-btn {
+  color: whitesmoke;
+  border: none;
+  background-color: #f72585;
+  text-align: center;
+  border-radius: 8px;
+  margin-top: auto;
+}
+
+.clear-btn:active, .clear-btn:hover{
+  color: black;
   background-color: red;
-  color: white;
 }
 
 img {
-  max-width: 10rem;
-  height: auto;
-  position: relative;
+  max-width: 30rem !important;
+  max-height: 20rem !important;
+  object-fit: contain;
+}
+
+h3{
+  text-align: center;
+}
+
+c-carousel-control[direction="next"]{
+right: 20px;
+}
+
+c-carousel-indicators{
+  gap: 3px;
+}
+
+a[cButton]{
+  background-color: #fd0dc5;
+  border: none;
+}
+
+.slide-content{
+display:flex;
+align-items: center;
+justify-content: space-between;
+width: 95%;
+height: 100%;
+padding: 2rem;
+box-sizing: border-box;
+margin-bottom: 20px;
+}
+
+.slide-image {
+width: 50%;
+max-height: 400px;
+object-fit: cover;
+border-radius: 8px;
+margin-left: 100px;
+}
+
+.slide-caption{
+width: 45%;
+background-color: rgba(255, 255, 255, 0.85);
+border-radius: 8px;
+padding: 2rem;
+color: black;
+z-index: 10;
+box-shadow: 0 4px 10px #b5179e !important;
+}
+
+@media (max-width: 768px) {
+.slide-content {
+  flex-direction: column;
+  text-align: center;
+}
+
+.slide-image,
+.slide-caption {
+  width: 100%;
+}
+
+.slide-caption {
+  margin-top: 1rem;
+}
 }

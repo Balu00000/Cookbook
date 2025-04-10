@@ -1,48 +1,136 @@
 <app-navbar></app-navbar>
 
-<div class="row">
-  <div class="col-sm-12 col-md-2 col-xl-2">
-    <img src="{{'data:image/jpg;base64,' + user.image}}" alt="">
-  </div>
-  <div class="col-sm-12 col-md-10 col-xl-10">
-    <p>{{ user.username || "User" }}</p>
-    <hr />
-    <p>Joined: {{ user.createdAt || "You never joined" }}</p>
-    <p>
-      Added: {{ user.postedFood + " Recipes" || "You never posted" }}
-    </p>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12 col-md-2 col-xl-2" id="imageContainer">
+      <img
+        src="{{ 'data:image/jpg;base64,' + user.image }}"
+        id="userImage"
+        alt="No image"
+      />
+    </div>
+    <div class="col-sm-12 col-md-10 col-xl-10">
+      <h1>Hi! {{ user.username || "User" }} 👋</h1>
+      <hr />
+      <p>Joined: {{ getFormattedDate() }}</p>
+      <p>Added: {{ user.postedFood + " Recipes" }}</p>
 
-    <div id="logout-delete">
-      <input type="button" (click)="logout()" value="Log Out!" />
+      <button
+            (click)="logout()"
+            class="btn btn-secondary clear-btn mt-2"
+          >
+            Log Out!
+          </button>
     </div>
   </div>
-</div>
 
-<div class="row" id="added">
-  <!--TODO Change width and give arrows, steal from bootstrap copy it and make it into Favorites one as well --->
   <p>Added ({{ user.postedFood || 0 }})</p>
   <hr />
-  @for (item of userAdded; track item) {
+  @if (userAdded.length > 0) {
 
-  <div class="col-sm-12 col-md-5 col-xl-5">
-    <p>{{item.name || "No Food Name Found"}}</p>
-  </div>
-  <div class="col-sm-12 col-md-7 col-xl-7">
-    <img src="{{ 'data:image/jpg;base64,' + item.image}}" alt="No Food Image Found">
-  </div>
-  }
-</div>
+  <c-carousel [dark]="true" [interval]="5000">
+    <c-carousel-indicators></c-carousel-indicators>
+    <c-carousel-inner>
+      @for (slide of userAdded; track slide.id) {
+      <c-carousel-item>
+        <div class="slide-content">
+          <img
+            alt="{{ slide.name }}"
+            class="slide-image"
+            loading="lazy"
+            [src]="'data:image/jpg;base64,' + slide.image"
+          />
+          <div class="slide-caption">
+            <h3>{{ slide.name }}</h3>
+            <hr />
+            <p>Rating: {{ slide.rating }} <i class="fa-regular fa-star"></i></p>
+            <p>Meal Type: {{ slide.mealTypeName }}</p>
+            <p>Difficulty: {{ slide.difficultyName }}</p>
+            <p>
+              Description: <br />
+              {{ slide.description | truncate : 60 }}
+            </p>
+            <a
+              cButton
+              [routerLink]="slide.name"
+              color="info"
+              shape="rounded-pill"
+              role="button"
+              (click)="viewRecipe(slide.name)"
+            >
+              Explore!
+            </a>
+          </div>
+        </div>
+      </c-carousel-item>
+      }
+    </c-carousel-inner>
+    @if(userAdded.length > 1){
 
-<div class="row" id="favorites">
-    <p>Favorite ({{ user.favouritedFood  }})</p>
-    <hr />
-    @for (item of userFavorites; track item) {
-  
-    <div class="col-sm-12 col-md-5 col-xl-5">
-      <p>{{item.name || "No Food Name Found"}}</p>
-    </div>
-    <div class="col-sm-12 col-md-7 col-xl-7">
-      <img src="{{'data:image/jpg;base64,' + item.image}}" alt="No Food Image Found">
-    </div>
+    <c-carousel-control
+      [routerLink]
+      caption="Previous"
+      direction="prev"
+      class="penis"
+    >
+      <i class="fa-solid fa-chevron-left fa-2xl" style="color: #fd0dc5"></i>
+    </c-carousel-control>
+    <c-carousel-control [routerLink] caption="Next" direction="next">
+      <i class="fa-solid fa-chevron-right fa-2xl" style="color: #fd0dc5"></i>
+    </c-carousel-control>
     }
+  </c-carousel>
+  }
+  <p>Favorites ({{ user.favouritedFood || 0 }})</p>
+  <hr />
+  @if (userFavorites.length > 0) {
+
+  <c-carousel [dark]="true" [interval]="5000">
+    <c-carousel-indicators></c-carousel-indicators>
+    <c-carousel-inner>
+      @for (slide of userFavorites; track slide.id) {
+      <c-carousel-item>
+        <div class="slide-content">
+          <img
+            alt="{{ slide.name }}"
+            class="slide-image"
+            loading="lazy"
+            [src]="'data:image/jpg;base64,' + slide.image"
+          />
+          <div class="slide-caption">
+            <h3>{{ slide.name }}</h3>
+            <hr />
+            <p>Rating: {{ slide.rating }} <i class="fa-regular fa-star"></i></p>
+            <p>Meal Type: {{ slide.mealTypeName }}</p>
+            <p>Difficulty: {{ slide.difficultyName }}</p>
+            <p>
+              Description: <br />
+              {{ slide.description | truncate : 60 }}
+            </p>
+            <a
+              cButton
+              [routerLink]="slide.name"
+              color="info"
+              shape="rounded-pill"
+              role="button"
+              (click)="viewRecipe(slide.name)"
+            >
+              Explore!
+            </a>
+          </div>
+        </div>
+      </c-carousel-item>
+      }
+    </c-carousel-inner>
+    @if (userFavorites.length > 1) {
+
+    <c-carousel-control [routerLink] caption="Previous" direction="prev">
+      <i class="fa-solid fa-chevron-left fa-2xl" style="color: #fd0dc5"></i>
+    </c-carousel-control>
+    <c-carousel-control [routerLink] caption="Next" direction="next">
+      <i class="fa-solid fa-chevron-right fa-2xl" style="color: #fd0dc5"></i>
+    </c-carousel-control>
+    }
+  </c-carousel>
+  }
 </div>

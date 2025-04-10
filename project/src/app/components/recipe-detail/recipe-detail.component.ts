@@ -24,6 +24,7 @@ export class RecipeDetailComponent implements OnInit {
       this.recipeDetails.instructions
     }
     this.getIngredientByFoodId()
+    this.minuteToHour()
   }
 
   getIngredientByFoodId(): void {
@@ -36,5 +37,18 @@ export class RecipeDetailComponent implements OnInit {
         this.ingredients = []; // fallback to empty array on error
       } 
     })
+  }
+
+  paddedHours: string = ""
+  paddedMinutes: string = ""
+
+  minuteToHour(): void{
+
+    const minutes = this.recipeDetails.prepTime || 0;
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+
+    this.paddedHours = hours.toString().padStart(2, '0');
+    this. paddedMinutes = remainingMinutes.toString().padStart(2, '0');
   }
 }

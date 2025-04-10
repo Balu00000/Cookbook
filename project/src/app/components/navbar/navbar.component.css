@@ -26,14 +26,19 @@ nav {
 }
 
 .search-container > input{
-  width: 300px;
-  background-color: whitesmoke;
+  height: 30px;
+  width: 250px;
+  background-color: white;
   border-radius: 8px;
+}
+
+.search-container input::placeholder, .search-container i {
+  font-size: 20px;
 }
 
 .search-container > i {
   position: relative;
-  right: 35px;
+  right: 30px;
 }
 
 .search-results {

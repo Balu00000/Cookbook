@@ -8,41 +8,45 @@
 <c-carousel [dark]="true" [interval]="5000">
   <c-carousel-indicators></c-carousel-indicators>
   <c-carousel-inner>
-      @for (slide of foodItems; track slide.id) {
-        <c-carousel-item>            
-            <div class="slide-content">
-              <img
-              alt="{{ slide.name }}"
-              class="slide-image"
-              loading="lazy"
-              [src]="'data:image/jpg;base64,' + slide.image"
-              />
-              <div class="slide-caption">
-                <h3>{{ slide.name }}</h3>
-                <hr />
-                <p>Rating: {{ slide.rating }} <i class="fa-regular fa-star"></i></p>
-                <p>Meal Type: {{ slide.mealTypeName }}</p>
-                <p>Difficulty: {{ slide.difficultyName }}</p>
-                <p>
-                  Description: <br />
-                  {{ slide.description | truncate : 60 }}
-                </p>
-                <a
-                cButton
-                [routerLink]="slide.name"
-                color="info"
-                shape="rounded-pill"
-                role="button"
-                (click)="viewRecipe(slide.name)"
-                >
-                Explore!
-              </a>
-            </div>
-          </div>
-      </c-carousel-item>
+    @for (slide of foodItems; track slide.id) {
+    <c-carousel-item>
+      <div class="slide-content">
+        <img
+          alt="{{ slide.name }}"
+          class="slide-image"
+          loading="lazy"
+          [src]="'data:image/jpg;base64,' + slide.image"
+        />
+        <div class="slide-caption">
+          <h3>{{ slide.name }}</h3>
+          <hr />
+          <p>Rating: {{ slide.rating }} <i class="fa-regular fa-star"></i></p>
+          <p>Meal Type: {{ slide.mealTypeName }}</p>
+          <p>Difficulty: {{ slide.difficultyName }}</p>
+          <p>
+            Description: <br />
+            {{ slide.description | truncate : 60 }}
+          </p>
+          <a
+            cButton
+            [routerLink]="slide.name"
+            color="info"
+            shape="rounded-pill"
+            role="button"
+            (click)="viewRecipe(slide.name)"
+          >
+            Explore!
+          </a>
+        </div>
+      </div>
+    </c-carousel-item>
     }
   </c-carousel-inner>
-  <c-carousel-control [routerLink] caption="Previous" direction="prev" class="penis">
+  <c-carousel-control
+    [routerLink]
+    caption="Previous"
+    direction="prev"
+  >
     <i class="fa-solid fa-chevron-left fa-2xl" style="color: #fd0dc5"></i>
   </c-carousel-control>
   <c-carousel-control [routerLink] caption="Next" direction="next">
