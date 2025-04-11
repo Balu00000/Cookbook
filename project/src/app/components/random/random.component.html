@@ -2,13 +2,14 @@
 @if (recipe) {
 <div class="container">
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-xs-12 col-sm-6 col-md-6">
       <img
         [src]="'data:image/jpg;base64,' + recipe.image"
         alt="{{ recipe.name }}"
+        class="img-fluid"
       />
     </div>
-    <div class="col-md-6" id="info">
+    <div class="col-xs-12 col-sm-6 col-md-6" id="info">
       <h1>{{ recipe.name }}</h1>
       <p>Favorites: {{ recipe.rating }} <i class="fa-regular fa-star"></i></p>
       <hr />
@@ -21,7 +22,7 @@
   </div>
 
   <div class="row">
-    <div class="col-md-3" id="ingredients">
+    <div class="col-xs-12 col-sm-5 col-md-5" id="ingredients">
       <h3>Ingredients</h3>
       <ul>
         @for (ingredient of ingredients; track $index) {
@@ -32,7 +33,7 @@
         }
       </ul>
     </div>
-    <div class="col-md-9" id="instructions">
+    <div class="col-xs-12 col-sm-7 col-md-7" id="instructions">
       <h3>Steps</h3>
       <ol>
         @for (step of recipe.instructions; track $index) {

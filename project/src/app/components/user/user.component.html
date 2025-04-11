@@ -2,14 +2,14 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-sm-12 col-md-2 col-xl-2" id="imageContainer">
+    <div class="col-sm-12 col-md-4 col-xl-2" id="imageContainer">
       <img
         src="{{ 'data:image/jpg;base64,' + user.image }}"
         id="userImage"
         alt="No image"
       />
     </div>
-    <div class="col-sm-12 col-md-10 col-xl-10">
+    <div class="col-sm-12 col-md-8 col-xl-10">
       <h1>Hi! {{ user.username || "User" }} 👋</h1>
       <hr />
       <p>Joined: {{ getFormattedDate() }}</p>

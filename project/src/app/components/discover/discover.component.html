@@ -3,7 +3,7 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-2 filter-container">
+    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 col-xl-2 filter-container">
       <div class="filter-scroll">
         <h4 class="mt-1">Filters</h4>
         <div class="filter-footer">
@@ -127,10 +127,10 @@
       </div>
     </div>
 
-    <div class="col-md-10">
+    <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xl-10">
       <div class="row">
         @for(item of filteredFood; track item.id) {
-        <div class="col-xs-12 col-sm-6 col-md-4 col-xl-3 mb-2 pt-2 pb-2">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xl-3 mb-2 pt-2 pb-2">
           <div class="card h-100 d-flex flex-column">
             <img
               src="{{ 'data:image/jpg;base64,' + item.image }}"
