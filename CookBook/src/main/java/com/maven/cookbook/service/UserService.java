@@ -52,38 +52,32 @@ public class UserService { //U.Model->U.Repository->U.Service->U.Controller
         int statusCode = 200;
 
         if (isValidEmail(email)) {
-            if(isValidPassword(password)){
-                User modelResult = layer.login(email, password);
-                if (modelResult == null) {
-                    status = "modelException";
-                    statusCode = 500;
-                } else {
-                    if (modelResult.getId() == null) {
-                        status = "userNotFound";
-                        statusCode = 404;
-                    }else if(modelResult.getIsDeleted() == true){
-                        status = "deletedUser";
-                        statusCode = 404;
-                    }
-                    else {
-                        JSONObject result = new JSONObject();
-                        result.put("id", modelResult.getId());
-                        result.put("username", modelResult.getUsername());
-                        result.put("image", modelResult.getBase64Image());
-                        result.put("email", modelResult.getEmail());
-                        result.put("isAdmin", modelResult.getIsAdmin());
-                        result.put("createdAt", modelResult.getCreatedAt());
-                        result.put("isDeleted", modelResult.getIsDeleted());
-                        result.put("deletedAt", modelResult.getDeletedAt());
-                        result.put("jwt", JWT.createJWT(modelResult));
-
-                        toReturn.put("result", result);
-                    }
+            User modelResult = layer.login(email, password);
+            if (modelResult == null) {
+                status = "modelException";
+                statusCode = 500;
+            } else {
+                if (modelResult.getId() == null) {
+                    status = "userNotFound";
+                    statusCode = 404;
+                }else if(modelResult.getIsDeleted() == true){
+                    status = "deletedUser";
+                    statusCode = 404;
                 }
-            }
-            else {
-                status = "InvalidPassword";
-                statusCode = 417;
+                else {
+                    JSONObject result = new JSONObject();
+                    result.put("id", modelResult.getId());
+                    result.put("username", modelResult.getUsername());
+                    result.put("image", modelResult.getBase64Image());
+                    result.put("email", modelResult.getEmail());
+                    result.put("isAdmin", modelResult.getIsAdmin());
+                    result.put("createdAt", modelResult.getCreatedAt());
+                    result.put("isDeleted", modelResult.getIsDeleted());
+                    result.put("deletedAt", modelResult.getDeletedAt());
+                    result.put("jwt", JWT.createJWT(modelResult));
+
+                    toReturn.put("result", result);
+                }
             }
         } else {
             status = "InvalidEmail";
@@ -137,7 +131,7 @@ public class UserService { //U.Model->U.Repository->U.Service->U.Controller
         String status = "success";
         int statusCode = 200;
         
-        if(JWT.isAdmin(jwt)) {
+        //if(JWT.isAdmin(jwt)) {
             if(isValidEmail(u.getEmail())){
                 if(isValidPassword(u.getPassword())){
                     boolean userIsExists = UserRepository.isUserExists(u.getEmail());
@@ -163,10 +157,10 @@ public class UserService { //U.Model->U.Repository->U.Service->U.Controller
                 status = "InvalidEmail";
                 statusCode = 417;
             }
-        }else{
+        /*}else{
             status = "PermissionError";
             statusCode=403;
-        }
+        }*/
         toReturn.put("status", status);
         toReturn.put("statusCode", statusCode);
         return toReturn;

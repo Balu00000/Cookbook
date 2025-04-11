@@ -116,6 +116,4 @@ public class FoodServiceTest {
         assertEquals("success", result.getString("status"));
         assertEquals(200, result.getInt("statusCode"));
     }
-    
-    
 }
