@@ -99,8 +99,8 @@ export class AdminComponent {
 
   buttonActive(button: 'user' | 'recipeMod') {
     const buttonState = {
-      user: [true, false, false, false],
-      recipeMod: [false, false, true, false],
+      user: [true, false],
+      recipeMod: [false, true],
     };
 
     [this.button1, this.button3] = buttonState[
