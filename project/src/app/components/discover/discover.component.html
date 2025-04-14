@@ -97,31 +97,31 @@
         </div>
 
         <!-- Dietary Filter -->
-        <div id="dietary">
-          <label
-            (click)="(isDropdownOpen4)"
-            (click)="dietary()"
-            class="dropdown-header"
-          >
-            Dietary
-            <span
-              [ngClass]="isDropdownOpen4 ? 'arrow-up' : 'arrow-down'"
-            ></span>
-          </label>
-          <div *ngIf="isDropdownOpen4" class="dropdown-menu">
-            <div *ngFor="let diet of dietarys">
-              <input
-                type="checkbox"
-                [id]="diet.type"
-                [name]="diet.type"
-                [(ngModel)]="selectedDietarys[diet.type]"
-                (ngModelChange)="applyFilters()"
-              />
-
-              <label [for]="diet.type">{{ diet.type }}</label>
-            </div>
-          </div>
-        </div>
+        <!-- <div id="dietary"> -->
+          <!-- <label -->
+            <!-- (click)="(isDropdownOpen4)" -->
+            <!-- (click)="dietary()" -->
+            <!-- class="dropdown-header" -->
+          <!-- > -->
+            <!-- Dietary -->
+            <!-- <span -->
+              <!-- [ngClass]="isDropdownOpen4 ? 'arrow-up' : 'arrow-down'" -->
+            <!-- ></span> -->
+          <!-- </label> -->
+          <!-- <div *ngIf="isDropdownOpen4" class="dropdown-menu"> -->
+            <!-- <div *ngFor="let diet of dietarys"> -->
+              <!-- <input -->
+                <!-- type="checkbox" -->
+                <!-- [id]="diet.type" -->
+                <!-- [name]="diet.type" -->
+                <!-- [(ngModel)]="selectedDietarys[diet.type]" -->
+                <!-- (ngModelChange)="applyFilters()" -->
+              <!-- /> -->
+<!--  -->
+              <!-- <label [for]="diet.type">{{ diet.type }}</label> -->
+            <!-- </div> -->
+          <!-- </div> -->
+        <!-- </div> -->
 
         
       </div>

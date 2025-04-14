@@ -93,9 +93,7 @@ export class AdminComponent {
   }
 
   button1: boolean = false;
-  button2: boolean = false;
   button3: boolean = true;
-  button4: boolean = false;
 
   buttonActive(button: 'user' | 'recipeMod') {
     const buttonState = {
