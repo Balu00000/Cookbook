@@ -1,0 +1,5 @@
+# Created at 2025-04-03T14:21:14.716
+Boot Manifest-JAR contains absolute paths in classpath 'D:\Projects\Java Projects\CookBook\target\test-classes'
+Hint: <argLine>-Djdk.net.URLClassPath.disableClassPathURLCheck=true</argLine>
+'other' has different root
+
