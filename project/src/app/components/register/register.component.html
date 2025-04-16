@@ -1,0 +1,250 @@
+<app-navbar></app-navbar>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="auth-container">
+        <div class="auth-header">
+          <div class="slider" [ngClass]="{ right: showLogin }"></div>
+          <span
+            class="auth-option"
+            id="register"
+            [ngClass]="{ active: !showLogin }"
+            (click)="toggleAuth('register')"
+            >Register</span
+          >
+          /
+          <span
+            class="auth-option"
+            id="login"
+            [ngClass]="{ active: showLogin }"
+            (click)="toggleAuth('login')"
+            >Login</span
+          >
+        </div>
+
+        <div class="auth-body">
+          @if(!showLogin){
+
+          <form
+            [formGroup]="registerForm"
+            (ngSubmit)="onRegister()"
+            autocomplete="off"
+            novalidate
+            class="form-content"
+          >
+            @if (errorMessage) {
+            <div class="error-message">
+              <i class="fas fa-exclamation-circle"></i>
+              {{ errorMessage }}
+            </div>
+            }
+            <div class="form-group">
+              <label for="username1" class="form-label">
+                <i class="fas fa-user"></i>
+                Username
+              </label>
+              <input
+                type="text"
+                id="username1"
+                formControlName="username1"
+                placeholder="Enter your username1"
+                [class.invalid]="
+                  registerForm.get('username1')?.invalid &&
+                  registerForm.get('username1')?.touched
+                "
+                autocomplete="new-username1"
+              />
+              @if (registerForm.get('username1')?.invalid &&
+              registerForm.get('username1')?.touched) {
+              <span class="error-hint">Username is required</span>
+              }
+            </div>
+
+            <div class="form-group">
+              <label for="email1" class="form-label">
+                <i class="fas fa-envelope"></i>
+                Email
+              </label>
+              <input
+                type="text"
+                id="email1"
+                formControlName="email1"
+                placeholder="Enter your email"
+                [class.invalid]="
+                  registerForm.get('email1')?.invalid &&
+                  registerForm.get('email1')?.touched
+                "
+                autocomplete="new-email"
+              />
+              @if (registerForm.get('email1')?.invalid &&
+              registerForm.get('email1')?.touched) {
+              <span class="error-hint">Email is required</span>
+              }
+            </div>
+
+            <div class="form-group">
+              <label for="password1" class="form-label">
+                <i class="fas fa-lock"></i>
+                Password
+                <i
+                    class="fa-solid fa-circle-info"
+                    [cPopover]="popoverHtml"
+                    cPopoverPlacement="right"
+                  >
+                    <ng-template #popoverHtml>
+                      <h3 class="popover-header">Help</h3>
+                      <div class="popover-body">
+                        Your password must at least have: <br>
+                        1 number, a special character and an uppercase letter
+                      </div>
+                    </ng-template>
+                    </i>
+              </label>
+              <div class="password-input">
+                <input
+                  [type]="showPassword ? 'text' : 'password'"
+                  id="password1"
+                  formControlName="password1"
+                  placeholder="Enter your password"
+                  [class.invalid]="
+                    registerForm.get('password1')?.invalid &&
+                    registerForm.get('password1')?.touched
+                  "
+                  autocomplete="new-password"
+                />
+                <button
+                  type="button"
+                  class="toggle-password"
+                  (click)="togglePassword()"
+                >
+                  <i
+                    [class]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"
+                  ></i>
+                </button>
+              </div>
+              @if (registerForm.get('password1')?.invalid &&
+              registerForm.get('password1')?.touched) {
+              <span class="error-hint">Password is required</span>
+              }
+            </div>
+
+            <div class="form-group">
+              <label for="image" class="form-label">
+                <i class="fas fa-user"></i>
+                Image
+              </label>
+              <input
+                type="file"
+                accept="image/png, image/jpeg, image/jpg, image/jfif, image/webp"
+                id="image"
+                (change)="onFileSelected($event)"
+              />
+              <img
+                *ngIf="imagePreview"
+                [src]="imagePreview"
+                alt="Image Preview"
+                style="max-width: 200px; margin-top: 10px"
+              />
+            </div>
+
+            <button
+              type="submit"
+              class="login-button btn-gradient mt-4"
+              [disabled]="registerForm.invalid"
+            >
+              Register In
+            </button>
+          </form>
+          } @if(showLogin){
+
+          <form
+            [formGroup]="loginForm"
+            (ngSubmit)="onSubmit()"
+            autocomplete="off"
+            novalidate
+            class="form-content"
+          >
+            @if (errorMessage) {
+            <div class="error-message">
+              <i class="fas fa-exclamation-circle"></i>
+              {{ errorMessage }}
+            </div>
+            }
+            <div class="form-group">
+              <label for="username" class="form-label">
+                <i class="fas fa-envelope"></i>
+                Email
+              </label>
+              <input
+                type="text"
+                id="username"
+                formControlName="username"
+                placeholder="Enter your username"
+                [class.invalid]="
+                  loginForm.get('username')?.invalid &&
+                  loginForm.get('username')?.touched
+                "
+                autocomplete="new-username"
+              />
+              @if (loginForm.get('username')?.invalid &&
+              loginForm.get('username')?.touched) {
+              <span class="error-hint">Username is required</span>
+              }
+            </div>
+
+            <div class="form-group">
+              <label for="password" class="form-label">
+                <i class="fas fa-lock"></i>
+                Password
+              </label>
+              <div class="password-input">
+                <input
+                  [type]="showPassword ? 'text' : 'password'"
+                  id="password"
+                  formControlName="password"
+                  placeholder="Enter your password"
+                  [class.invalid]="
+                    loginForm.get('password')?.invalid &&
+                    loginForm.get('password')?.touched
+                  "
+                  autocomplete="new-password"
+                />
+                <button
+                  type="button"
+                  class="toggle-password"
+                  (click)="togglePassword()"
+                >
+                  <i
+                    [class]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"
+                  ></i>
+                </button>
+              </div>
+              @if (loginForm.get('password')?.invalid &&
+              loginForm.get('password')?.touched) {
+              <span class="error-hint">Password is required</span>
+              }
+            </div>
+            <div class="mb-3 rememberCheck">
+              <input
+                type="checkbox"
+                id="rememberMe"
+                (click)="changeRemember()"
+                name="checkbox"
+              />
+              <label for="rememberMe"> Remember me </label>
+            </div>
+
+            <button
+              type="submit"
+              class="login-button btn-gradient mt-4"
+              [disabled]="loginForm.invalid"
+            >
+              Sign In
+            </button>
+          </form>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

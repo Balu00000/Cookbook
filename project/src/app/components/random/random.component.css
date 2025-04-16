@@ -1,0 +1,63 @@
+img {
+  border-radius: 8px;
+  object-fit: cover;
+  max-width: 100%;
+  height: auto;
+}
+
+h1 {
+  padding-top: 5px;
+  text-align: center;
+}
+
+#ingredients {
+  position: relative;
+  left: 12px;
+  padding-top: 10px;
+  margin-top: 20px;
+  text-align: center;
+  border-radius: 8px;
+  box-shadow: 0px 3px 10px #7209b7;
+  margin-bottom: 15px;
+}
+
+#ingredients li {
+  text-align: left;
+  list-style: circle;
+}
+
+#instructions {
+  margin-left: auto;
+  width: 800px;
+  position: relative;
+  padding-top: 10px;
+  margin-top: 20px;
+  text-align: center;
+  border-radius: 8px;
+  box-shadow: 0px 3px 10px #7209b7;
+  margin-bottom: 15px;
+}
+
+#instructions li {
+  text-align: left;
+}
+
+#description {
+  text-align: center;
+  line-height: 30px;
+}
+
+#description::first-line {
+  font-weight: 600;
+  text-shadow: 0px 10px 20px #b5179e;
+}
+
+#info {
+  border-radius: 8px;
+  box-shadow: 0px 3px 10px #7209b7;
+}
+
+.container {
+  margin-top: 15px;
+  max-width: 95vw;
+}

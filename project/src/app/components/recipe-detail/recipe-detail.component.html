@@ -1,0 +1,45 @@
+<app-navbar></app-navbar>
+@if (recipeDetails) {
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <img
+        [src]="'data:image/jpg;base64,' + recipeDetails.image"
+        alt="{{ recipeDetails.name }}"
+      />
+    </div>
+    <div class="col-md-6" id="info">
+      <h1>{{ recipeDetails.name }}</h1>
+      <p>Favorites: {{ recipeDetails.rating }} <i class="fa-regular fa-star"></i></p>
+      <hr />
+      <p id="description">Description: <br> {{ recipeDetails.description }}</p>
+      <p>Meal Type: {{ recipeDetails.mealTypeName }}</p>
+      <p>Difficulty: {{ recipeDetails.difficultyName }}</p>
+      <p>Prep Time: {{ paddedHours }}h {{paddedMinutes}}m</p>
+      <p>Cuisine: {{ recipeDetails.cuisineName }}</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3" id="ingredients">
+      <h3>Ingredients</h3>
+      <ul>
+        @for (ingredient of ingredients; track $index) {
+          <li>
+            {{ ingredient.amount }} {{ ingredient.measurment }} of
+            {{ ingredient.name }}
+          </li>
+        }
+      </ul>
+    </div>
+    <div class="col-md-9" id="instructions">
+      <h3>Steps</h3>
+      <ol>
+        @for (step of recipeDetails.instructions; track $index) {
+          <li>{{ step }}</li>
+        }
+        </ol>
+    </div>
+  </div>
+</div>
+}

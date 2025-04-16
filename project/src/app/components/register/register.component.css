@@ -1,0 +1,207 @@
+input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  background: white;
+  transition: all 0.3s ease;
+}
+
+input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+input.invalid {
+  border-color: #fc8181;
+}
+
+input[type="checkbox"] {
+  padding: 0.4rem;
+  position: relative;
+  top: 0.2rem;
+  width: 5px !important;  /* Adjust as needed */
+  height: 5px !important;
+  appearance: none; /* Removes default styling */
+  border-radius: 3px;
+  background-color: white;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+input[type="checkbox"]:checked {
+  background-color: #f72585;
+}
+
+.rememberCheck{
+  margin-top: 5px;
+  margin-left: 3px;
+}
+
+.form-check-input {
+  width: auto;
+  height: auto;
+}
+
+.password-input {
+  position: relative;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #718096;
+  cursor: pointer;
+  padding: 0;
+}
+
+.toggle-password:hover {
+  color: #667eea;
+}
+
+.error-hint {
+  display: block;
+  color: #fc8181;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
+.error-message {
+  background: #fff5f5;
+  color: #c53030;
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.login-button {
+  width: 100%;
+  padding: 0.875rem;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.login-button:hover {
+  background: #5a67d8;
+  transform: translateY(-1px);
+}
+
+.login-button:disabled {
+  background: #cbd5e0;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Container Styles */
+.auth-container {
+  width: 550px;
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 4px 10px #b5179e !important;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Header with Sliding Background */
+.auth-header {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #aaa;
+  overflow: hidden;
+}
+
+.auth-option {
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  padding: 10px 20px;
+  transition: color 0.3s ease-in-out;
+}
+
+.auth-option.active {
+  color: black;
+}
+
+.slider {
+  position: absolute;
+  top: 0;
+  left: 10px; /* Starting position */
+  height: 100%;
+  width: 110px; /* Default width */
+  background: linear-gradient(white, rgba(181, 23, 158, 0.5));
+  border-radius: 23px;
+  z-index: 0;
+  transition: transform 0.4s ease-in-out, width 0.4s ease-in-out;
+}
+
+/* Form Styles */
+.form-content {
+  animation: fadeIn 0.5s;
+}
+
+.form-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.form-check-label a {
+  text-decoration: none;
+  color: #007bff;
+}
+
+.form-check-label a:hover {
+  text-decoration: underline;
+}
+
+.btn-gradient {
+  background: linear-gradient(45deg, #f72585, #7209b7);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 8px;
+  transition: background 0.3s ease-in-out;
+}
+
+.btn-gradient:hover {
+  box-shadow: 5px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "name": "project",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "^19.1.6",
+    "@angular/cdk": "^19.1.0",
+    "@angular/common": "^19.1.6",
+    "@angular/compiler": "^19.1.6",
+    "@angular/core": "^19.1.6",
+    "@angular/forms": "^19.1.6",
+    "@angular/material": "^19.1.4",
+    "@angular/platform-browser": "^19.1.6",
+    "@angular/platform-browser-dynamic": "^19.1.6",
+    "@angular/router": "^19.1.6",
+    "@coreui/angular-pro": "^5.3.16",
+    "@coreui/coreui": "~5.2.0",
+    "@coreui/coreui-pro": "^5.9.0",
+    "@coreui/icons-angular": "~5.3.15",
+    "@popperjs/core": "~2.11.8",
+    "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
+    "coreui": "^0.1.0",
+    "jwt-decode": "^4.0.0",
+    "primeng": "^19.0.6",
+    "rxjs": "~7.8.0",
+    "sha.js": "^2.4.11",
+    "tslib": "^2.8.1",
+    "zone.js": "~0.15.0"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^19.1.7",
+    "@angular/cli": "^19.1.7",
+    "@angular/compiler-cli": "^19.1.6",
+    "@types/jasmine": "~5.1.0",
+    "jasmine-core": "~5.2.0",
+    "karma": "~6.4.0",
+    "karma-chrome-launcher": "~3.2.0",
+    "karma-coverage": "~2.2.0",
+    "karma-jasmine": "~5.1.0",
+    "karma-jasmine-html-reporter": "~2.1.0",
+    "typescript": "~5.5.2"
+  }
+}
